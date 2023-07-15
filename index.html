@@ -12,19 +12,49 @@
 
 <body>
   <div id="app">
+    <div class="header-container">
+      <button class="result-btn">
+        Result
+      </button>
+    </div>
 
-    
     <div class="input-container">
       <div class="input-main">
         <button class="operation-btn big">
           +
         </button>
-        <input inputmode="decimal" class="input-num" placeholder="enter number">
+        <div class="operator-modal">
+          <button class="operation-btn big">+</button>
+          <button class="operation-btn big">-</button>
+          <button class="operation-btn big">x</button>
+          <button class="operation-btn big">/</button>
+          <button class="operation-btn big">%</button>
+        </div>
+        <input inputmode="decimal" class="input-num" placeholder="put number">
       </div>
-      <div class="slider-menu-btn">
-        <ul>
-          <button></button>
-        </ul>
+      <div class="slider-menu-closed">
+        <button class="switch-indicator mod off"></button>
+        <button class="switch-indicator switch off"></button>
+        <button class="switch-indicator delete off"></button>
+      </div>
+      <div class="slider-menu-open">
+        <button class="switch-menu-btn mod off">mod()</button>
+        <button class="switch-menu-btn switch off">on/off</button>
+        <button class="switch-menu-btn delete off">delete</button>
+      </div>
+      <div class="slider-mod">
+        <button class="operation-btn smaller">x</button>
+        <input inputmode="decimal" class="input-num" placeholder="0">
+      </div>
+      <div class="slider-switch">
+        <button class="switch-btn ">on</button>
+        /
+        <button class="switch-btn off">off</button>
+      </div>
+      <div class="slider-delete">
+        <button class="delete-btn ">delete</button>
+        /
+        <button class="delete-btn off">keep</button>
       </div>
     </div>
     <button class="operation-btn bigger">

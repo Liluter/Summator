@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@400;600&display=swap');
+
 :root {
   --light-backG: #fbfbfb;
   --dark-grey-text: #3d3d3d;
@@ -5,15 +7,27 @@
   --input-backG: #adadad;
   --input-main-stroke: #808080;
   --input-main-bckg: #adadad;
-  --secret-menu-bckg-stroke: #bbb;
+  --secret-menu-bckg: #ebebeb;
+  --secret-menu-stroke: #bdbdbd;
   --border-prime: 1px solid #7dd454;
   --border-sec: 1px solid #808080;
-  --border-third: 1px solid var(--secret-menu-bckg-stroke);
+  --secret-menu-mod: #5F6EF1;
+  --secret-menu-switch: #FFF38B;
+  --secret-menu-delete: #FC9393;
+  --operator-modal-backG: #24249cc3;
+  --header-btn-backG: #FFC165;
+  --header-btn-stroke: #c39148;
 }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html {
+  font-family: 'Signika', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--dark-grey-text);
 }
 
 #app {
@@ -27,21 +41,40 @@
   gap: 12px;
 }
 
+.header-container {
+  width: 100vw;
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  border-radius: 0px 0px 13px 13px;
+  border: 1px solid var(--input-main-stroke);
+  background: var(--input-main-bckg);
+}
+
+.result-btn {
+  width: 93px;
+  height: 41px;
+  border-radius: 8px;
+  border: 1px solid var(--header-btn-stroke);
+  background: var(--header-btn-backG) ;
+}
+
 .operation-btn {
   position: relative;
   width: 44px;
   height: 42px;
   border-radius: 17px;
   border: var(--border-prime);
-  background: linear-gradient(
-    135deg,
-    rgba(202, 228, 39, 0.85) 0%,
-    #99f66d 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(202, 228, 39, 0.85) 0%,
+      #99f66d 100%);
   color: var(--dark-grey-text);
   text-align: center;
   align-items: center;
-  font-family: Consolas;
+  font-family: 'Signika';
   font-size: 28px;
   font-style: normal;
   line-height: 14px;
@@ -49,6 +82,13 @@
   font-weight: 700;
   transition: all 200ms ease;
   flex-shrink: 0;
+}
+
+.smaller {
+  width: 32px;
+  height: 30px;
+  border-radius: 13px;
+  font-size: 22px;
 }
 
 .bigger {
@@ -62,7 +102,7 @@
   transform: scale(1.05);
 }
 
-.input-container{
+.input-container {
   width: fit-content;
   position: relative;
 }
@@ -89,7 +129,7 @@
   border-radius: 17px;
   border: var(--border-sec);
   color: var(--dark-grey-text);
-  font-family: Consolas;
+  font-family: 'Signika';
   font-size: 28px;
   font-style: normal;
   line-height: 14px;
@@ -98,21 +138,210 @@
   text-align: right;
   padding-right: 6px;
 }
+
 .input-num:focus-visible {
   outline: none;
 }
-.input-num:hover {
-  appearance: unset;
-}
 
-.slider-menu-btn {
+/* .input-num:hover {
+  appearance: unset;
+} */
+
+.slider-menu-closed {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: end;
   width: 53px;
   height: 60px;
   position: absolute;
-  right: -30px;
-  top:0;
+  right: -27px;
+  top: 0;
   z-index: 1;
   border-radius: 0px 13px 13px 0px;
-  border: var(--border-third);
+  border: solid 1px var(--secret-menu-stroke);
+  background: var(--secret-menu-bckg);
+  gap: 3px;
+  transition: all 0.5s ease;
+}
+
+.switch-indicator {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  border: 1px solid var(--secret-menu-stroke);
   background: var(--light-grey);
+  list-style: none;
+  margin-right: 6px;
+}
+
+.off {
+  opacity: 0.3;
+}
+
+.on {
+  opacity: 1;
+}
+
+
+.switch-indicator:hover {
+  opacity: 1;
+}
+
+
+.slider-menu-open {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 251px;
+  height: 60px;
+  position: absolute;
+  right: -27px;
+  top: 0;
+  z-index: 2;
+  border-radius: 13px 13px 13px 13px;
+  border: solid 1px var(--secret-menu-stroke);
+  background: var(--secret-menu-bckg);
+  gap: 10px;
+  transition: all 1.5s ease;
+}
+
+.slider-mod {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 251px;
+  height: 60px;
+  position: absolute;
+  right: -27px;
+  top: 0;
+  z-index: 2;
+  border-radius: 13px 13px 13px 13px;
+  border: solid 1px var(--secret-menu-stroke);
+  background: var(--secret-menu-mod);
+  gap: 6px;
+  transition: all 0.5s ease;
+  padding: 0 6px;
+}
+
+.slider-switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 251px;
+  height: 60px;
+  position: absolute;
+  right: -27px;
+  top: 0;
+  z-index: 2;
+  border-radius: 13px 13px 13px 13px;
+  border: solid 1px var(--secret-menu-stroke);
+  background: var(--secret-menu-bckg);
+  gap: 6px;
+  transition: all 0.5s ease;
+  padding: 0 6px;
+}
+
+.switch-menu-btn {
+  width: 64px;
+  height: 32px;
+  margin-right: 0;
+  border-radius: 16px;
+  border: 1px solid var(--secret-menu-stroke);
+  background: var(--light-grey);
+  transition: all 0.2s ease;
+}
+
+.switch-btn {
+  width: 64px;
+  height: 32px;
+  margin-right: 0;
+  border-radius: 16px;
+  border: 1px solid var(--secret-menu-stroke);
+  background: var(--secret-menu-switch);
+  transition: all 0.5s ease;
+}
+
+.slider-delete {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 251px;
+  height: 60px;
+  position: absolute;
+  right: -27px;
+  top: 0;
+  z-index: 2;
+  border-radius: 13px 13px 13px 13px;
+  border: solid 1px var(--secret-menu-stroke);
+  background: var(--secret-menu-bckg);
+  gap: 6px;
+  transition: all 1.5s ease;
+  padding: 0 6px;
+}
+
+.delete-btn {
+  width: 64px;
+  height: 32px;
+  margin-right: 0;
+  border-radius: 16px;
+  border: 1px solid var(--secret-menu-stroke);
+  background: var(--secret-menu-delete);
+  transition: all 0.5s ease;
+}
+
+.switch-btn:hover {
+  transform: scale(1.05);
+}
+
+.switch-menu-btn:hover {
+  opacity: 1;
+}
+
+.delete-btn:hover {
+  transform: scale(1.05);
+}
+
+.delete-menu-btn:hover {
+  opacity: 1;
+}
+
+.mod {
+  background: var(--secret-menu-mod);
+}
+
+.switch {
+  background: var(--secret-menu-switch);
+}
+
+.delete {
+  background: var(--secret-menu-delete);
+}
+
+.operator-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 56px;
+  height: 250px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  border-radius: 13px 13px 13px 13px;
+  border: solid 1px var(--secret-menu-stroke);
+  background: var(--operator-modal-backG);
+  gap: 6px;
+  transition: all 1.5s ease;
+}
+
+.hide {
+  display: none;
+  /* visibility: hidden; */
 }
