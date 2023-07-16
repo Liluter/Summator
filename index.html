@@ -16,42 +16,43 @@
       <button class="result-btn">
         Result
       </button>
+      <input inputmode="numeric" value="0.00" class="header-input" readonly >
     </div>
 
     <div class="input-container">
       <div class="input-main">
-        <button class="operation-btn big">
+        <button class="operation-btn">
           +
         </button>
-        <div class="operator-modal">
+        <div class="operator-modal hide">
           <button class="operation-btn big">+</button>
           <button class="operation-btn big">-</button>
           <button class="operation-btn big">x</button>
           <button class="operation-btn big">/</button>
           <button class="operation-btn big">%</button>
         </div>
-        <input inputmode="decimal" class="input-num" placeholder="put number">
+        <input inputmode="decimal"  class="input-num" placeholder="put number">
       </div>
       <div class="slider-menu-closed">
         <button class="switch-indicator mod off"></button>
         <button class="switch-indicator switch off"></button>
         <button class="switch-indicator delete off"></button>
       </div>
-      <div class="slider-menu-open">
+      <div class="slider-menu-open hide">
         <button class="switch-menu-btn mod off">mod()</button>
         <button class="switch-menu-btn switch off">on/off</button>
         <button class="switch-menu-btn delete off">delete</button>
       </div>
-      <div class="slider-mod">
+      <div class="slider-mod hide">
         <button class="operation-btn smaller">x</button>
         <input inputmode="decimal" class="input-num" placeholder="0">
       </div>
-      <div class="slider-switch">
+      <div class="slider-switch hide">
         <button class="switch-btn ">on</button>
         /
         <button class="switch-btn off">off</button>
       </div>
-      <div class="slider-delete">
+      <div class="slider-delete hide">
         <button class="delete-btn ">delete</button>
         /
         <button class="delete-btn off">keep</button>

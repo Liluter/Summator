@@ -38,7 +38,7 @@ html {
   width: 100vw;
   height: 100vh;
   background-color: var(--light-backG);
-  gap: 12px;
+  gap: 24px;
 }
 
 .header-container {
@@ -47,20 +47,58 @@ html {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   position: fixed;
   top: 0;
   border-radius: 0px 0px 13px 13px;
   border: 1px solid var(--input-main-stroke);
   background: var(--input-main-bckg);
+  
+  padding: 0 6px;
+  gap: 6px;
 }
 
 .result-btn {
   width: 93px;
-  height: 41px;
+  height: 40px;
   border-radius: 8px;
   border: 1px solid var(--header-btn-stroke);
   background: var(--header-btn-backG) ;
+  color: var(--dark-grey-text);
+  font-family: 'Signika';
+  font-size: 18px;
+  font-style: normal;
+  line-height: 18px;
+  padding-bottom: 2px;
+  font-weight: 700;
 }
+
+.header-input{
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  width: 280px;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--input-main-stroke);
+  background-color: var(--light-backG);
+  color: var(--dark-grey-text);
+  font-family: 'Signika';
+  font-size: 28px;
+  font-style: normal;
+  line-height: 14px;
+  padding-bottom: 2px;
+  font-weight: 700;
+  text-align: right;
+  padding-right: 6px;
+  gap: 8px;
+  padding: 0 6px;
+}
+.header-input:focus-visible {
+  outline: none;
+}
+
 
 .operation-btn {
   position: relative;
@@ -137,6 +175,7 @@ html {
   font-weight: 700;
   text-align: right;
   padding-right: 6px;
+  background-color: var(--light-backG);
 }
 
 .input-num:focus-visible {
