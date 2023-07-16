@@ -32,8 +32,7 @@ class HeaderComp extends Component {
   constructor(hookId) {
     super(hookId, false);
     this.showValue = () => {
-      console.log("Actual Result : ", this.input);
-      // InputContainer.clearStock();
+      console.log("Actual Result : ", this.input, InputContainer.inputs);
     };
     this.render();
   }
@@ -70,21 +69,65 @@ class Input {
   }
 }
 
+class OperationBtnInput extends Component {
+  constructor(hookId, operator, attr) {
+    super(hookId, false);
+    this.operator = operator;
+    this.attr = attr;
+    this.render();
+  }
+
+  operationHandler() {}
+
+  render() {
+    const operBtn = this.createComp("button", "operation-btn");
+    operBtn.innerHTML = this.operator;
+    operBtn.addEventListener("click", this.operationHandler);
+  }
+}
+
+class OperatorModal extends Component {
+  operators = ["+", "-", "x", "/", "%"];
+  buttons = [];
+
+  constructor(hookId, attr) {
+    super(hookId, false);
+    this.attr = attr;
+    this.elem
+    this.render();
+  }
+  operatorHandler(e) {
+    e.target.parentElement.classList.toggle('hide');
+  }
+
+  render() {
+    this.elem = this.createComp("div", "operator-modal hide", this.attr);
+    console.log("Id oper mod:", this.elem.id);
+    // this.elem.addEventListener("click", this.operatorHandler, false);
+
+    for (const btn of this.operators) {
+      console.log(btn);
+      console.log(this.operators);
+      let oprBtnMod = new OperationBtnInput(this.elem.id,btn);
+      btn.addEventListener('click', this.operatorHandler);
+      this.buttons.push(oprBtnMod);
+      // inModOprBtn.addEventListener('click', this.operatorHandler)
+    }
+  }
+}
 
 class InputMain extends Component {
-  constructor(hookId, ownId) {
+  constructor(hookId, attr) {
     super(hookId, false);
-    this.ownId = ownId;
+    this.attr = attr;
     this.render();
     this.elem;
   }
 
   render() {
-    this.elem = this.createComp("div", "input-main", this.ownId);
-    console.log('Test', this.elem.id);
-
+    this.elem = this.createComp("div", "input-main", this.attr);
+    console.log("Test", this.elem.id);
   }
-
 }
 
 class InputContainer extends Component {
@@ -96,13 +139,19 @@ class InputContainer extends Component {
   }
 
   static addInput() {
-    const id = this.inputs.length - 1;
-    const nextId = 'InputMain-'+id;
-    this.inputs.push(new Input(nextId));
-    const newInputMain = new InputMain("input-cont", [{name: 'id', value: nextId}]);
+    const id = this.inputs.length + 1;
+    console.log("id ;", id);
+    const mainInputId = "InputMain-" + id;
+    this.inputs.push(new Input(mainInputId));
+    const newInputMain = new InputMain("input-cont", [
+      { name: "id", value: mainInputId },
+    ]);
     console.log(newInputMain.elem);
-    const operBtn = new OperationBtnInput(nextId, '+');
-
+    const operBtn = new OperationBtnInput(mainInputId, "+");
+    const operModId = "OperMod-" + id;
+    const operMOdal = new OperatorModal(mainInputId, [
+      { name: "id", value: operModId },
+    ]);
   }
 
   static renderItems() {
@@ -115,24 +164,6 @@ class InputContainer extends Component {
   render() {
     const inputIt = this.createComp("div", "input-container");
     inputIt.id = "input-cont";
-  }
-}
-
-class OperationBtnInput extends Component {
-  constructor(hookId, operator) {
-    super(hookId, false);
-    this.operator = operator;
-    this.render();
-  }
-
-  operationHandler(){
-
-  }
-
-  render() {
-    const operBtn = this.createComp("button", "operation-btn");
-    operBtn.innerHTML = this.operator;
-    operBtn.addEventListener("click", this.operationHandler);
   }
 }
 
