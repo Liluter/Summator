@@ -143,6 +143,9 @@ html {
 .input-container {
   width: fit-content;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .input-main {
