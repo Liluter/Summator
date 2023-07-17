@@ -53,7 +53,7 @@ html {
   border-radius: 0px 0px 13px 13px;
   border: 1px solid var(--input-main-stroke);
   background: var(--input-main-bckg);
-  
+
   padding: 0 6px;
   gap: 6px;
 }
@@ -63,7 +63,7 @@ html {
   height: 40px;
   border-radius: 8px;
   border: 1px solid var(--header-btn-stroke);
-  background: var(--header-btn-backG) ;
+  background: var(--header-btn-backG);
   color: var(--dark-grey-text);
   font-family: 'Signika';
   font-size: 18px;
@@ -73,7 +73,7 @@ html {
   font-weight: 700;
 }
 
-.header-input{
+.header-input {
   position: relative;
   z-index: 2;
   display: flex;
@@ -95,6 +95,7 @@ html {
   gap: 8px;
   padding: 0 6px;
 }
+
 .header-input:focus-visible {
   outline: none;
 }
@@ -143,6 +144,10 @@ html {
 .input-container {
   width: fit-content;
   position: relative;
+  
+}
+
+.container{
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -367,23 +372,25 @@ html {
 
 .operator-modal {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  width: 56px;
-  height: 250px;
+  width: 258px;
+  height: 56px;
   position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  border-radius: 13px 13px 13px 13px;
+  left: 1px;
+  top: 1px;
+  z-index: 4;
+  border-radius: 23px 23px 23px 23px;
   border: solid 1px var(--secret-menu-stroke);
   background: var(--operator-modal-backG);
   gap: 6px;
-  transition: all 1.5s ease;
+  transition: all 250ms ease;
 }
 
 .hide {
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  /* display: none; */
   /* visibility: hidden; */
 }
