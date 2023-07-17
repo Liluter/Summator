@@ -32,7 +32,7 @@ class HeaderComp extends Component {
   constructor(hookId) {
     super(hookId, false);
     this.showValue = () => {
-      console.log("Actual Result : ", this.input, InputContainer.inputs);
+      console.log("Actual Result : ", this.input, Generator.inputs);
     };
     this.render();
   }
@@ -69,10 +69,56 @@ class Input {
   }
 }
 
+class SliderMod extends Component{
+  constructor(hookId,attr){
+    super(hookId,false);
+    this.attr=attr;
+    this.render();
+  }
+//add handler
+
+
+  render(){
+    const elem = this.createComp('div','slider-mod',this.attr);
+    console.log(elem)
+    const smallOprBtn = new OperationBtnInput(elem.id,'+');
+    elem.append(smallOprBtn.elem);
+    const modInput = new InputNumber(elem.id);
+
+  }
+}
+
+class SliderMenuOpen extends Component {
+  list = ["mod", "switch", "delete"];
+  constructor(hookId, attr) {
+    super(hookId, false);
+    this.attr = attr;
+    this.elem;
+    this.render();
+  }
+
+slideMenuHandler(e){
+console.log('pressed slider menu', e.target.textContent)
+}
+
+  render() {
+    this.elem = this.createComp("div", "slider-menu-open hide", this.attr);
+    // this.elem.addEventListener('click', this.slideMenuHandler,false);
+    for (let el of this.list) {
+      const switchBtn = new SwitchInd(this.elem.id, 'switch-menu-btn off ' + el);
+      switchBtn.elem.innerHTML = el;
+      switchBtn.elem.addEventListener('click', this.slideMenuHandler);
+      
+    }
+  }
+}
+
 class SwitchInd extends Component {
   constructor(hookId, classes, attr) {
     super(hookId, false);
+    this.attr=attr;
     this.classes = classes;
+    this.elem;
     this.render();
   }
 
@@ -82,7 +128,7 @@ class SwitchInd extends Component {
 
   render() {
     this.elem = this.createComp("button", this.classes, this.attr);
-    this.elem.addEventListener("click", this.switchHandler);
+    // this.elem.addEventListener("click", this.switchHandler);
   }
 }
 
@@ -91,16 +137,19 @@ class SliderMenuClosed extends Component {
   constructor(hookId, attr) {
     super(hookId, false);
     this.attr = attr;
-    this.elem;
     this.render();
   }
 
+slideMenuHandler(){
+  this.elem.nextElementSibling.classList.toggle('hide');
+}
+
   render() {
-    const sliderClo = this.createComp("div", "slider-menu-closed", this.attr);
+    this.elem = this.createComp("div", "slider-menu-closed", this.attr);
+    this.elem.addEventListener('click', this.slideMenuHandler.bind(this),true);
     for (let el of this.list) {
-      console.log(el)
-      const newIt = new SwitchInd(sliderClo.id, el);
-      sliderClo.append(newIt.elem);
+      const switchBtn = new SwitchInd(this.elem.id, 'switch-indicator off ' + el);
+      
     }
   }
 }
@@ -126,6 +175,10 @@ class OperationBtnInput extends Component {
   }
 }
 
+// class ModInputNumber extende Component {}
+//=========================================
+//=========================================
+
 class InputNumber extends Component {
   constructor(hookId) {
     super(hookId, false);
@@ -134,13 +187,14 @@ class InputNumber extends Component {
   }
 
   valueHandler(e) {
+    console.log('InputNumber class hookId:',this.hookId)
     Generator.inputs.find((e) => e.id === this.hookId).mainVal = e.target.value;
     console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
   }
 
   render() {
     this.elem = this.createComp("input", "input-num", [
-      { name: "placeholder", value: "put number" },
+      { name: "placeholder", value: "set number" },
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));
   }
@@ -198,7 +252,12 @@ class Generator {
   static addInput() {
     const id = this.inputs.length + 1;
     const smallContId = "input-cont-" + id;
+    //====================================
     const mainInputId = "InputMain-" + id;
+    
+    const sliderMenuId = "SliderMenu-" + id;
+    const sliderMenuOpen = "SliderMenuOpen-" + id;
+    const sliderMod = "SliderMod-" + id;
     this.inputs.push(new Input(mainInputId));
 
     new InputItem("container", "input-container", [
@@ -207,8 +266,12 @@ class Generator {
     new InputItem(smallContId, "input-main", [
       { name: "id", value: mainInputId },
     ]);
-    new SliderMenuClosed(smallContId);
+    new SliderMenuClosed(smallContId,[{name:'id', value:sliderMenuId}]);
+    
+    new SliderMenuOpen(smallContId, [{name:'id', value: sliderMenuOpen}])
     //Slider mod open
+    new SliderMod(smallContId,[{name: 'id', value: sliderMod }]);
+
     //Slider Switch open
     //Slider delete open
 

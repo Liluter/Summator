@@ -11,9 +11,9 @@
   --secret-menu-stroke: #bdbdbd;
   --border-prime: 1px solid #7dd454;
   --border-sec: 1px solid #808080;
-  --secret-menu-mod: #5F6EF1;
-  --secret-menu-switch: #FFF38B;
-  --secret-menu-delete: #FC9393;
+  --secret-menu-mod: #3449ff;
+  --secret-menu-switch: #ffec3e;
+  --secret-menu-delete: #ff5c5c;
   --operator-modal-backG: #24249cc3;
   --header-btn-backG: #FFC165;
   --header-btn-stroke: #c39148;
@@ -71,6 +71,11 @@ html {
   line-height: 18px;
   padding-bottom: 2px;
   font-weight: 700;
+  flex:0 0 93px
+}
+
+.result-btn:hover{
+  scale: 1.05;
 }
 
 .header-input {
@@ -78,7 +83,7 @@ html {
   z-index: 2;
   display: flex;
   align-items: center;
-  width: 280px;
+  min-width: 160px;
   height: 40px;
   border-radius: 8px;
   border: 1px solid var(--input-main-stroke);
@@ -94,6 +99,7 @@ html {
   padding-right: 6px;
   gap: 8px;
   padding: 0 6px;
+  flex:0 1 250px;
 }
 
 .header-input:focus-visible {
@@ -221,6 +227,7 @@ html {
   background: var(--light-grey);
   list-style: none;
   margin-right: 6px;
+  transition: all .2s ease;;
 }
 
 .off {
@@ -233,7 +240,8 @@ html {
 
 
 .switch-indicator:hover {
-  opacity: 1;
+  opacity: 0.5;
+  scale: 1.1;
 }
 
 
@@ -252,7 +260,7 @@ html {
   border: solid 1px var(--secret-menu-stroke);
   background: var(--secret-menu-bckg);
   gap: 10px;
-  transition: all 1.5s ease;
+  transition: all 0.5s ease;
 }
 
 .slider-mod {
@@ -328,7 +336,7 @@ html {
   border: solid 1px var(--secret-menu-stroke);
   background: var(--secret-menu-bckg);
   gap: 6px;
-  transition: all 1.5s ease;
+  transition: all 0.5s ease;
   padding: 0 6px;
 }
 
