@@ -396,6 +396,12 @@ html {
   transition: all 250ms ease;
 }
 
+.operator-modal.smaller {
+  width: 208px;
+  height: 46px;
+  top: 6px;
+}
+
 .hide {
   opacity: 0;
   visibility: hidden;

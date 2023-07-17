@@ -80,11 +80,11 @@ class SliderMod extends Component{
 
   render(){
     const elem = this.createComp('div','slider-mod',this.attr);
-    console.log(elem)
-    const smallOprBtn = new OperationBtnInput(elem.id,'+');
-    elem.append(smallOprBtn.elem);
+    console.log(this.hookId, this.attr, elem.id)
+    const smallOprBtn = new OperationBtnInput(elem.id,'x','smaller');
     const modInput = new InputNumber(elem.id);
-
+    const operatsMod = new OperatorModal(elem.id,[{name: 'id', value:'OprModSmall-'+(this.hookId[this.hookId.length-1])}],'smaller');
+    // to be continued...
   }
 }
 
@@ -98,7 +98,7 @@ class SliderMenuOpen extends Component {
   }
 
 slideMenuHandler(e){
-console.log('pressed slider menu', e.target.textContent)
+console.log('pressed slider menu', e.target)
 }
 
   render() {
@@ -156,9 +156,10 @@ slideMenuHandler(){
 
 
 class OperationBtnInput extends Component {
-  constructor(hookId, operator, attr) {
+  constructor(hookId, operator,classes, attr) {
     super(hookId, false);
     this.operator = operator;
+    this.classes=classes;
     this.attr = attr;
     this.render();
     this.elem;
@@ -169,7 +170,7 @@ class OperationBtnInput extends Component {
   // }
 
   render() {
-    this.elem = this.createComp("button", "operation-btn");
+    this.elem = this.createComp("button", "operation-btn " + this.classes);
     this.elem.innerHTML = this.operator;
     // this.elem.addEventListener("click", this.operationHandler.bind(this));
   }
@@ -204,14 +205,16 @@ class OperatorModal extends Component {
   operators = ["+", "-", "x", "/", "%"];
   buttons = [];
 
-  constructor(hookId, attr) {
+  constructor(hookId, attr, classes) {
     super(hookId, false);
     this.attr = attr;
+    this.classes=classes;
     this.elem;
     this.render();
   }
   operatorHandler(e) {
     e.target.parentElement.classList.toggle("hide");
+    console.log(e.id, this.hookId)
     Generator.inputs.find((e) => e.id === this.hookId).mainOperator =
       e.target.innerHTML;
     e.target.parentElement.parentElement.firstChild.innerHTML =
@@ -220,10 +223,10 @@ class OperatorModal extends Component {
   }
 
   render() {
-    this.elem = this.createComp("div", "operator-modal hide", this.attr);
+    this.elem = this.createComp("div", "operator-modal hide "+ this.classes, this.attr);
 
-    for (const btn of this.operators) {
-      this.buttons.push(new OperationBtnInput(this.elem.id, btn));
+    for (const operator of this.operators) {
+      this.buttons.push(new OperationBtnInput(this.elem.id, operator,this.classes));
     }
     this.buttons.forEach((e) =>
       e.elem.addEventListener("click", this.operatorHandler.bind(this))
@@ -258,6 +261,7 @@ class Generator {
     const sliderMenuId = "SliderMenu-" + id;
     const sliderMenuOpen = "SliderMenuOpen-" + id;
     const sliderMod = "SliderMod-" + id;
+    const operModId = "OperMod-" + id;
     this.inputs.push(new Input(mainInputId));
 
     new InputItem("container", "input-container", [
@@ -280,7 +284,6 @@ class Generator {
     this.oprMainBtn.elem.addEventListener("click", (e) => {
       e.target.nextSibling.classList.toggle("hide");
     });
-    const operModId = "OperMod-" + id;
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
     new InputNumber(mainInputId);
   }
