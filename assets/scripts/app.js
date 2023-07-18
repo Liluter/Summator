@@ -79,11 +79,78 @@ class SliderMod extends Component{
 
 
   render(){
-    const elem = this.createComp('div','slider-mod',this.attr);
+    const elem = this.createComp('div','slider-mod hide',this.attr);
     console.log(this.hookId, this.attr, elem.id)
     const smallOprBtn = new OperationBtnInput(elem.id,'x','smaller');
     const modInput = new InputNumber(elem.id);
     const operatsMod = new OperatorModal(elem.id,[{name: 'id', value:'OprModSmall-'+(this.hookId[this.hookId.length-1])}],'smaller');
+    // to be continued...
+  }
+}
+
+class SliderSwitch extends Component{
+  constructor(hookId,attr){
+    super(hookId,false);
+    this.attr=attr;
+    this.render();
+  }
+//add handler
+
+slideMenuHandler(e){
+  // itself
+  // open modModal
+  // add if statment to choose which btn was pressed switchon switch off
+  // add to Generator.inputs;
+  console.log(e.target.textContent, );
+  console.log('Second ancestor',e.target.parentElement.parentElement.children);
+  switch (e.target.textContent) {
+    case 'ON' :
+      console.log('ON was pressed');
+      
+      e.target.parentElement.parentElement.children[1].children[1].classList.remove('off');
+      break;
+    case 'OFF' :
+       console.log('OFF was pressed');
+      e.target.parentElement.parentElement.children[1].children[1].classList.add('off');
+    break;
+  }
+  e.target.parentElement.classList.toggle('hide')
+      // this.elem.parentElement.children[3].classList.toggle('hide')
+// console.log(' itself open modModal' );
+// create opener SliderMod
+}
+
+
+  render(){
+    const elem = this.createComp('div','slider-switch hide',this.attr);
+    const switchBtnOn = new SwitchInd(elem.id, 'switch-menu-btn switch off');
+    switchBtnOn.elem.innerHTML='ON';
+    switchBtnOn.elem.addEventListener('click', this.slideMenuHandler.bind(this));
+    const switchBtnOff = new SwitchInd(elem.id, 'switch-menu-btn switch off turnoff');
+    switchBtnOff.elem.innerHTML='OFF';
+    switchBtnOff.elem.addEventListener('click', this.slideMenuHandler.bind(this));
+    // elem.innerHTML = 'SWITCH';
+    console.log(this.hookId, this.attr, elem.id)
+    // to be continued...
+  }
+}
+class SliderDelete extends Component{
+  constructor(hookId,attr){
+    super(hookId,false);
+    this.attr=attr;
+    this.render();
+  }
+//add handler
+
+
+  render(){
+    const elem = this.createComp('div','slider-delete hide',this.attr);
+    const switchBtnOn = new SwitchInd(elem.id, 'switch-menu-btn delete off');
+    switchBtnOn.elem.innerHTML='DELETE';
+    const switchBtnOff = new SwitchInd(elem.id, 'switch-menu-btn delete off turnoff');
+    switchBtnOff.elem.innerHTML='KEEP';
+    // elem.innerHTML = 'DELETE';
+    console.log(this.hookId, this.attr, elem.id)
     // to be continued...
   }
 }
@@ -98,7 +165,26 @@ class SliderMenuOpen extends Component {
   }
 
 slideMenuHandler(e){
-console.log('pressed slider menu', e.target)
+  // itself
+e.target.parentElement.classList.toggle('hide');
+  // open modModal
+  // add if statment to choose which btn was pressed mod switch or delete
+  console.log(e.target.textContent)
+  switch (e.target.textContent) {
+    case 'mod' :
+      this.elem.parentElement.children[3].classList.toggle('hide');
+      break;
+    case 'switch' :
+      this.elem.parentElement.children[4].classList.toggle('hide');
+      break;
+    case 'delete' :
+      this.elem.parentElement.children[5].classList.toggle('hide');
+      break;
+  }
+  console.log(this.elem.parentElement.children);
+  // this.elem.parentElement.children[3].classList.toggle('hide')
+console.log(' itself open modModal' );
+// create opener SliderMod
 }
 
   render() {
@@ -107,7 +193,7 @@ console.log('pressed slider menu', e.target)
     for (let el of this.list) {
       const switchBtn = new SwitchInd(this.elem.id, 'switch-menu-btn off ' + el);
       switchBtn.elem.innerHTML = el;
-      switchBtn.elem.addEventListener('click', this.slideMenuHandler);
+      switchBtn.elem.addEventListener('click', this.slideMenuHandler.bind(this));
       
     }
   }
@@ -148,8 +234,13 @@ slideMenuHandler(){
     this.elem = this.createComp("div", "slider-menu-closed", this.attr);
     this.elem.addEventListener('click', this.slideMenuHandler.bind(this),true);
     for (let el of this.list) {
-      const switchBtn = new SwitchInd(this.elem.id, 'switch-indicator off ' + el);
-      
+      const classes = 'switch-indicator '+ el;
+      if (el !== 'switch') {
+        const switchBtn = new SwitchInd(this.elem.id, classes + ' off');
+      } else {
+        const switchBtn = new SwitchInd(this.elem.id, classes );
+      }
+      // need to set without off class for switch btn indiator ... done.
     }
   }
 }
@@ -176,7 +267,7 @@ class OperationBtnInput extends Component {
   }
 }
 
-// class ModInputNumber extende Component {}
+// class ModInputNumber extends Component {}
 //=========================================
 //=========================================
 
@@ -261,6 +352,8 @@ class Generator {
     const sliderMenuId = "SliderMenu-" + id;
     const sliderMenuOpen = "SliderMenuOpen-" + id;
     const sliderMod = "SliderMod-" + id;
+    const sliderSwitch = "SliderSwitch-" + id;
+    const sliderDelete = "SliderDelete-" + id;
     const operModId = "OperMod-" + id;
     this.inputs.push(new Input(mainInputId));
 
@@ -275,9 +368,11 @@ class Generator {
     new SliderMenuOpen(smallContId, [{name:'id', value: sliderMenuOpen}])
     //Slider mod open
     new SliderMod(smallContId,[{name: 'id', value: sliderMod }]);
-
+    
     //Slider Switch open
+    new SliderSwitch(smallContId,[{name: 'id', value: sliderSwitch }]);
     //Slider delete open
+    new SliderDelete(smallContId,[{name: 'id', value: sliderDelete }]);
 
     //InputMain children
     this.oprMainBtn = new OperationBtnInput(mainInputId, "+");

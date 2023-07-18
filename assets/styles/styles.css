@@ -358,6 +358,10 @@ html {
   opacity: 1;
 }
 
+.switch-menu-btn.turnoff:hover{
+  filter: grayscale(50%) contrast(70%);
+}
+
 .delete-btn:hover {
   transform: scale(1.05);
 }
