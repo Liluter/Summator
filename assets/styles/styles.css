@@ -150,7 +150,16 @@ html {
 .input-container {
   width: fit-content;
   position: relative;
-  
+  transition: transform 1s ease-in;
+}
+.input-container.disabled{
+  filter:grayscale(100%) opacity(50%); 
+}
+
+.input-container.removing{
+  /* transform: rotate(360deg) scale(0); */
+  transform:scaleX(0);
+
 }
 
 .container{

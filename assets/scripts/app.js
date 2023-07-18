@@ -41,7 +41,7 @@ class HeaderComp extends Component {
     const headerEl = this.createComp("div", "header-container");
     headerEl.innerHTML = `
     <button class='result-btn'>Result</button>
-    <input inputmode='numeric' value='0.00' class='header-input' readonly>
+    <input id='resultInput' inputmode='numeric' value='0.00' class='header-input' readonly>
     `;
     const resultBtn = headerEl.querySelector("button");
     const input = headerEl.querySelector("input");
@@ -97,27 +97,22 @@ class SliderSwitch extends Component{
 //add handler
 
 slideMenuHandler(e){
-  // itself
-  // open modModal
-  // add if statment to choose which btn was pressed switchon switch off
-  // add to Generator.inputs;
-  console.log(e.target.textContent, );
-  console.log('Second ancestor',e.target.parentElement.parentElement.children);
+  // console.log(e.target.textContent, );
+  // console.log('Second ancestor',e.target.parentElement.parentElement.children);
+  // console.log('Second ancestor',e.target.parentElement.parentElement);
   switch (e.target.textContent) {
     case 'ON' :
-      console.log('ON was pressed');
-      
+      // console.log('ON was pressed');
       e.target.parentElement.parentElement.children[1].children[1].classList.remove('off');
+      e.target.parentElement.parentElement.classList.remove('disabled')
       break;
     case 'OFF' :
-       console.log('OFF was pressed');
+        // console.log('OFF was pressed');
       e.target.parentElement.parentElement.children[1].children[1].classList.add('off');
+      e.target.parentElement.parentElement.classList.add('disabled')
     break;
   }
   e.target.parentElement.classList.toggle('hide')
-      // this.elem.parentElement.children[3].classList.toggle('hide')
-// console.log(' itself open modModal' );
-// create opener SliderMod
 }
 
 
@@ -125,10 +120,10 @@ slideMenuHandler(e){
     const elem = this.createComp('div','slider-switch hide',this.attr);
     const switchBtnOn = new SwitchInd(elem.id, 'switch-menu-btn switch off');
     switchBtnOn.elem.innerHTML='ON';
-    switchBtnOn.elem.addEventListener('click', this.slideMenuHandler.bind(this));
+    switchBtnOn.elem.addEventListener('click', this.slideMenuHandler);
     const switchBtnOff = new SwitchInd(elem.id, 'switch-menu-btn switch off turnoff');
     switchBtnOff.elem.innerHTML='OFF';
-    switchBtnOff.elem.addEventListener('click', this.slideMenuHandler.bind(this));
+    switchBtnOff.elem.addEventListener('click', this.slideMenuHandler);
     // elem.innerHTML = 'SWITCH';
     console.log(this.hookId, this.attr, elem.id)
     // to be continued...
@@ -143,12 +138,55 @@ class SliderDelete extends Component{
 //add handler
 
 
+slideMenuHandler(e){
+  // console.log(e.target.textContent, );
+  // console.log('Second ancestor',e.target.parentElement.parentElement.children);
+  // console.log('Second ancestor',e.target.parentElement.parentElement);
+  switch (e.target.textContent) {
+    case 'DELETE' :
+      // console.log('ON was pressed');
+      e.target.parentElement.parentElement.children[1].children[2].classList.remove('off');
+      // Run function which give some time before delete
+      // add class removing
+      let counter = 0;
+      const myMethod =() =>{
+        console.log('Element: ',e.target.parentElement.parentElement.id)
+        console.log('Interval', counter);
+        e.target.parentElement.parentElement.children[1].children[2].classList.toggle('off');
+        counter++
+        if ( counter === 5 ){
+          clearInterval(blinker);
+          console.log('Deleting element...', e.target.parentElement.parentElement)
+          const toRemove = e.target.parentElement.parentElement;
+          //
+          //remove from generator inputs
+          //
+          toRemove.remove();
+          e.target.parentElement.parentElement.classList.add('removing')
+        } 
+          
+      }
+      const blinker = setInterval(myMethod,600)
+      // Add featuere to animate procces of deleting
+      break;
+    case 'KEEP' :
+        // console.log('OFF was pressed');
+      e.target.parentElement.parentElement.children[1].children[2].classList.add('off');
+      // e.target.parentElement.parentElement.classList.remove('removing')
+      // e.target.parentElement.parentElement.classList.add('disabled')
+    break;
+  }
+  e.target.parentElement.classList.toggle('hide')
+}
+
   render(){
     const elem = this.createComp('div','slider-delete hide',this.attr);
     const switchBtnOn = new SwitchInd(elem.id, 'switch-menu-btn delete off');
     switchBtnOn.elem.innerHTML='DELETE';
+    switchBtnOn.elem.addEventListener('click', this.slideMenuHandler);
     const switchBtnOff = new SwitchInd(elem.id, 'switch-menu-btn delete off turnoff');
     switchBtnOff.elem.innerHTML='KEEP';
+    switchBtnOff.elem.addEventListener('click', this.slideMenuHandler);
     // elem.innerHTML = 'DELETE';
     console.log(this.hookId, this.attr, elem.id)
     // to be continued...
@@ -279,14 +317,20 @@ class InputNumber extends Component {
   }
 
   valueHandler(e) {
+    // Need to validate each input only number
+    // Need to separate inputMod from Input number
     console.log('InputNumber class hookId:',this.hookId)
-    Generator.inputs.find((e) => e.id === this.hookId).mainVal = e.target.value;
+    const ancestorCont = e.target.closest('.input-container');
+    // Generator.inputs.find((e) => e.id === this.hookId).mainVal = e.target.value;
+    Generator.inputFinder(ancestorCont.id).mainVal = e.target.value;
+    Generator.calculateResults();
     console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
   }
 
   render() {
     this.elem = this.createComp("input", "input-num", [
       { name: "placeholder", value: "set number" },
+      { name: 'inputmode', value: 'numeric'}
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));
   }
@@ -304,13 +348,14 @@ class OperatorModal extends Component {
     this.render();
   }
   operatorHandler(e) {
+    const ancestorCont = e.target.closest('.input-container');
     e.target.parentElement.classList.toggle("hide");
-    console.log(e.id, this.hookId)
-    Generator.inputs.find((e) => e.id === this.hookId).mainOperator =
+    Generator.inputFinder(ancestorCont.id).mainOperator = e.target.innerHTML;
+    e.target.parentElement.previousElementSibling.innerHTML =
       e.target.innerHTML;
-    e.target.parentElement.parentElement.firstChild.innerHTML =
-      e.target.innerHTML;
+
     console.log("Input list : ", Generator.inputs);
+    console.log(this.hookId);
   }
 
   render() {
@@ -342,10 +387,39 @@ class InputItem extends Component {
 class Generator {
   static inputs = [];
   static oprMainBtn;
+  
+  // static resultField = ()=>{
+  //   return document.getElementById('resultInput'); 
+  // } 
+  
 
+  static inputFinder(searchedID){
+    return this.inputs.find((e) => e.id === searchedID);
+  }
+  
+  static inputRemover(containerID){
+    const toRemEleIdx = this.inputs.indexOf(this.inputs.find((e) => e.id === containerID))
+    // document.getElementById(this.inputs.indexOf(this.inputs.find((e) => e.id === containerID))).remove();
+    this.inputs.splice(toRemEleIdx,1);
+    console.log(this.inputs)
+  }
+  
+  static calculateResults(){
+    const resultInput = document.getElementById('resultInput')
+    const listOfValues = this.inputs.map(e=> e.mainVal);
+    const sum = listOfValues.reduce((prevVal,currVal)=>{
+      return +prevVal + +currVal;
+    },0);
+    
+    resultInput.value = sum.toFixed(2);
+
+    return sum;
+  }
+  
   static addInput() {
     const id = this.inputs.length + 1;
-    const smallContId = "input-cont-" + id;
+    //====================================
+    const smallContId = "Input-cont-" + id;
     //====================================
     const mainInputId = "InputMain-" + id;
     
@@ -355,14 +429,27 @@ class Generator {
     const sliderSwitch = "SliderSwitch-" + id;
     const sliderDelete = "SliderDelete-" + id;
     const operModId = "OperMod-" + id;
-    this.inputs.push(new Input(mainInputId));
+    this.inputs.push(new Input(smallContId));
+    // was mainInputId
 
     new InputItem("container", "input-container", [
       { name: "id", value: smallContId },
     ]);
+    //==============================
+    // input-container children
     new InputItem(smallContId, "input-main", [
       { name: "id", value: mainInputId },
     ]);
+    //==============================
+    //input-main children
+    this.oprMainBtn = new OperationBtnInput(mainInputId, "+");
+    this.oprMainBtn.elem.addEventListener("click", (e) => {
+      e.target.nextSibling.classList.toggle("hide");
+    });
+    new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
+    new InputNumber(mainInputId);
+    //==============================
+
     new SliderMenuClosed(smallContId,[{name:'id', value:sliderMenuId}]);
     
     new SliderMenuOpen(smallContId, [{name:'id', value: sliderMenuOpen}])
@@ -374,13 +461,6 @@ class Generator {
     //Slider delete open
     new SliderDelete(smallContId,[{name: 'id', value: sliderDelete }]);
 
-    //InputMain children
-    this.oprMainBtn = new OperationBtnInput(mainInputId, "+");
-    this.oprMainBtn.elem.addEventListener("click", (e) => {
-      e.target.nextSibling.classList.toggle("hide");
-    });
-    new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
-    new InputNumber(mainInputId);
   }
 }
 
