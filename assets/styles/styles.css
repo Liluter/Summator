@@ -153,7 +153,7 @@ html {
   transition: transform 1s ease-in;
 }
 .input-container.disabled{
-  filter:grayscale(100%) opacity(50%); 
+  filter:grayscale(75%) opacity(100%); 
 }
 
 .input-container.removing{
