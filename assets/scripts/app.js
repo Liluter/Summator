@@ -79,7 +79,7 @@ class SliderMod extends Component {
     this.render();
   }
   //add handler
-
+  // create hiding element after clicking outside element
   render() {
     const elem = this.createComp("div", "slider-mod hide", this.attr);
     console.log(this.hookId, this.attr, elem.id);
@@ -96,6 +96,7 @@ class SliderMod extends Component {
       "smaller"
     );
     // to be continued...
+    elem.parentElement.parentElement.parentElement.addEventListener('click', (e)=>console.log('clickParent', e), false);
   }
 }
 
@@ -270,7 +271,7 @@ class SliderMenuClosed extends Component {
 }
 
 class OperationBtnInput extends Component {
-  constructor(hookId, operator, classes, attr) {
+  constructor(hookId, operator, classes='', attr) {
     super(hookId, false);
     this.operator = operator;
     this.classes = classes;
@@ -296,12 +297,18 @@ class InputNumber extends Component {
     // Need to validate each input only number
     // =========================================
     // Need to separate inputMod from Input number
-    console.log("InputNumber class hookId:", this.hookId);
+    // console.log("InputNumber class hookId:", this.hookId);
     const ancestorCont = e.target.closest(".input-container");
     // Generator.inputs.find((e) => e.id === this.hookId).mainVal = e.target.value;
     Generator.inputFinder(ancestorCont.id).mainVal = e.target.value;
     Generator.calculateResults();
     console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
+  }
+  keyDownHandler(e){
+    if (("0123456789.".includes(e.key)) && (typeof +e.target.value === 'number') || (e.key === 'Backspace')) {
+    } else {
+      e.preventDefault();      
+    }
   }
 
   render() {
@@ -310,6 +317,9 @@ class InputNumber extends Component {
       { name: "inputmode", value: "numeric" },
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));
+    // this.elem.addEventListener("input", this.inputHandler.bind(this));
+    this.elem.addEventListener("keydown", this.keyDownHandler.bind(this));
+
   }
 }
 
@@ -330,7 +340,7 @@ class OperatorModal extends Component {
     Generator.inputFinder(ancestorCont.id).mainOperator = e.target.innerHTML;
     e.target.parentElement.previousElementSibling.innerHTML =
       e.target.innerHTML;
-      Generator.calculateResults();
+    Generator.calculateResults();
   }
 
   render() {
@@ -391,7 +401,7 @@ class Generator {
           counter += +element.mainVal;
           break;
         case "-":
-          counter -=  element.mainVal;
+          counter -= element.mainVal;
           break;
         case "x":
           counter *= element.mainVal;
@@ -400,12 +410,12 @@ class Generator {
           counter /= element.mainVal;
           break;
         case "%":
-          counter *= element.mainVal/100;
+          counter *= element.mainVal / 100;
           break;
       }
-      console.log('Counter',counter);
+      console.log("Counter", counter);
     }
-    
+
     resultInput.value = counter.toFixed(2);
 
     return counter;

@@ -14,3 +14,7 @@
  
   - After modification whatever input, and every input entry
   -  start this function which refresh state of results.
+
+
+ - Deleting remote branch.
+ git push origin --delete serverfix
