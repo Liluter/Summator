@@ -96,7 +96,7 @@ class SliderMod extends Component {
       "smaller"
     );
     // to be continued...
-    elem.parentElement.parentElement.parentElement.addEventListener('click', (e)=>console.log('clickParent', e), false);
+    // elem.parentElement.parentElement.parentElement.addEventListener('click', (e)=>console.log('clickParent', e.target.id), false);
   }
 }
 
@@ -499,12 +499,37 @@ class Container extends Component {
 }
 
 class App {
+
+  static closeModal(e){
+// for slider mod inside operator modal closing
+
+    const sliderMod = document.querySelectorAll('.slider-mod');
+    const sliderMenuOpen = document.querySelectorAll('.slider-menu-open');
+    const sliderDelete = document.querySelectorAll('.slider-delete');
+    const sliderSwitch = document.querySelectorAll('.slider-switch');
+    
+    const modals = [sliderMod, sliderMenuOpen, sliderDelete, sliderSwitch];
+
+    modals.forEach((modal) => {
+      modal.forEach((slider)=> {
+        if (!slider.classList.contains('hide')) {
+          if (!slider.contains(e.target)) {
+            slider.classList.add('hide')
+          }
+        }
+      });
+    })
+  }
+
   static init() {
     const header = new HeaderComp("app");
     const container = new Container("app", "container");
     const generator = new Generator();
     const startBtn = new NewInput("app", "+");
+    const app  = document.getElementById('app');
+    app.addEventListener('click', this.closeModal.bind(this), true)
   }
 }
+
 
 App.init();
