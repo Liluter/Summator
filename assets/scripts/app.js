@@ -88,6 +88,15 @@ class SliderMod extends Component {
     e.target.nextElementSibling.nextElementSibling.classList.toggle('hide');
   }
 
+  modInputHandler(e){
+    const ancestorCont = e.target.closest(".input-container");
+    if (e.target.value) {
+      ancestorCont.children[1].children[0].classList.remove('off');
+    } else {
+      ancestorCont.children[1].children[0].classList.add('off')
+    }
+  }
+
   render() {
     const elem = this.createComp("div", "slider-mod hide", this.attr);
     console.log(this.hookId, this.attr, elem.id);
@@ -105,6 +114,7 @@ class SliderMod extends Component {
     );
     // to be continued...
     smallOprBtn.elem.addEventListener('click', this.oprBtnHandler.bind(this));
+    modInput.elem.addEventListener('input', this.modInputHandler.bind(this));
     // fix handler
     // elem.parentElement.parentElement.parentElement.addEventListener('click', (e)=>console.log('clickParent', e.target.id), false);
   }
