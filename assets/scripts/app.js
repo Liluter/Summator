@@ -115,7 +115,7 @@ class SliderMod extends Component {
     // to be continued...
     smallOprBtn.elem.addEventListener('click', this.oprBtnHandler.bind(this));
     modInput.elem.addEventListener('input', this.modInputHandler.bind(this));
-    // fix handler
+   // fix handler
     // elem.parentElement.parentElement.parentElement.addEventListener('click', (e)=>console.log('clickParent', e.target.id), false);
   }
 }
@@ -176,7 +176,7 @@ class SliderDelete extends Component {
           counter++;
           if (counter === 5) {
             clearInterval(blinker);
-            Generator.inputRemover(ancestorCont);
+            Generator.inputRemover(ancestorCont.id);
             ancestorCont.classList.add("removing");
             ancestorCont.remove();
           }
@@ -431,6 +431,7 @@ class Generator {
   static inputs = [];
   static trash = [];
   static oprMainBtn;
+  static id = 0;
 
   static inputFinder(searchedID) {
     return this.inputs.find((e) => e.id === searchedID);
@@ -500,7 +501,8 @@ class Generator {
   }
 
   static addInput() {
-    const id = this.inputs.length + 1;
+    // const id = this.inputs.length + 1; // wrong attempt
+    const id = ++this.id;
     //====================================
     const smallContId = "Input-cont-" + id;
     //====================================
