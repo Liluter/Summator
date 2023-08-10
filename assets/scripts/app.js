@@ -90,11 +90,17 @@ class SliderMod extends Component {
 
   modInputHandler(e){
     const ancestorCont = e.target.closest(".input-container");
+    console.log('Ancestor : ', ancestorCont.children[0].children[3])
     if (e.target.value) {
       ancestorCont.children[1].children[0].classList.remove('off');
+      ancestorCont.children[0].children[3].value=e.target.value;
+      ancestorCont.children[0].children[3].classList.remove('hide');
     } else {
-      ancestorCont.children[1].children[0].classList.add('off')
+      ancestorCont.children[1].children[0].classList.add('off');
+      ancestorCont.children[0].children[3].classList.add('hide');
     }
+    // show value in modified input handler
+
   }
 
   render() {
@@ -112,7 +118,10 @@ class SliderMod extends Component {
       ],
       "smaller"
     );
-    // to be continued...
+    
+    // create modifiedInput in InputMain but show only if Value is present.
+
+
     smallOprBtn.elem.addEventListener('click', this.oprBtnHandler.bind(this));
     modInput.elem.addEventListener('input', this.modInputHandler.bind(this));
    // fix handler
@@ -307,8 +316,10 @@ class OperationBtnInput extends Component {
 }
 
 class InputNumber extends Component {
-  constructor(hookId) {
+  constructor(hookId, classes="", attributes=[]) {
     super(hookId, false);
+    this.classes = classes;
+    this.attributes = attributes;
     this.elem;
     this.render();
   }
@@ -322,7 +333,7 @@ class InputNumber extends Component {
     // Generator.inputs.find((e) => e.id === this.hookId).mainVal = e.target.value;
     Generator.inputFinder(ancestorCont.id).mainVal = e.target.value;
     Generator.calculateResults();
-    console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
+    // console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
   }
   keyDownHandler(e){
     if (("0123456789.".includes(e.key)) && (typeof +e.target.value === 'number') || (e.key === 'Backspace')) {
@@ -332,9 +343,10 @@ class InputNumber extends Component {
   }
 
   render() {
-    this.elem = this.createComp("input", "input-num", [
+    this.elem = this.createComp("input", "input-num " + this.classes , [
       { name: "placeholder", value: "set number" },
       { name: "inputmode", value: "numeric" },
+      ...this.attributes
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));
     // this.elem.addEventListener("input", this.inputHandler.bind(this));
@@ -533,6 +545,11 @@ class Generator {
     });
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
     new InputNumber(mainInputId);
+
+    //modified inputNumber with value from SliderMod manipulation.
+    new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
+    //add feature which modified value.
+
     //==============================
 
     new SliderMenuClosed(smallContId, [{ name: "id", value: sliderMenuId }]);
