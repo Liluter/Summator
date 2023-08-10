@@ -17,6 +17,7 @@
   --operator-modal-backG: #24249cc3;
   --header-btn-backG: #FFC165;
   --header-btn-stroke: #c39148;
+  --input-modified-bckg: #8e99ff;
 }
 
 * {
@@ -186,7 +187,7 @@ html {
   position: relative;
   z-index: 3;
   height: 42px;
-  min-width: 150px;
+  min-width: 100px;
   border-radius: 17px;
   border: var(--border-sec);
   color: var(--dark-grey-text);
@@ -203,6 +204,10 @@ html {
 
 .input-num:focus-visible {
   outline: none;
+}
+
+.input-num.modified {
+  background-color: var(--input-modified-bckg);
 }
 
 /* .input-num:hover {
@@ -366,6 +371,10 @@ html {
 .switch-menu-btn:hover {
   opacity: 1;
 }
+/* .switch-menu-btn.off:hover {
+  opacity: 1;
+  filter: grayscale(0%) contrast(50%) saturate(200%);
+} */
 
 .switch-menu-btn.turnoff:hover{
   filter: grayscale(50%) contrast(70%);
@@ -417,7 +426,7 @@ html {
 
 .hide {
   opacity: 0;
-  visibility: hidden;
-  /* display: none; */
+  /* visibility: hidden; */
+  display: none;
   /* visibility: hidden; */
 }

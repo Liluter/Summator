@@ -88,13 +88,31 @@ class SliderMod extends Component {
     e.target.nextElementSibling.nextElementSibling.classList.toggle('hide');
   }
 
+
+
   modInputHandler(e){
     const ancestorCont = e.target.closest(".input-container");
-    if (e.target.value) {
-      ancestorCont.children[1].children[0].classList.remove('off');
-    } else {
-      ancestorCont.children[1].children[0].classList.add('off')
+    const modIndicator = ancestorCont.children[1].children[0];
+    const inputNumModified = ancestorCont.children[0].children[3];
+    const actualModOperator = Generator.inputFinder(ancestorCont.id).modOperator;
+    if (e.target.value ) {
+      modIndicator.classList.remove('off');
+      inputNumModified.value=e.target.value;
+      inputNumModified.classList.remove('hide');
+    } else if (actualModOperator !== "+") {
+      modIndicator.classList.remove('off');
+      inputNumModified.value=e.target.value;
+      inputNumModified.classList.add('hide');
     }
+    else
+    {
+      modIndicator.classList.add('off');
+      inputNumModified.classList.add('hide');
+      //switching operator to default
+      Generator.inputFinder(ancestorCont.id).modOperator = "+";
+    }
+    // show value in modified input handler
+
   }
 
   render() {
@@ -112,7 +130,10 @@ class SliderMod extends Component {
       ],
       "smaller"
     );
-    // to be continued...
+    
+    // create modifiedInput in InputMain but show only if Value is present.
+
+
     smallOprBtn.elem.addEventListener('click', this.oprBtnHandler.bind(this));
     modInput.elem.addEventListener('input', this.modInputHandler.bind(this));
    // fix handler
@@ -307,8 +328,10 @@ class OperationBtnInput extends Component {
 }
 
 class InputNumber extends Component {
-  constructor(hookId) {
+  constructor(hookId, classes="", attributes=[]) {
     super(hookId, false);
+    this.classes = classes;
+    this.attributes = attributes;
     this.elem;
     this.render();
   }
@@ -322,7 +345,7 @@ class InputNumber extends Component {
     // Generator.inputs.find((e) => e.id === this.hookId).mainVal = e.target.value;
     Generator.inputFinder(ancestorCont.id).mainVal = e.target.value;
     Generator.calculateResults();
-    console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
+    // console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
   }
   keyDownHandler(e){
     if (("0123456789.".includes(e.key)) && (typeof +e.target.value === 'number') || (e.key === 'Backspace')) {
@@ -332,9 +355,10 @@ class InputNumber extends Component {
   }
 
   render() {
-    this.elem = this.createComp("input", "input-num", [
-      { name: "placeholder", value: "set number" },
+    this.elem = this.createComp("input", "input-num " + this.classes , [
+      { name: "placeholder", value: "set" },
       { name: "inputmode", value: "numeric" },
+      ...this.attributes
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));
     // this.elem.addEventListener("input", this.inputHandler.bind(this));
@@ -404,12 +428,20 @@ class OperatorModal extends Component {
 class OperatorModalSmall extends OperatorModal {
     operatorHandler(e) {
       const ancestorCont = e.target.closest(".input-container");
+      const modIndicator = ancestorCont.children[1].children[0];
       e.target.parentElement.classList.toggle("hide");
+      const modValue =  Generator.inputFinder(ancestorCont.id).modValue;
+
+      if ( (e.target.innerHTML !== '+' && !modValue) || 
+      (modValue) )  {
+        modIndicator.classList.remove('off');
+      } else {
+        modIndicator.classList.add('off');
+      }
       Generator.inputFinder(ancestorCont.id).modOperator = e.target.innerHTML;
       e.target.parentElement.previousElementSibling.previousElementSibling.innerHTML =
         e.target.innerHTML;
       Generator.calculateResults();
-      console.log('You clicked ', e.target.innerHTML)
     } 
 }
 
@@ -533,6 +565,11 @@ class Generator {
     });
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
     new InputNumber(mainInputId);
+
+    //modified inputNumber with value from SliderMod manipulation.
+    new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
+    //add feature which modified value.
+
     //==============================
 
     new SliderMenuClosed(smallContId, [{ name: "id", value: sliderMenuId }]);
