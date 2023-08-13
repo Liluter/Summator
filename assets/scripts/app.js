@@ -328,8 +328,10 @@ class OperationBtnInput extends Component {
 }
 
 class InputNumber extends Component {
-  constructor(hookId, classes="", attributes=[]) {
+  constructor(hookId, classes="", attributes=[], classes="", attributes=[]) {
     super(hookId, false);
+    this.classes = classes;
+    this.attributes = attributes;
     this.classes = classes;
     this.attributes = attributes;
     this.elem;
@@ -345,7 +347,7 @@ class InputNumber extends Component {
     // Generator.inputs.find((e) => e.id === this.hookId).mainVal = e.target.value;
     Generator.inputFinder(ancestorCont.id).mainVal = e.target.value;
     Generator.calculateResults();
-    // console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
+    // // console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
   }
   keyDownHandler(e){
     if (("0123456789.".includes(e.key)) && (typeof +e.target.value === 'number') || (e.key === 'Backspace')) {
@@ -358,6 +360,7 @@ class InputNumber extends Component {
     this.elem = this.createComp("input", "input-num " + this.classes , [
       { name: "placeholder", value: "set" },
       { name: "inputmode", value: "numeric" },
+      ...this.attributes
       ...this.attributes
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));
@@ -565,6 +568,11 @@ class Generator {
     });
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
     new InputNumber(mainInputId);
+
+    //modified inputNumber with value from SliderMod manipulation.
+    new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
+    //add feature which modified value.
+
 
     //modified inputNumber with value from SliderMod manipulation.
     new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
