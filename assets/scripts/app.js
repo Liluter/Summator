@@ -167,7 +167,7 @@ class SliderSwitch extends Component {
 
   render() {
     const elem = this.createComp("div", "slider-switch hide", this.attr);
-    const switchBtnOn = new SwitchInd(elem.id, "switch-menu-btn switch off");
+    const switchBtnOn = new SwitchInd(elem.id, "switch-menu-btn switch indicator");
     switchBtnOn.elem.innerHTML = "ON";
     switchBtnOn.elem.addEventListener("click", this.slideMenuHandler);
     const switchBtnOff = new SwitchInd(
@@ -328,7 +328,7 @@ class OperationBtnInput extends Component {
 }
 
 class InputNumber extends Component {
-  constructor(hookId, classes="", attributes=[], classes="", attributes=[]) {
+  constructor(hookId, classes="", attributes=[]) {
     super(hookId, false);
     this.classes = classes;
     this.attributes = attributes;
@@ -360,7 +360,6 @@ class InputNumber extends Component {
     this.elem = this.createComp("input", "input-num " + this.classes , [
       { name: "placeholder", value: "set" },
       { name: "inputmode", value: "numeric" },
-      ...this.attributes
       ...this.attributes
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));

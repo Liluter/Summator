@@ -370,6 +370,11 @@ html {
 
 .switch-menu-btn:hover {
   opacity: 1;
+  filter:brightness(100%);
+}
+.switch-menu-btn.switch.indicator:hover {
+  opacity: 1;
+  filter:brightness(110%);
 }
 /* .switch-menu-btn.off:hover {
   opacity: 1;
