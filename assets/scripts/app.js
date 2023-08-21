@@ -93,26 +93,34 @@ class SliderMod extends Component {
   modInputHandler(e){
     const ancestorCont = e.target.closest(".input-container");
     const modIndicator = ancestorCont.children[1].children[0];
-    const inputNumModified = ancestorCont.children[0].children[3];
+    const operatonModified = ancestorCont.children[0].children[3];
+    const inputNumModified = ancestorCont.children[0].children[4];
     const actualModOperator = Generator.inputFinder(ancestorCont.id).modOperator;
+    console.log('Actual Mod Oprt ', actualModOperator)
     if (e.target.value ) {
+      console.log('test')
       modIndicator.classList.remove('off');
       inputNumModified.value=e.target.value;
       inputNumModified.classList.remove('hide');
+      operatonModified.classList.remove('hide');
     } else if (actualModOperator !== "+") {
+      console.log('operator not default');
       modIndicator.classList.remove('off');
       inputNumModified.value=e.target.value;
       inputNumModified.classList.add('hide');
+      operatonModified.classList.add('hide');
+      operatonModified.innerHTML = Generator.inputFinder(ancestorCont.id).modOperator;
     }
     else
     {
       modIndicator.classList.add('off');
       inputNumModified.classList.add('hide');
+      operatonModified.classList.add('hide');
       //switching operator to default
       Generator.inputFinder(ancestorCont.id).modOperator = "+";
+      operatonModified.innerHTML = Generator.inputFinder(ancestorCont.id).modOperator;
     }
     // show value in modified input handler
-
   }
 
   render() {
@@ -431,6 +439,8 @@ class OperatorModalSmall extends OperatorModal {
     operatorHandler(e) {
       const ancestorCont = e.target.closest(".input-container");
       const modIndicator = ancestorCont.children[1].children[0];
+      const operatonModified = ancestorCont.children[0].children[3];
+      const operatorBtnsmall = e.target.parentElement.previousElementSibling.previousElementSibling;
       e.target.parentElement.classList.toggle("hide");
       const modValue =  Generator.inputFinder(ancestorCont.id).modValue;
 
@@ -441,8 +451,10 @@ class OperatorModalSmall extends OperatorModal {
         modIndicator.classList.add('off');
       }
       Generator.inputFinder(ancestorCont.id).modOperator = e.target.innerHTML;
-      e.target.parentElement.previousElementSibling.previousElementSibling.innerHTML =
-        e.target.innerHTML;
+      operatorBtnsmall.innerHTML = e.target.innerHTML;
+
+      operatonModified.innerHTML = e.target.innerHTML;
+      
       Generator.calculateResults();
     } 
 }
@@ -568,13 +580,14 @@ class Generator {
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
     new InputNumber(mainInputId);
 
+    new OperationBtnInput(mainInputId, "+", "smaller hide");
+
     //modified inputNumber with value from SliderMod manipulation.
     new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
     //add feature which modified value.
 
-
     //modified inputNumber with value from SliderMod manipulation.
-    new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
+    // new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
     //add feature which modified value.
 
     //==============================
