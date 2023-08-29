@@ -35,8 +35,8 @@ class HeaderComp extends Component {
   }
   
   showValue = () => {
-    console.log("Actual Result : ", this.input.value, Generator.inputs);
     Generator.calculateResults();
+    console.log("Actual Result : ", this.input.value, Generator.inputs);
   }
 
   render() {
@@ -163,11 +163,13 @@ class SliderSwitch extends Component {
         ancestorCont.children[1].children[1].classList.remove("off");
         ancestorCont.classList.remove("disabled");
         Generator.inputFinder(ancestorCont.id).switcher = true;
+        Generator.calculateResults();
         break;
       case "OFF":
         ancestorCont.children[1].children[1].classList.add("off");
         ancestorCont.classList.add("disabled");
         Generator.inputFinder(ancestorCont.id).switcher = false;
+        Generator.calculateResults();
         break;
     }
     e.target.parentElement.classList.toggle("hide");
@@ -495,49 +497,52 @@ class Generator {
     let counter = 0;
     let modifier = 0;
     for (const element of this.inputs) {
-      console.log("Cumulative loop: ", +element.mainVal);
-      console.log('Mod Value', +element.modValue)
-      console.log('Mod Operator', element.modOperator)
-      modifier = +element.mainVal;
-
-      switch (element.modOperator) {
-        case "+":
-          modifier +=  +element.modValue;
-          break;
-        case "-":
-          modifier -= +element.modValue;
-          break;
-        case "x":
-          modifier *= +element.modValue;
-          break;
-        case "/":
-          modifier /= +element.modValue;
-          break;
-        case "%":
-          modifier *= +element.modValue / 100;
-          break;
-      }
-
-      switch (element.mainOperator) {
-        case "+":
-          counter += modifier ;
-          break;
-        case "-":
-          counter -= modifier;
-          break;
-        case "x":
-          counter *= modifier;
-          break;
-        case "/":
-          counter /= modifier;
-          break;
-        case "%":
-          counter *= modifier / 100;
-          break;
-      }
-
       
-      console.log("Counter", counter);
+      if (element.switcher) {
+        console.log("Cumulative loop: ", +element.mainVal);
+        console.log('Mod Value', +element.modValue)
+        console.log('Mod Operator', element.modOperator)
+        modifier = +element.mainVal;
+
+        switch (element.modOperator) {
+          case "+":
+            modifier +=  +element.modValue;
+            break;
+          case "-":
+            modifier -= +element.modValue;
+            break;
+          case "x":
+            modifier *= +element.modValue;
+            break;
+          case "/":
+            modifier /= +element.modValue;
+            break;
+          case "%":
+            modifier *= +element.modValue / 100;
+            break;
+        }
+  
+        switch (element.mainOperator) {
+          case "+":
+            counter += modifier ;
+            break;
+          case "-":
+            counter -= modifier;
+            break;
+          case "x":
+            counter *= modifier;
+            break;
+          case "/":
+            counter /= modifier;
+            break;
+          case "%":
+            counter *= modifier / 100;
+            break;
+        }
+  
+        
+        console.log("Counter", counter);
+      }
 
     }
 
