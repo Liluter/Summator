@@ -28,26 +28,100 @@ class Component {
   }
 }
 
+class ListItem extends Component {
+  constructor(hookId, classes, value) {
+    super(hookId, false);
+    this.classes = classes;
+    this.value = value;
+    this.elem;
+    this.render();
+  }
+  render() {
+    this.elem = this.createComp("li", this.classes);
+    const checkBox = document.createElement("input");
+    checkBox.setAttribute("type", "checkbox");
+    checkBox.setAttribute("name", this.name);
+    this.elem.append(checkBox);
+    const inputVal = document.createElement("input");
+    inputVal.setAttribute("inputmode", "numeric");
+    inputVal.setAttribute("value", this.value);
+    this.elem.append(inputVal);
+    // const label = document.createElement("label");
+    // label.setAttribute("for", this.name);
+    // label.innerHTML = this.name;
+    // this.elem.append(label);
+    // this.elem.innerHTML = '';
+  }
+}
+
+class Button extends Component {
+  constructor(hookId, classes, name, onclickFunc) {
+    super(hookId, false);
+    this.classes = classes;
+    this.name = name;
+    this.onclickFunc = onclickFunc;
+    this.elem;
+    this.render();
+  }
+  render() {
+    this.elem = this.createComp("button", this.classes);
+    this.elem.innerHTML = this.name;
+    this.elem.addEventListener("click", this.onclickFunc.bind(this));
+  }
+}
+
+class ModalOptions extends Component {
+  constructor(hookId) {
+    super(hookId, false);
+    this.render();
+  }
+  render() {
+    const modal = this.createComp("div", "options-modal hide", [
+      { name: "id", value: "options-modal" },
+    ]);
+
+    const trashBtn = new Button(modal.id, "uniBtn", "Trash", (e) => {
+      while (modal.children[1] ) {
+        modal.children[1].remove();
+      }
+
+      for (let trashItem of Generator.trash) {
+        const listElement = new ListItem(modal.id, "list-item", trashItem.mainVal);
+      }
+    });
+    
+  }
+}
+
 class HeaderComp extends Component {
   constructor(hookId) {
     super(hookId, false);
     this.render();
   }
-  
+
   showValue = () => {
     Generator.calculateResults();
     console.log("Actual Result : ", this.input.value, Generator.inputs);
-  }
+  };
+
+  showOptions = () => {
+    const optionsModal = document.getElementById("options-modal");
+    optionsModal.classList.toggle("hide");
+  };
 
   render() {
     const headerEl = this.createComp("div", "header-container");
+    // to change for components
     headerEl.innerHTML = `
     <button class='result-btn'>Result</button>
     <input id='resultInput' inputmode='numeric' value='0.00' class='header-input' readonly>
+    <button class='options-btn'>Options</button>
     `;
     const resultBtn = headerEl.querySelector("button");
-    this.input = headerEl.querySelector('input');
+    const optionsBtn = headerEl.querySelector(".options-btn");
+    this.input = headerEl.querySelector("input");
     resultBtn.addEventListener("click", this.showValue.bind(this));
+    optionsBtn.addEventListener("click", this.showOptions.bind(this));
   }
 }
 
@@ -67,7 +141,7 @@ class Input {
     this.hashId = Math.floor(Math.random() * 1000000000);
     this.mainOperator = mainOperator;
     // (this.mainVal = mainVal.toFixed(2)), (this.modOperator = modOperator);
-    this.mainVal = mainVal.toFixed(2) ;
+    this.mainVal = mainVal.toFixed(2);
     this.modValue = modValue;
     this.modOperator = modOperator;
     this.mod = mod;
@@ -84,48 +158,49 @@ class SliderMod extends Component {
   }
   //add handler
   // create hiding element after clicking outside element
-  oprBtnHandler(e){
-    e.target.nextElementSibling.nextElementSibling.classList.toggle('hide');
+  oprBtnHandler(e) {
+    e.target.nextElementSibling.nextElementSibling.classList.toggle("hide");
   }
 
-
-
-  modInputHandler(e){
+  modInputHandler(e) {
     const ancestorCont = e.target.closest(".input-container");
     const modIndicator = ancestorCont.children[1].children[0];
     const operatonModified = ancestorCont.children[0].children[3];
     const inputNumModified = ancestorCont.children[0].children[4];
-    const actualModOperator = Generator.inputFinder(ancestorCont.id).modOperator;
-    console.log('Actual Mod Oprt ', actualModOperator)
-    if (e.target.value ) {
-      console.log('test')
-      modIndicator.classList.remove('off');
-      inputNumModified.value=e.target.value;
-      inputNumModified.classList.remove('hide');
-      operatonModified.classList.remove('hide');
+    const actualModOperator = Generator.inputFinder(
+      ancestorCont.id
+    ).modOperator;
+    console.log("Actual Mod Oprt ", actualModOperator);
+    if (e.target.value) {
+      console.log("test");
+      modIndicator.classList.remove("off");
+      inputNumModified.value = e.target.value;
+      inputNumModified.classList.remove("hide");
+      operatonModified.classList.remove("hide");
     } else if (actualModOperator !== "+") {
-      console.log('operator not default');
-      modIndicator.classList.remove('off');
-      inputNumModified.value=e.target.value;
-      inputNumModified.classList.add('hide');
-      operatonModified.classList.add('hide');
-      operatonModified.innerHTML = Generator.inputFinder(ancestorCont.id).modOperator;
-    }
-    else
-    {
-      modIndicator.classList.add('off');
-      inputNumModified.classList.add('hide');
-      operatonModified.classList.add('hide');
+      console.log("operator not default");
+      modIndicator.classList.remove("off");
+      inputNumModified.value = e.target.value;
+      inputNumModified.classList.add("hide");
+      operatonModified.classList.add("hide");
+      operatonModified.innerHTML = Generator.inputFinder(
+        ancestorCont.id
+      ).modOperator;
+    } else {
+      modIndicator.classList.add("off");
+      inputNumModified.classList.add("hide");
+      operatonModified.classList.add("hide");
       //switching operator to default
       Generator.inputFinder(ancestorCont.id).modOperator = "+";
-      operatonModified.innerHTML = Generator.inputFinder(ancestorCont.id).modOperator;
+      operatonModified.innerHTML = Generator.inputFinder(
+        ancestorCont.id
+      ).modOperator;
     }
     // show value in modified input handler
   }
 
   render() {
     const elem = this.createComp("div", "slider-mod hide", this.attr);
-    console.log(this.hookId, this.attr, elem.id);
     const smallOprBtn = new OperationBtnInput(elem.id, "+", "smaller");
     const modInput = new InputNumberMod(elem.id);
     const operatsMod = new OperatorModalSmall(
@@ -138,13 +213,12 @@ class SliderMod extends Component {
       ],
       "smaller"
     );
-    
+
     // create modifiedInput in InputMain but show only if Value is present.
 
-
-    smallOprBtn.elem.addEventListener('click', this.oprBtnHandler.bind(this));
-    modInput.elem.addEventListener('input', this.modInputHandler.bind(this));
-   // fix handler
+    smallOprBtn.elem.addEventListener("click", this.oprBtnHandler.bind(this));
+    modInput.elem.addEventListener("input", this.modInputHandler.bind(this));
+    // fix handler
     // elem.parentElement.parentElement.parentElement.addEventListener('click', (e)=>console.log('clickParent', e.target.id), false);
   }
 }
@@ -177,7 +251,10 @@ class SliderSwitch extends Component {
 
   render() {
     const elem = this.createComp("div", "slider-switch hide", this.attr);
-    const switchBtnOn = new SwitchInd(elem.id, "switch-menu-btn switch indicator");
+    const switchBtnOn = new SwitchInd(
+      elem.id,
+      "switch-menu-btn switch indicator"
+    );
     switchBtnOn.elem.innerHTML = "ON";
     switchBtnOn.elem.addEventListener("click", this.slideMenuHandler);
     const switchBtnOff = new SwitchInd(
@@ -322,7 +399,7 @@ class SliderMenuClosed extends Component {
 }
 
 class OperationBtnInput extends Component {
-  constructor(hookId, operator, classes='', attr) {
+  constructor(hookId, operator, classes = "", attr) {
     super(hookId, false);
     this.operator = operator;
     this.classes = classes;
@@ -338,7 +415,7 @@ class OperationBtnInput extends Component {
 }
 
 class InputNumber extends Component {
-  constructor(hookId, classes="", attributes=[]) {
+  constructor(hookId, classes = "", attributes = []) {
     super(hookId, false);
     this.classes = classes;
     this.attributes = attributes;
@@ -359,23 +436,25 @@ class InputNumber extends Component {
     Generator.calculateResults();
     // // console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
   }
-  keyDownHandler(e){
-    if (("0123456789.".includes(e.key)) && (typeof +e.target.value === 'number') || (e.key === 'Backspace')) {
+  keyDownHandler(e) {
+    if (
+      ("0123456789.".includes(e.key) && typeof +e.target.value === "number") ||
+      e.key === "Backspace"
+    ) {
     } else {
-      e.preventDefault();      
+      e.preventDefault();
     }
   }
 
   render() {
-    this.elem = this.createComp("input", "input-num " + this.classes , [
+    this.elem = this.createComp("input", "input-num " + this.classes, [
       { name: "placeholder", value: "set" },
       { name: "inputmode", value: "numeric" },
-      ...this.attributes
+      ...this.attributes,
     ]);
     this.elem.addEventListener("change", this.valueHandler.bind(this));
     // this.elem.addEventListener("input", this.inputHandler.bind(this));
     this.elem.addEventListener("keydown", this.keyDownHandler.bind(this));
-
   }
 }
 
@@ -395,7 +474,7 @@ class InputNumberMod extends InputNumber {
     Generator.calculateResults();
     // console.log("target val: ", e.target.value, "Items: ", Generator.inputs);
 
-    console.log('Value changed', e.target);
+    console.log("Value changed", e.target);
   }
 }
 
@@ -403,7 +482,7 @@ class OperatorModal extends Component {
   operators = ["+", "-", "x", "/", "%"];
   buttons = [];
 
-  constructor(hookId, attr, classes='') {
+  constructor(hookId, attr, classes = "") {
     super(hookId, false);
     this.attr = attr;
     this.classes = classes;
@@ -438,27 +517,27 @@ class OperatorModal extends Component {
   }
 }
 class OperatorModalSmall extends OperatorModal {
-    operatorHandler(e) {
-      const ancestorCont = e.target.closest(".input-container");
-      const modIndicator = ancestorCont.children[1].children[0];
-      const operatonModified = ancestorCont.children[0].children[3];
-      const operatorBtnsmall = e.target.parentElement.previousElementSibling.previousElementSibling;
-      e.target.parentElement.classList.toggle("hide");
-      const modValue =  Generator.inputFinder(ancestorCont.id).modValue;
+  operatorHandler(e) {
+    const ancestorCont = e.target.closest(".input-container");
+    const modIndicator = ancestorCont.children[1].children[0];
+    const operatonModified = ancestorCont.children[0].children[3];
+    const operatorBtnsmall =
+      e.target.parentElement.previousElementSibling.previousElementSibling;
+    e.target.parentElement.classList.toggle("hide");
+    const modValue = Generator.inputFinder(ancestorCont.id).modValue;
 
-      if ( (e.target.innerHTML !== '+' && !modValue) || 
-      (modValue) )  {
-        modIndicator.classList.remove('off');
-      } else {
-        modIndicator.classList.add('off');
-      }
-      Generator.inputFinder(ancestorCont.id).modOperator = e.target.innerHTML;
-      operatorBtnsmall.innerHTML = e.target.innerHTML;
+    if ((e.target.innerHTML !== "+" && !modValue) || modValue) {
+      modIndicator.classList.remove("off");
+    } else {
+      modIndicator.classList.add("off");
+    }
+    Generator.inputFinder(ancestorCont.id).modOperator = e.target.innerHTML;
+    operatorBtnsmall.innerHTML = e.target.innerHTML;
 
-      operatonModified.innerHTML = e.target.innerHTML;
-      
-      Generator.calculateResults();
-    } 
+    operatonModified.innerHTML = e.target.innerHTML;
+
+    Generator.calculateResults();
+  }
 }
 
 class InputItem extends Component {
@@ -489,7 +568,7 @@ class Generator {
     const toRemEleIdx = this.inputs.indexOf(
       this.inputs.find((e) => e.id === containerID)
     );
-    this.trash.push(this.inputs.splice(toRemEleIdx, 1));
+    this.trash.push(...this.inputs.splice(toRemEleIdx, 1));
   }
 
   static calculateResults() {
@@ -497,16 +576,12 @@ class Generator {
     let counter = 0;
     let modifier = 0;
     for (const element of this.inputs) {
-      
       if (element.switcher) {
-        console.log("Cumulative loop: ", +element.mainVal);
-        console.log('Mod Value', +element.modValue)
-        console.log('Mod Operator', element.modOperator)
         modifier = +element.mainVal;
 
         switch (element.modOperator) {
           case "+":
-            modifier +=  +element.modValue;
+            modifier += +element.modValue;
             break;
           case "-":
             modifier -= +element.modValue;
@@ -521,10 +596,10 @@ class Generator {
             modifier *= +element.modValue / 100;
             break;
         }
-  
+
         switch (element.mainOperator) {
           case "+":
-            counter += modifier ;
+            counter += modifier;
             break;
           case "-":
             counter -= modifier;
@@ -539,11 +614,9 @@ class Generator {
             counter *= modifier / 100;
             break;
         }
-  
-        
-        console.log("Counter", counter);
-      }
 
+        // console.log("Counter", counter);
+      }
     }
 
     resultInput.value = counter.toFixed(2);
@@ -588,7 +661,9 @@ class Generator {
     new OperationBtnInput(mainInputId, "+", "smaller hide");
 
     //modified inputNumber with value from SliderMod manipulation.
-    new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
+    new InputNumber(mainInputId, "modified hide", [
+      { name: "readonly", value: "readonly" },
+    ]);
     //add feature which modified value.
 
     //modified inputNumber with value from SliderMod manipulation.
@@ -641,38 +716,50 @@ class Container extends Component {
 }
 
 class App {
+  static closeModal(e) {
+    // for slider mod inside operator modal closing
 
-  static closeModal(e){
-// for slider mod inside operator modal closing
+    const sliderMod = document.querySelectorAll(".slider-mod");
+    const sliderMenuOpen = document.querySelectorAll(".slider-menu-open");
+    const sliderDelete = document.querySelectorAll(".slider-delete");
+    const sliderSwitch = document.querySelectorAll(".slider-switch");
+    const operatorModal = document.querySelectorAll(".operator-modal");
 
-    const sliderMod = document.querySelectorAll('.slider-mod');
-    const sliderMenuOpen = document.querySelectorAll('.slider-menu-open');
-    const sliderDelete = document.querySelectorAll('.slider-delete');
-    const sliderSwitch = document.querySelectorAll('.slider-switch');
-    const operatorModal = document.querySelectorAll('.operator-modal');
-    
-    const modals = [sliderMod, sliderMenuOpen, sliderDelete, sliderSwitch,operatorModal];
+    const modals = [
+      sliderMod,
+      sliderMenuOpen,
+      sliderDelete,
+      sliderSwitch,
+      operatorModal,
+    ];
 
     modals.forEach((modal) => {
-      modal.forEach((slider)=> {
-        if (!slider.matches('.hide')) {
+      modal.forEach((slider) => {
+        if (!slider.matches(".hide")) {
           if (!slider.contains(e.target)) {
-            slider.classList.add('hide')
+            slider.classList.add("hide");
           }
         }
       });
-    })
+    });
+
+    // closing options modal
+    const optionsModal = document.getElementById("options-modal");
+    const optionsBtn = document.querySelector(".options-btn");
+    if (!optionsModal.contains(e.target) && e.target != optionsBtn) {
+      optionsModal.classList.add("hide");
+    }
   }
 
   static init() {
     const header = new HeaderComp("app");
+    const options = new ModalOptions("app");
     const container = new Container("app", "container");
     const generator = new Generator();
     const startBtn = new NewInput("app", "+");
-    const app  = document.getElementById('app');
-    app.addEventListener('click', this.closeModal.bind(this), true)
+    const app = document.getElementById("app");
+    app.addEventListener("click", this.closeModal.bind(this), true);
   }
 }
-
 
 App.init();
