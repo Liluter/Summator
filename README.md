@@ -3,6 +3,9 @@ Summator App for easy calculations
 
 Create app for marketplace salesman to fast calculations and easy sale manegment.
 
+## Jira web link
+https://awdziewicz.atlassian.net/wiki/spaces/SD/overview?atlOrigin=eyJpIjoiYmI2ODQxMWQwNzMwNDZiYjllZjhmZDE5NmQzMWQ3NDciLCJwIjoiaiJ9
+
 ## MVP Sprint
 - Main logic done.
 - UI and almost all css styles done.
