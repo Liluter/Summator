@@ -46,16 +46,11 @@ class ListItem extends Component {
     inputVal.setAttribute("inputmode", "numeric");
     inputVal.setAttribute("value", this.value);
     this.elem.append(inputVal);
-    // const label = document.createElement("label");
-    // label.setAttribute("for", this.name);
-    // label.innerHTML = this.name;
-    // this.elem.append(label);
-    // this.elem.innerHTML = '';
   }
 }
 
 class Button extends Component {
-  constructor(hookId, classes, name, onclickFunc) {
+  constructor(hookId, classes, name, onclickFunc = () => {}) {
     super(hookId, false);
     this.classes = classes;
     this.name = name;
@@ -65,8 +60,75 @@ class Button extends Component {
   }
   render() {
     this.elem = this.createComp("button", this.classes);
-    this.elem.innerHTML = this.name;
+    this.elem.textContent = this.name;
     this.elem.addEventListener("click", this.onclickFunc.bind(this));
+  }
+}
+
+class Swatch extends Component {
+  constructor(hookId, classes) {
+    super(hookId, false);
+    this.classes = classes;
+    this.elem;
+    this.render();
+  }
+  render() {
+    this.elem = this.createComp("div", this.classes, [
+      { name: "type", value: "color" },
+    ]);
+  }
+}
+
+class ThemeItem extends Component {
+  constructor(hookId, id, themeClasses, checked) {
+    super(hookId, false);
+    this.id = id;
+    this.themeClasses = themeClasses;
+    this.checked = checked;
+    this.render();
+  }
+
+  // showValue = () => {
+  //   Generator.calculateResults();
+  //   console.log("Actual Result : ", this.input.value, Generator.inputs);
+  // };
+
+  // showOptions = () => {
+  //   // const optionsModal = document.getElementById("options-modal");
+  //   // optionsModal.classList.toggle("hide");
+  // };
+
+  render() {
+    const themeElement = this.createComp("div", "themeItemContainer");
+    themeElement.id = this.id;
+    const checkBox = this.createComp("input", "themeCheckBox", [
+      { name: "type", value: "checkbox" },
+      { name: this.checked },
+    ]);
+    themeElement.append(checkBox);
+    checkBox.addEventListener("input", (e) => {
+      console.log("checked", e.target.checked);
+    });
+    const inputColorFirst = new Swatch(themeElement.id, this.themeClasses[0]);
+    const inputColorSecond = new Swatch(themeElement.id, this.themeClasses[1]);
+    const inputColorThird = new Swatch(themeElement.id, this.themeClasses[2]);
+    // working here last time
+    // to do:
+    // - add three swatches with default theme colors
+    // - add another theme input with special colors eg: light;
+    // - add custom theme item eith ability to manipulate with colors values. Save in localStorage.
+
+    // to change for components
+    // headerEl.innerHTML = `
+    // <button class='uniBtn'>Result</button>
+    // <input id='resultInput' inputmode='numeric' value='0.00' class='header-input' readonly>
+    // <button class='uniBtn'>Options</button>
+    // `;
+    // const resultBtn = headerEl.querySelector("button");
+    // const optionsBtn = headerEl.querySelectorAll(".uniBtn");
+    // this.input = headerEl.querySelector("input");
+    // resultBtn.addEventListener("click", this.showValue.bind(this));
+    // optionsBtn[1].addEventListener("click", this.showOptions.bind(this));
   }
 }
 
@@ -79,17 +141,74 @@ class ModalOptions extends Component {
     const modal = this.createComp("div", "options-modal hide", [
       { name: "id", value: "options-modal" },
     ]);
-
-    const trashBtn = new Button(modal.id, "uniBtn", "Trash", (e) => {
-      while (modal.children[1] ) {
+    const modalHeader = document.createElement("header");
+    modalHeader.id = "modalHeader";
+    modal.append(modalHeader);
+    // trash button
+    const trashBtn = new Button(modalHeader.id, "uniBtn", "Trash", (e) => {
+      while (modal.children[1]) {
         modal.children[1].remove();
       }
 
+      const ul = document.createElement("ul");
+      modal.append(ul);
+      ul.id = "trashItemsList";
       for (let trashItem of Generator.trash) {
-        const listElement = new ListItem(modal.id, "list-item", trashItem.mainVal);
+        const listElement = new ListItem(ul.id, "list-item", trashItem.mainVal);
       }
     });
-    
+    // theme button
+    const themeBtn = new Button(modalHeader.id, "uniBtn", "Theme", (e) => {
+      const root = document.documentElement;
+      console.log(getComputedStyle(root).getPropertyValue("--light-backG"));
+
+      while (modal.children[1]) {
+        modal.children[1].remove();
+      }
+
+      const ul = document.createElement("ul");
+      modal.append(ul);
+      ul.id = "colorList";
+
+      // const swatchBackground = document.createElement("div");
+      // swatchBackground.classList.add("swatch");
+      // swatchBackground.style.backgroundColor =
+      //   getComputedStyle(root).getPropertyValue("--light-backG");
+      // ul.append(swatchBackground);
+
+      // const swatchOprationBtn = document.createElement("div");
+      // swatchOprationBtn.classList.add("swatch");
+      // swatchOprationBtn.style.backgroundColor = getComputedStyle(
+      //   root
+      // ).getPropertyValue("--operation-btn-prime");
+      // ul.append(swatchOprationBtn);
+      // const swatchOprationBtn2 = document.createElement("div");
+      // swatchOprationBtn2.classList.add("swatch");
+      // swatchOprationBtn2.style.backgroundColor = getComputedStyle(
+      //   root
+      // ).getPropertyValue("--operation-btn-prime");
+      // ul.append(swatchOprationBtn2);
+
+      const defaultTheme= new ThemeItem(ul.id, "theme-default",[
+        "swatch default first",
+        "swatch default second",
+        "swatch default third",
+      ],"checked");
+      const optionTheme= new ThemeItem(ul.id, "theme-option",[
+        "swatch option first",
+        "swatch option second",
+        "swatch option third",
+      ]);
+      const customTheme= new ThemeItem(ul.id, "theme-custom",[
+        "swatch custom first",
+        "swatch custom second",
+        "swatch custom third",
+      ]);
+      // for (let trashItem of Generator.trash) {
+
+      //   const listElement = new ListItem(ul.id, "list-item", trashItem.mainVal);
+      // }
+    });
   }
 }
 
@@ -113,15 +232,15 @@ class HeaderComp extends Component {
     const headerEl = this.createComp("div", "header-container");
     // to change for components
     headerEl.innerHTML = `
-    <button class='result-btn'>Result</button>
+    <button class='uniBtn'>Result</button>
     <input id='resultInput' inputmode='numeric' value='0.00' class='header-input' readonly>
-    <button class='options-btn'>Options</button>
+    <button class='uniBtn'>Options</button>
     `;
     const resultBtn = headerEl.querySelector("button");
-    const optionsBtn = headerEl.querySelector(".options-btn");
+    const optionsBtn = headerEl.querySelectorAll(".uniBtn");
     this.input = headerEl.querySelector("input");
     resultBtn.addEventListener("click", this.showValue.bind(this));
-    optionsBtn.addEventListener("click", this.showOptions.bind(this));
+    optionsBtn[1].addEventListener("click", this.showOptions.bind(this));
   }
 }
 
@@ -745,7 +864,7 @@ class App {
 
     // closing options modal
     const optionsModal = document.getElementById("options-modal");
-    const optionsBtn = document.querySelector(".options-btn");
+    const optionsBtn = document.querySelector(".uniBtn");
     if (!optionsModal.contains(e.target) && e.target != optionsBtn) {
       optionsModal.classList.add("hide");
     }
