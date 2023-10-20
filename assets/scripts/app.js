@@ -66,25 +66,30 @@ class Button extends Component {
 }
 
 class Swatch extends Component {
-  constructor(hookId, classes) {
+  constructor(hookId, nth, value, event) {
     super(hookId, false);
-    this.classes = classes;
+    this.nth = nth;
+    this.value = value;
     this.elem;
+    this.event = event;
     this.render();
   }
   render() {
-    this.elem = this.createComp("div", this.classes, [
+    this.elem = this.createComp("input", "colorInput", [
       { name: "type", value: "color" },
+      { name: "value", value: this.value },
     ]);
+    this.elem.addEventListener("change", this.event.bind(this));
   }
 }
 
 class ThemeItem extends Component {
-  constructor(hookId, id, themeClasses, checked) {
+  constructor(hookId, id, type) {
     super(hookId, false);
     this.id = id;
-    this.themeClasses = themeClasses;
-    this.checked = checked;
+    // this.checked = checked;
+    this.type = type;
+    this.getColorValue;
     this.render();
   }
 
@@ -101,34 +106,54 @@ class ThemeItem extends Component {
   render() {
     const themeElement = this.createComp("div", "themeItemContainer");
     themeElement.id = this.id;
-    const checkBox = this.createComp("input", "themeCheckBox", [
-      { name: "type", value: "checkbox" },
-      { name: this.checked },
+    //RADIO BUTTON
+    const setColorValue = function (e) {
+      // console.log("change e.target.value ", e.target.value);
+      // console.log("element n this", this);
+      // console.log("element n .nth", this.nth);
+      // console.log(Generator.theme[this.hookId.slice(6)][this.nth]);
+      Generator.theme[this.hookId.slice(6)][this.nth] = e.target.value;
+    };
+
+    const getColorValue = (n) => {
+      return Generator.theme[this.type][n];
+    };
+
+    // RADIO BUTTON
+    const radioBtn = this.createComp("input", "", [
+      { name: "type", value: "radio" },
+      { name: "name", value: "colorThemeSelect" },
+      { name: "value", value: this.type },
+      {
+        name: Generator.actualTheme == this.type ? "checked" : null,
+        value: "",
+      },
     ]);
-    themeElement.append(checkBox);
-    checkBox.addEventListener("input", (e) => {
+
+    themeElement.append(radioBtn);
+    radioBtn.addEventListener("input", (e) => {
       console.log("checked", e.target.checked);
     });
-    const inputColorFirst = new Swatch(themeElement.id, this.themeClasses[0]);
-    const inputColorSecond = new Swatch(themeElement.id, this.themeClasses[1]);
-    const inputColorThird = new Swatch(themeElement.id, this.themeClasses[2]);
-    // working here last time
-    // to do:
-    // - add three swatches with default theme colors
-    // - add another theme input with special colors eg: light;
-    // - add custom theme item eith ability to manipulate with colors values. Save in localStorage.
 
-    // to change for components
-    // headerEl.innerHTML = `
-    // <button class='uniBtn'>Result</button>
-    // <input id='resultInput' inputmode='numeric' value='0.00' class='header-input' readonly>
-    // <button class='uniBtn'>Options</button>
-    // `;
-    // const resultBtn = headerEl.querySelector("button");
-    // const optionsBtn = headerEl.querySelectorAll(".uniBtn");
-    // this.input = headerEl.querySelector("input");
-    // resultBtn.addEventListener("click", this.showValue.bind(this));
-    // optionsBtn[1].addEventListener("click", this.showOptions.bind(this));
+    // COLOR INPUTS
+    const inputColorFirst = new Swatch(
+      themeElement.id,
+      0,
+      getColorValue(0),
+      setColorValue
+    );
+    const inputColorSecond = new Swatch(
+      themeElement.id,
+      1,
+      getColorValue(1),
+      setColorValue
+    );
+    const inputColorThird = new Swatch(
+      themeElement.id,
+      2,
+      getColorValue(2),
+      setColorValue
+    );
   }
 }
 
@@ -141,10 +166,12 @@ class ModalOptions extends Component {
     const modal = this.createComp("div", "options-modal hide", [
       { name: "id", value: "options-modal" },
     ]);
+
     const modalHeader = document.createElement("header");
     modalHeader.id = "modalHeader";
     modal.append(modalHeader);
-    // trash button
+
+    // TRASH BUTTON
     const trashBtn = new Button(modalHeader.id, "uniBtn", "Trash", (e) => {
       while (modal.children[1]) {
         modal.children[1].remove();
@@ -157,57 +184,31 @@ class ModalOptions extends Component {
         const listElement = new ListItem(ul.id, "list-item", trashItem.mainVal);
       }
     });
-    // theme button
+    // THEME BUTTON
     const themeBtn = new Button(modalHeader.id, "uniBtn", "Theme", (e) => {
       const root = document.documentElement;
-      console.log(getComputedStyle(root).getPropertyValue("--light-backG"));
 
       while (modal.children[1]) {
         modal.children[1].remove();
       }
 
-      const ul = document.createElement("ul");
-      modal.append(ul);
-      ul.id = "colorList";
+      const form = document.createElement("form");
+      modal.append(form);
+      form.id = "themeColorList";
 
-      // const swatchBackground = document.createElement("div");
-      // swatchBackground.classList.add("swatch");
-      // swatchBackground.style.backgroundColor =
-      //   getComputedStyle(root).getPropertyValue("--light-backG");
-      // ul.append(swatchBackground);
+      const defaultTheme = new ThemeItem(form.id, "theme-default", "default");
+      const optionTheme = new ThemeItem(form.id, "theme-option", "option");
+      const customTheme = new ThemeItem(form.id, "theme-custom", "custom");
 
-      // const swatchOprationBtn = document.createElement("div");
-      // swatchOprationBtn.classList.add("swatch");
-      // swatchOprationBtn.style.backgroundColor = getComputedStyle(
-      //   root
-      // ).getPropertyValue("--operation-btn-prime");
-      // ul.append(swatchOprationBtn);
-      // const swatchOprationBtn2 = document.createElement("div");
-      // swatchOprationBtn2.classList.add("swatch");
-      // swatchOprationBtn2.style.backgroundColor = getComputedStyle(
-      //   root
-      // ).getPropertyValue("--operation-btn-prime");
-      // ul.append(swatchOprationBtn2);
+      const saveAndApplyBtn = new Button(form.id, "uniBtn", "Apply&Save", (e) => {
+        const data = new FormData(form);
 
-      const defaultTheme= new ThemeItem(ul.id, "theme-default",[
-        "swatch default first",
-        "swatch default second",
-        "swatch default third",
-      ],"checked");
-      const optionTheme= new ThemeItem(ul.id, "theme-option",[
-        "swatch option first",
-        "swatch option second",
-        "swatch option third",
-      ]);
-      const customTheme= new ThemeItem(ul.id, "theme-custom",[
-        "swatch custom first",
-        "swatch custom second",
-        "swatch custom third",
-      ]);
-      // for (let trashItem of Generator.trash) {
+        Generator.themeApply(data.get("colorThemeSelect"));
 
-      //   const listElement = new ListItem(ul.id, "list-item", trashItem.mainVal);
-      // }
+        Generator.themeSave();
+
+        e.preventDefault();
+      });
     });
   }
 }
@@ -223,10 +224,11 @@ class HeaderComp extends Component {
     console.log("Actual Result : ", this.input.value, Generator.inputs);
   };
 
-  showOptions = () => {
-    const optionsModal = document.getElementById("options-modal");
-    optionsModal.classList.toggle("hide");
-  };
+  // showOptions = () => {
+  //   const optionsModal = document.getElementById("options-modal");
+  //   optionsModal.classList.remove("hide");
+  //   console.log('showOptions remove hide');
+  // };
 
   render() {
     const headerEl = this.createComp("div", "header-container");
@@ -240,7 +242,8 @@ class HeaderComp extends Component {
     const optionsBtn = headerEl.querySelectorAll(".uniBtn");
     this.input = headerEl.querySelector("input");
     resultBtn.addEventListener("click", this.showValue.bind(this));
-    optionsBtn[1].addEventListener("click", this.showOptions.bind(this));
+    // not actual use functionality in 929 line and beneath
+    // optionsBtn[1].addEventListener("click", this.showOptions.bind(this));
   }
 }
 
@@ -615,7 +618,6 @@ class OperatorModal extends Component {
     e.target.parentElement.previousElementSibling.innerHTML =
       e.target.innerHTML;
     Generator.calculateResults();
-    // console.log('You clicked ', e.target.innerHTML)
   }
 
   render() {
@@ -678,6 +680,58 @@ class Generator {
   static trash = [];
   static oprMainBtn;
   static id = 0;
+
+
+  // THEME CHANGE FEATURE -->
+  static theme = {
+    default: ["#6adb35", "#FFC165", "#ADADAD"],
+    option: ["#edd400", "#e45555", "#d3d7cf"],
+    custom: ["#3d18c1", "#d15f96", "#592e61"],
+  };
+
+  static actualTheme = "default";
+
+  static themeSave() {
+    localStorage.setItem("theme", JSON.stringify(this.theme));
+
+    console.log("LOCAL THEME SAVED ");
+  }
+
+  static themeLoad() {
+    const newTheme = JSON.parse(localStorage.getItem("theme"));
+    const newActualTheme = localStorage.getItem("actualTheme");
+    !!localStorage.getItem("theme") ? (Generator.theme = newTheme) : null;
+
+    !!localStorage.getItem("actualTheme")
+      ? (Generator.actualTheme = newActualTheme)
+      : null;
+
+    Generator.themeApply();
+
+    console.log("Theme loadad successfully");
+  }
+
+  static themeApply(passedTheme) {
+    !!passedTheme ? (this.actualTheme = passedTheme) : null;
+
+    localStorage.setItem("actualTheme", this.actualTheme);
+
+    document.documentElement.style.setProperty(
+      "--operation-btn-second",
+      this.theme[this.actualTheme][0]
+    );
+    document.documentElement.style.setProperty(
+      "--header-btn-backG",
+      this.theme[this.actualTheme][1]
+    );
+    document.documentElement.style.setProperty(
+      "--input-main-bckg",
+      this.theme[this.actualTheme][2]
+    );
+    console.log(`THEME "${this.actualTheme}" APPLIED`);
+  }
+  //  <--THEME CHANGE FEATURE
+
 
   static inputFinder(searchedID) {
     return this.inputs.find((e) => e.id === searchedID);
@@ -857,6 +911,7 @@ class App {
         if (!slider.matches(".hide")) {
           if (!slider.contains(e.target)) {
             slider.classList.add("hide");
+            console.log("other events");
           }
         }
       });
@@ -864,9 +919,36 @@ class App {
 
     // closing options modal
     const optionsModal = document.getElementById("options-modal");
-    const optionsBtn = document.querySelector(".uniBtn");
-    if (!optionsModal.contains(e.target) && e.target != optionsBtn) {
+    const optionsBtn = document.querySelectorAll(".uniBtn");
+    if (
+      !optionsModal.contains(e.target) &&
+      e.target == optionsBtn[1] &&
+      optionsModal.classList.contains("hide")
+    ) {
+      // console.log('close modalOption' , optionsModal.classList.contains("hide"));
+      optionsModal.classList.toggle("hide");
+      // console.log(e.target);
+      // console.log(optionsBtn[1]);
+      // console.log(e.target == optionsBtn[1]);
+      // console.log("Only when closing options-modal");
+      console.log("turn on ");
+    } else if (
+      !optionsModal.contains(e.target) &&
+      e.target == optionsBtn[1] &&
+      !optionsModal.classList.contains("hide")
+    ) {
       optionsModal.classList.add("hide");
+      // console.log('else e.target == optionsBtn[1]')
+      console.log("turn off 1 ");
+      console.log(optionsModal.children);
+    } else if (
+      !optionsModal.contains(e.target) &&
+      e.target != optionsBtn[1] &&
+      !optionsModal.classList.contains("hide")
+    ) {
+      optionsModal.classList.add("hide");
+      console.log("turn off 2");
+      // console.log('else e.target != optionsBtn[1]')
     }
   }
 
@@ -878,6 +960,7 @@ class App {
     const startBtn = new NewInput("app", "+");
     const app = document.getElementById("app");
     app.addEventListener("click", this.closeModal.bind(this), true);
+    addEventListener("load", Generator.themeLoad);
   }
 }
 
