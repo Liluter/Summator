@@ -66,18 +66,20 @@ class Button extends Component {
 }
 
 class Swatch extends Component {
-  constructor(hookId, nth, value, event) {
+  constructor(hookId, nth, value, title, event) {
     super(hookId, false);
     this.nth = nth;
     this.value = value;
-    this.elem;
+    this.title = title;
     this.event = event;
+    this.elem;
     this.render();
   }
   render() {
     this.elem = this.createComp("input", "colorInput", [
       { name: "type", value: "color" },
       { name: "value", value: this.value },
+      {name: "title", value: this.title}
     ]);
     this.elem.addEventListener("change", this.event.bind(this));
   }
@@ -87,31 +89,16 @@ class ThemeItem extends Component {
   constructor(hookId, id, type) {
     super(hookId, false);
     this.id = id;
-    // this.checked = checked;
     this.type = type;
     this.getColorValue;
     this.render();
   }
-
-  // showValue = () => {
-  //   Generator.calculateResults();
-  //   console.log("Actual Result : ", this.input.value, Generator.inputs);
-  // };
-
-  // showOptions = () => {
-  //   // const optionsModal = document.getElementById("options-modal");
-  //   // optionsModal.classList.toggle("hide");
-  // };
 
   render() {
     const themeElement = this.createComp("div", "themeItemContainer");
     themeElement.id = this.id;
     //RADIO BUTTON
     const setColorValue = function (e) {
-      // console.log("change e.target.value ", e.target.value);
-      // console.log("element n this", this);
-      // console.log("element n .nth", this.nth);
-      // console.log(Generator.theme[this.hookId.slice(6)][this.nth]);
       Generator.theme[this.hookId.slice(6)][this.nth] = e.target.value;
     };
 
@@ -136,24 +123,10 @@ class ThemeItem extends Component {
     });
 
     // COLOR INPUTS
-    const inputColorFirst = new Swatch(
-      themeElement.id,
-      0,
-      getColorValue(0),
-      setColorValue
-    );
-    const inputColorSecond = new Swatch(
-      themeElement.id,
-      1,
-      getColorValue(1),
-      setColorValue
-    );
-    const inputColorThird = new Swatch(
-      themeElement.id,
-      2,
-      getColorValue(2),
-      setColorValue
-    );
+
+    Generator.cssVaribles.forEach((e, idx) => {
+      new Swatch(themeElement.id, idx, getColorValue(idx), Generator.themeSwatchTitles[idx], setColorValue);
+    });
   }
 }
 
@@ -192,23 +165,29 @@ class ModalOptions extends Component {
         modal.children[1].remove();
       }
 
+
       const form = document.createElement("form");
       modal.append(form);
-      form.id = "themeColorList";
+      form.id = "themeColorForm";
 
-      const defaultTheme = new ThemeItem(form.id, "theme-default", "default");
-      const optionTheme = new ThemeItem(form.id, "theme-option", "option");
-      const customTheme = new ThemeItem(form.id, "theme-custom", "custom");
+      Object.keys(Generator.theme).forEach(
+        (theme, idx) => new ThemeItem(form.id, `theme-${theme}`, theme)
+      );
 
-      const saveAndApplyBtn = new Button(form.id, "uniBtn", "Apply&Save", (e) => {
-        const data = new FormData(form);
+      const saveAndApplyBtn = new Button(
+        form.id,
+        "uniBtn",
+        "Apply&Save",
+        (e) => {
+          const data = new FormData(form);
 
-        Generator.themeApply(data.get("colorThemeSelect"));
+          Generator.themeApply(data.get("colorThemeSelect"));
 
-        Generator.themeSave();
+          Generator.themeSave();
 
-        e.preventDefault();
-      });
+          e.preventDefault();
+        }
+      );
     });
   }
 }
@@ -681,12 +660,21 @@ class Generator {
   static oprMainBtn;
   static id = 0;
 
-
   // THEME CHANGE FEATURE -->
+  static cssVaribles = [
+    "--operation-btn-second",
+    "--header-btn-backG",
+    "--input-main-bckg",
+    "--operator-modal-backG"
+  ];
+
+  static themeSwatchTitles = ["Operation Button", "Main Button", "Modal Background", "Popup Background" ];
+
   static theme = {
-    default: ["#6adb35", "#FFC165", "#ADADAD"],
-    option: ["#edd400", "#e45555", "#d3d7cf"],
-    custom: ["#3d18c1", "#d15f96", "#592e61"],
+    default: ["#6adb35", "#FFC165", "#ADADAD","#204a87"],
+    option: ["#edd400", "#e45555", "#d3d7cf","#ce5c00"],
+    custom: ["#3d18c1", "#d15f96", "#592e61","#b273cf"],
+    contrast: ["#3d18c1", "#d15f96", "#592e61","#b273cf"],
   };
 
   static actualTheme = "default";
@@ -716,22 +704,16 @@ class Generator {
 
     localStorage.setItem("actualTheme", this.actualTheme);
 
-    document.documentElement.style.setProperty(
-      "--operation-btn-second",
-      this.theme[this.actualTheme][0]
+    this.cssVaribles.forEach((varible, idx) =>
+      document.documentElement.style.setProperty(
+        varible,
+        this.theme[this.actualTheme][idx]
+      )
     );
-    document.documentElement.style.setProperty(
-      "--header-btn-backG",
-      this.theme[this.actualTheme][1]
-    );
-    document.documentElement.style.setProperty(
-      "--input-main-bckg",
-      this.theme[this.actualTheme][2]
-    );
+
     console.log(`THEME "${this.actualTheme}" APPLIED`);
   }
   //  <--THEME CHANGE FEATURE
-
 
   static inputFinder(searchedID) {
     return this.inputs.find((e) => e.id === searchedID);
