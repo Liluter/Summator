@@ -28,11 +28,12 @@ class Component {
   }
 }
 
-class ListItem extends Component {
-  constructor(hookId, classes, value) {
+class TrashItem extends Component {
+  constructor(hookId, classes, value, data) {
     super(hookId, false);
     this.classes = classes;
     this.value = value;
+    this.data = data
     this.elem;
     this.render();
   }
@@ -45,6 +46,7 @@ class ListItem extends Component {
     const inputVal = document.createElement("input");
     inputVal.setAttribute("inputmode", "numeric");
     inputVal.setAttribute("value", this.value);
+    inputVal.setAttribute("title", this.data );
     this.elem.append(inputVal);
   }
 }
@@ -145,19 +147,57 @@ class ModalOptions extends Component {
     modal.append(modalHeader);
 
     // TRASH BUTTON
+
     const trashBtn = new Button(modalHeader.id, "uniBtn", "Trash", (e) => {
       while (modal.children[1]) {
         modal.children[1].remove();
       }
 
-      const ul = document.createElement("ul");
-      modal.append(ul);
-      ul.id = "trashItemsList";
-      for (let trashItem of Generator.trash) {
-        const listElement = new ListItem(ul.id, "list-item", trashItem.mainVal);
+
+
+      const trashForm = document.createElement("form");
+      modal.append(trashForm);
+      // trashForm.id="trashForm"
+      trashForm.id = "trashForm";
+
+      if (Generator.trash.length > 0 ) {
+        for (let trashItem of Generator.trash) {
+          // console.log("To trash , ",trashItem);
+          const trashElement = new TrashItem(trashForm.id, "trash-item", trashItem.mainVal, JSON.stringify(trashItem));
+        }
+
+      } else {
+        const message = document.createElement("p");
+        message.classList.add('message');
+        message.textContent = "Empty Trash";
+        trashForm.append(message);
       }
+
+
+      const permanentRemove = new Button(
+        trashForm.id,
+        "uniBtn",
+        "Permanently Remove",
+        (e) => {
+          console.log("Permanently Remove")
+          Generator.trash = [];
+
+          while (modal.children[1]) {
+            modal.children[1].remove();
+          }
+          e.preventDefault();
+        }
+      );
+
+
     });
+
+
+
+
+
     // THEME BUTTON
+
     const themeBtn = new Button(modalHeader.id, "uniBtn", "Theme", (e) => {
       const root = document.documentElement;
 
@@ -388,6 +428,7 @@ class SliderDelete extends Component {
             Generator.inputRemover(ancestorCont.id);
             ancestorCont.classList.add("removing");
             setTimeout(()=>ancestorCont.remove(),500);
+            Generator.calculateResults();
             
           }
         };

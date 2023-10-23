@@ -9,6 +9,7 @@
   --secret-menu-stroke: #b5b5b5;
   --border-prime: 2px solid #ababab;
   --border-main: 1px solid var(--input-main-stroke);
+  --gap: 8px;
   --radius: 13px;
   --secret-menu-mod: #3449ff;
   --secret-menu-switch: #ffec3e;
@@ -66,14 +67,14 @@ html {
 ul#colorList {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--gap);
 }
 
 #themeColorForm {
   width: fit-content;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--gap);
 }
 
 .themeItemContainer {
@@ -84,7 +85,7 @@ ul#colorList {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  gap: 8px;
+  gap: var(--gap);
   align-items: center;
   border-radius: calc(2*var(--radius));
   border: var(--border-main);
@@ -128,7 +129,8 @@ ul#colorList {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  /* gap: 12px; */
+  gap: calc(var(--gap)*1.5);
   padding: 8px;
   position: absolute;
   border-radius: 8px;
@@ -146,7 +148,10 @@ ul#colorList {
   gap: 10px;
 }
 
-.list-item {
+.trash-item {
+  display:flex;
+  justify-content: center;
+  align-items: center;
   padding: 8px;
   border-radius: 12px;
   list-style: none;
@@ -154,11 +159,11 @@ ul#colorList {
   border: var(--border-main);
 }
 
-.list-item input {
+.trash-item input {
   width: 70px;
   height: 30px;
   margin: 0 4px;
-  border-radius: 12px;
+  border-radius: var(--radius);
   text-align: right;
   color: var(--dark-grey-text);
   text-align: right;
@@ -166,6 +171,11 @@ ul#colorList {
   font-size: 28px;
   font-style: normal;
   line-height: 14px;
+}
+#trashForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
 }
 
 input[type='checkbox'] {
@@ -192,7 +202,7 @@ input[type='checkbox'] {
   font-weight: 700;
   text-align: right;
   padding-right: 6px;
-  gap: 8px;
+  gap: var(--gap);
   padding: 0 6px;
   flex: 0 1 250px;
 }
@@ -228,14 +238,14 @@ input[type='checkbox'] {
 .smaller {
   width: 32px;
   height: 30px;
-  border-radius: 13px;
+  border-radius: var(--radius);
   font-size: 22px;
 }
 
 .bigger {
   width: 64px;
   height: 60px;
-  border-radius: 26px;
+  border-radius: calc(var(--radius)*2);
   font-size: 44px;
 }
 
@@ -276,6 +286,17 @@ input[type='checkbox'] {
   gap: 6px;
 }
 
+.message {
+  background-color: #dcdcdc;
+  color: blue;
+  text-align: center;
+  line-height: 22px;
+  font-family: 'Signika';
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+}
+
 .input-main {
   position: relative;
   z-index: 2;
@@ -286,7 +307,7 @@ input[type='checkbox'] {
   border-radius: 18px;
   border: 1px solid var(--input-main-stroke);
   background: var(--input-main-bckg);
-  gap: 8px;
+  gap: var(--gap);
   padding: 0 6px;
 }
 
@@ -332,7 +353,7 @@ input[type='checkbox'] {
   right: -27px;
   top: 0;
   z-index: 1;
-  border-radius: 0px 13px 13px 0px;
+  border-radius: 0px var(--radius) var(--radius) 0px;
   border: solid 1px var(--secret-menu-stroke);
   background: var(--secret-menu-bckg);
   gap: 3px;
@@ -378,7 +399,7 @@ input[type='checkbox'] {
   right: -27px;
   top: 0;
   z-index: 2;
-  border-radius: 13px 13px 13px 13px;
+  border-radius: var(--radius);
   border: solid 1px var(--secret-menu-stroke);
   background: var(--secret-menu-bckg);
   gap: 10px;
@@ -396,7 +417,7 @@ input[type='checkbox'] {
   right: -27px;
   top: 0;
   z-index: 2;
-  border-radius: 13px 13px 13px 13px;
+  border-radius: var(--radius);
   border: solid 1px var(--secret-menu-stroke);
   background: var(--secret-menu-mod);
   gap: 6px;
@@ -415,7 +436,7 @@ input[type='checkbox'] {
   right: -27px;
   top: 0;
   z-index: 2;
-  border-radius: 13px 13px 13px 13px;
+  border-radius: var(--radius);
   border: solid 1px var(--secret-menu-stroke);
   background: var(--secret-menu-bckg);
   gap: 6px;
@@ -454,7 +475,7 @@ input[type='checkbox'] {
   right: -27px;
   top: 0;
   z-index: 2;
-  border-radius: 13px 13px 13px 13px;
+  border-radius: var(--radius);
   border: solid 1px var(--secret-menu-stroke);
   background: var(--secret-menu-bckg);
   gap: 6px;
@@ -526,7 +547,7 @@ input[type='checkbox'] {
   left: 1px;
   top: 1px;
   z-index: 4;
-  border-radius: 23px 23px 23px 23px;
+  border-radius: calc(var(--radius)*2);
   border: solid 1px var(--secret-menu-stroke);
   background: var(--operator-modal-backG);
   gap: 6px;
