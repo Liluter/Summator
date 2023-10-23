@@ -387,7 +387,8 @@ class SliderDelete extends Component {
             clearInterval(blinker);
             Generator.inputRemover(ancestorCont.id);
             ancestorCont.classList.add("removing");
-            ancestorCont.remove();
+            setTimeout(()=>ancestorCont.remove(),500);
+            
           }
         };
         const blinker = setInterval(myMethod, 600);
@@ -669,6 +670,14 @@ class Generator {
   ];
 
   static themeSwatchTitles = ["Operation Button", "Main Button", "Modal Background", "Popup Background" ];
+
+  // static themeDefault = {
+  //   default: ["#6adb35", "#FFC165", "#ADADAD","#204a87"],
+  //   option: ["#edd400", "#e45555", "#d3d7cf","#ce5c00"],
+  //   custom: ["#3d18c1", "#d15f96", "#592e61","#b273cf"],
+  //   contrast: ["#3d18c1", "#d15f96", "#592e61","#b273cf"],
+  // };
+
 
   static theme = {
     default: ["#6adb35", "#FFC165", "#ADADAD","#204a87"],

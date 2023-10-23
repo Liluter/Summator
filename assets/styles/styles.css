@@ -117,7 +117,7 @@ ul#colorList {
   flex: 0 0 auto
 }
 
-.uniBtn:hover {
+.uniBtn:hover, .colorInput:hover {
   scale: 1.05;
 }
 
@@ -256,8 +256,18 @@ input[type='checkbox'] {
 
 .input-container.removing {
   /* transform: rotate(360deg) scale(0); */
-  transform: scaleX(0);
+  /* transform: scaleX(0); */
+  animation: 500ms normal closingInput;
 
+}
+
+@keyframes closingInput {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
+  }
 }
 
 .container {

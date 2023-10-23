@@ -57,3 +57,14 @@ SAD-23
 ![App after Upgrade 1](./Images/Upgrade1.png)
 
 --- 
+
+
+## Upgrade 2
+
+![App after Upgrade 2](./Images/Upgrade2.png)
+
+- Add to option modal, theme change feature.
+
+
+- New ideas during sprint : 
+    - Reset all themes to default values.
