@@ -221,7 +221,9 @@ input[type='checkbox'] {
   /* background: radial-gradient(
       var(--operation-btn-prime) 10%,
       var(--operation-btn-second) 100%); */
-  background-color: var(--operation-btn-second, #7dd454);
+  /* background: var(--operation-btn-second, #7dd454); */
+  background: radial-gradient(var(--operation-btn-second) 20%, color-mix(in srgb, var(--operation-btn-second) 99%, white) 40%, var(--operation-btn-second) 80%);
+  
   color: var(--dark-grey-text);
   text-align: center;
   align-items: center;
@@ -231,8 +233,8 @@ input[type='checkbox'] {
   line-height: 14px;
   padding-bottom: 2px;
   font-weight: 700;
-  transition: all 200ms ease;
   flex-shrink: 0;
+  transition: all 200ms ease;
 }
 
 .smaller {
@@ -251,7 +253,8 @@ input[type='checkbox'] {
 
 .operation-btn:hover {
   transform: scale(1.05);
-  background: radial-gradient(var(--operation-btn-second) 20%, color-mix(in srgb, var(--operation-btn-second) 60%, white) 40%, var(--operation-btn-second) 80%);
+  background: radial-gradient(var(--operation-btn-second) 20%, color-mix(in srgb, var(--operation-btn-second) 85%, white) 40%, var(--operation-btn-second) 80%);
+  
 }
 
 .input-container {
@@ -307,6 +310,7 @@ input[type='checkbox'] {
   border-radius: 18px;
   border: 1px solid var(--input-main-stroke);
   background: var(--input-main-bckg);
+  box-shadow: 0px 2px 2px #6b6b6b4d,0px 4px 18px #90909080;
   gap: var(--gap);
   padding: 0 6px;
 }

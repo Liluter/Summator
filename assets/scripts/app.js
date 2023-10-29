@@ -33,7 +33,7 @@ class TrashItem extends Component {
     super(hookId, false);
     this.classes = classes;
     this.value = value;
-    this.data = data
+    this.data = data;
     this.elem;
     this.render();
   }
@@ -41,12 +41,13 @@ class TrashItem extends Component {
     this.elem = this.createComp("li", this.classes);
     const checkBox = document.createElement("input");
     checkBox.setAttribute("type", "checkbox");
-    checkBox.setAttribute("name", this.name);
+    // checkBox.setAttribute("name", "trashItem");
+    // checkBox.setAttribute("value", this.value);
     this.elem.append(checkBox);
     const inputVal = document.createElement("input");
     inputVal.setAttribute("inputmode", "numeric");
     inputVal.setAttribute("value", this.value);
-    inputVal.setAttribute("title", this.data );
+    inputVal.setAttribute("title", this.data);
     this.elem.append(inputVal);
   }
 }
@@ -81,7 +82,7 @@ class Swatch extends Component {
     this.elem = this.createComp("input", "colorInput", [
       { name: "type", value: "color" },
       { name: "value", value: this.value },
-      {name: "title", value: this.title}
+      { name: "title", value: this.title },
     ]);
     this.elem.addEventListener("change", this.event.bind(this));
   }
@@ -127,7 +128,13 @@ class ThemeItem extends Component {
     // COLOR INPUTS
 
     Generator.cssVaribles.forEach((e, idx) => {
-      new Swatch(themeElement.id, idx, getColorValue(idx), Generator.themeSwatchTitles[idx], setColorValue);
+      new Swatch(
+        themeElement.id,
+        idx,
+        getColorValue(idx),
+        Generator.themeSwatchTitles[idx],
+        setColorValue
+      );
     });
   }
 }
@@ -135,79 +142,117 @@ class ThemeItem extends Component {
 class ModalOptions extends Component {
   constructor(hookId) {
     super(hookId, false);
+    this.elem;
     this.render();
   }
+
+  // test() {
+  //   console.log('Testing digital audio... :)')
+  // }
+
   render() {
-    const modal = this.createComp("div", "options-modal hide", [
+    this.elem = this.createComp("div", "options-modal hide", [
       { name: "id", value: "options-modal" },
+      // { name: "popover", value: "auto" },
     ]);
+
+    this.elem.addEventListener("closeOptionModal", (e) =>{
+      // console.log("MODAL LOAD", e.detail);
+      while (this.elem.children[1]) {
+        this.elem.children[1].remove();
+      }
+    } );
 
     const modalHeader = document.createElement("header");
     modalHeader.id = "modalHeader";
-    modal.append(modalHeader);
+    this.elem.append(modalHeader);
 
     // TRASH BUTTON
 
     const trashBtn = new Button(modalHeader.id, "uniBtn", "Trash", (e) => {
-      while (modal.children[1]) {
-        modal.children[1].remove();
+      while (this.elem.children[1]) {
+        this.elem.children[1].remove();
       }
 
-
-
       const trashForm = document.createElement("form");
-      modal.append(trashForm);
+      this.elem.append(trashForm);
       // trashForm.id="trashForm"
       trashForm.id = "trashForm";
 
-      if (Generator.trash.length > 0 ) {
+      if (Generator.trash.length > 0) {
         for (let trashItem of Generator.trash) {
           // console.log("To trash , ",trashItem);
-          const trashElement = new TrashItem(trashForm.id, "trash-item", trashItem.mainVal, JSON.stringify(trashItem));
+          const trashElement = new TrashItem(
+            trashForm.id,
+            "trash-item",
+            trashItem.mainVal,
+            JSON.stringify(trashItem)
+          );
         }
-
       } else {
         const message = document.createElement("p");
-        message.classList.add('message');
+        message.classList.add("message");
         message.textContent = "Empty Trash";
         trashForm.append(message);
       }
-
 
       const permanentRemove = new Button(
         trashForm.id,
         "uniBtn",
         "Permanently Remove",
         (e) => {
-          console.log("Permanently Remove")
-          Generator.trash = [];
+          console.log("Permanently Remove");
+          console.log("children", trashForm.children);
+          const liItems = Array.from(trashForm.children).filter(
+            (child) => child.tagName == "LI"
+          );
+          console.log(liItems);
+          const newArr = liItems.map((item, idx) => {
+            if (item.children[0].checked === true) {
+              // to be continued
+              return null;
+            } else {
+              return Generator.trash[idx];
+            }
 
-          while (modal.children[1]) {
-            modal.children[1].remove();
-          }
+            //  return item.children[0].checked === true ? null : Generator.trash[idx]
+          });
+
+          const newArrFiltered = newArr.filter((el) =>
+            el != null ? true : false
+          );
+          Generator.trash = newArrFiltered;
+          console.log(Generator.trash);
+
+          //IMPROOVE SWEEPING TRASh
+
+          // const fromT = new FormData(trashForm);
+          // console.log('form', fromT.getAll("trashItem"))
+          // const data = new FormData(form);
+
+          // Generator.themeApply(data.get("colorThemeSelect"));
+
+          // Generator.trash = [];
+
+          // while (modal.children[1]) {
+          //   modal.children[1].remove();
+          // }
           e.preventDefault();
         }
       );
-
-
     });
-
-
-
-
 
     // THEME BUTTON
 
     const themeBtn = new Button(modalHeader.id, "uniBtn", "Theme", (e) => {
       const root = document.documentElement;
 
-      while (modal.children[1]) {
-        modal.children[1].remove();
+      while (this.elem.children[1]) {
+        this.elem.children[1].remove();
       }
 
-
       const form = document.createElement("form");
-      modal.append(form);
+      this.elem.append(form);
       form.id = "themeColorForm";
 
       Object.keys(Generator.theme).forEach(
@@ -427,9 +472,8 @@ class SliderDelete extends Component {
             clearInterval(blinker);
             Generator.inputRemover(ancestorCont.id);
             ancestorCont.classList.add("removing");
-            setTimeout(()=>ancestorCont.remove(),500);
+            setTimeout(() => ancestorCont.remove(), 500);
             Generator.calculateResults();
-            
           }
         };
         const blinker = setInterval(myMethod, 600);
@@ -707,10 +751,15 @@ class Generator {
     "--operation-btn-second",
     "--header-btn-backG",
     "--input-main-bckg",
-    "--operator-modal-backG"
+    "--operator-modal-backG",
   ];
 
-  static themeSwatchTitles = ["Operation Button", "Main Button", "Modal Background", "Popup Background" ];
+  static themeSwatchTitles = [
+    "Operation Button",
+    "Main Button",
+    "Modal Background",
+    "Popup Background",
+  ];
 
   // static themeDefault = {
   //   default: ["#6adb35", "#FFC165", "#ADADAD","#204a87"],
@@ -719,12 +768,11 @@ class Generator {
   //   contrast: ["#3d18c1", "#d15f96", "#592e61","#b273cf"],
   // };
 
-
   static theme = {
-    default: ["#6adb35", "#FFC165", "#ADADAD","#204a87"],
-    option: ["#edd400", "#e45555", "#d3d7cf","#ce5c00"],
-    custom: ["#3d18c1", "#d15f96", "#592e61","#b273cf"],
-    contrast: ["#3d18c1", "#d15f96", "#592e61","#b273cf"],
+    default: ["#6adb35", "#FFC165", "#ADADAD", "#204a87"],
+    option: ["#edd400", "#e45555", "#d3d7cf", "#ce5c00"],
+    custom: ["#3d18c1", "#d15f96", "#592e61", "#b273cf"],
+    contrast: ["#3d18c1", "#d15f96", "#592e61", "#b273cf"],
   };
 
   static actualTheme = "default";
@@ -952,6 +1000,7 @@ class App {
     // closing options modal
     const optionsModal = document.getElementById("options-modal");
     const optionsBtn = document.querySelectorAll(".uniBtn");
+    const myEvent = new Event("closeOptionModal");
     if (
       !optionsModal.contains(e.target) &&
       e.target == optionsBtn[1] &&
@@ -968,18 +1017,25 @@ class App {
       !optionsModal.contains(e.target) &&
       e.target == optionsBtn[1] &&
       !optionsModal.classList.contains("hide")
-    ) {
-      optionsModal.classList.add("hide");
-      // console.log('else e.target == optionsBtn[1]')
-      console.log("turn off 1 ");
-      console.log(optionsModal.children);
-    } else if (
-      !optionsModal.contains(e.target) &&
-      e.target != optionsBtn[1] &&
-      !optionsModal.classList.contains("hide")
-    ) {
-      optionsModal.classList.add("hide");
-      console.log("turn off 2");
+      ) {
+        optionsModal.classList.add("hide");
+        // console.log('else e.target == optionsBtn[1]')
+        console.log("turn off 1 ");
+        // custom Event
+        // const myEvent = new Event("closeing");
+        // const myEvent = new CustomEvent("closeing",{detail: "Way first of closeing modal"});
+        optionsModal.dispatchEvent(myEvent);
+        // console.log(optionsModal.children);
+      } else if (
+        !optionsModal.contains(e.target) &&
+        e.target != optionsBtn[1] &&
+        !optionsModal.classList.contains("hide")
+        ) {
+          optionsModal.classList.add("hide");
+          console.log("turn off 2");
+          // const myEvent2 = new Event("closeing");
+          // const myEvent2 = new CustomEvent("closeing",{detail: "Way second of closeing modal"});
+          optionsModal.dispatchEvent(myEvent);
       // console.log('else e.target != optionsBtn[1]')
     }
   }
