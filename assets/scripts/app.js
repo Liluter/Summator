@@ -222,21 +222,9 @@ class ModalOptions extends Component {
             el != null ? true : false
           );
           Generator.trash = newArrFiltered;
+          Generator.trashSave();
           console.log(Generator.trash);
 
-          //IMPROOVE SWEEPING TRASh
-
-          // const fromT = new FormData(trashForm);
-          // console.log('form', fromT.getAll("trashItem"))
-          // const data = new FormData(form);
-
-          // Generator.themeApply(data.get("colorThemeSelect"));
-
-          // Generator.trash = [];
-
-          // while (modal.children[1]) {
-          //   modal.children[1].remove();
-          // }
           e.preventDefault();
         }
       );
@@ -602,12 +590,13 @@ class OperationBtnInput extends Component {
 }
 
 class InputNumber extends Component {
-  constructor(hookId, classes = "", attributes = []) {
+  constructor(hookId, classes = "", attributes = [], value) {
     super(hookId, false);
     this.classes = classes;
     this.attributes = attributes;
     this.classes = classes;
     this.attributes = attributes;
+    this.value=value;
     this.elem;
     this.render();
   }
@@ -683,6 +672,7 @@ class OperatorModal extends Component {
     e.target.parentElement.previousElementSibling.innerHTML =
       e.target.innerHTML;
     Generator.calculateResults();
+    Generator.inputsSave();
   }
 
   render() {
@@ -744,7 +734,49 @@ class Generator {
   static inputs = [];
   static trash = [];
   static oprMainBtn;
+  //starting point id number not  use when loading from localStorageApi
   static id = 0;
+
+  // TRASH SAVE FEATURE -->
+  static inputsSave() {
+    localStorage.setItem("inputs", JSON.stringify(this.inputs));
+    console.log("INPUTS SAVED in LoacalStorageAPI ");
+  }
+  static inputsLoad() {
+    const newInputs = JSON.parse(localStorage.getItem("inputs"));
+    // const newActualInputs = localStorage.getItem("inputs");
+    !!localStorage.getItem("inputs") ? (Generator.inputs = newInputs) : null;
+
+    console.log("Inputs LOADED successfully");
+  }
+
+  static trashSave() {
+    localStorage.setItem("trash", JSON.stringify(this.trash));
+    console.log("TRASH SAVED in LoacalStorageAPI ");
+    
+  }  
+  static trashLoad() {
+    const newTrash = JSON.parse(localStorage.getItem("trash"));
+    !!localStorage.getItem("trash") ? (Generator.trash = newTrash) : null;
+    console.log("TRASH LOADED in LoacalStorageAPI ");
+  }
+
+  // <-- TRASH SAVE FEATURE
+
+  // LOAD HISTORY FROM LOCALSTORAGE
+  // Need to recrate every Main Input element as in store.
+  // Rebuild class components in Generator.addInput method to have abilyty to render from params and default params. Not just like that.
+  static loadHistory(){
+    Generator.inputsLoad();
+    console.log("History load")
+    // this.addInput(Generator.inputs[0])
+    !!Generator.inputs.length ? Generator.inputs.forEach((elem)=>{
+      this.addInput(elem) 
+    }) : console.log("no inputs")
+    // Generator.inputs.forEach((elem)=>this.addInput(elem));
+  }
+  //
+
 
   // THEME CHANGE FEATURE -->
   static cssVaribles = [
@@ -822,6 +854,9 @@ class Generator {
       this.inputs.find((e) => e.id === containerID)
     );
     this.trash.push(...this.inputs.splice(toRemEleIdx, 1));
+    // Save Actual Stateto localStoreAPI trash and inputs
+    Generator.inputsSave();
+    Generator.trashSave();
   }
 
   static calculateResults() {
@@ -874,12 +909,19 @@ class Generator {
 
     resultInput.value = counter.toFixed(2);
 
+    Generator.inputsSave()
     return counter;
   }
 
-  static addInput() {
+  static addInput(historyInput) {
+    // Create Input-main element for now without params, will change.
+    console.log('Arguments' ,!!historyInput)
+    !!historyInput ? console.log(historyInput.id[historyInput.id.length-1] ) : null
     // const id = this.inputs.length + 1; // wrong attempt
-    const id = ++this.id;
+    // const id = ++this.id;
+    const id = !!historyInput ? historyInput.id[historyInput.id.length-1] : this.inputs.length+1;
+
+
     //====================================
     const smallContId = "Input-cont-" + id;
     //====================================
@@ -891,7 +933,11 @@ class Generator {
     const sliderSwitch = "SliderSwitch-" + id;
     const sliderDelete = "SliderDelete-" + id;
     const operModId = "OperMod-" + id;
-    this.inputs.push(new Input(smallContId));
+
+    // this.inputs.push(new Input(smallContId));
+    !!historyInput ? null : this.inputs.push(new Input(smallContId));
+
+
     // was mainInputId
 
     new InputItem("container", "input-container", [
@@ -904,12 +950,12 @@ class Generator {
     ]);
     //==============================
     //input-main children
-    this.oprMainBtn = new OperationBtnInput(mainInputId, "+");
+    this.oprMainBtn = new OperationBtnInput(mainInputId, !!historyInput ? historyInput.mainOperator : "+");
     this.oprMainBtn.elem.addEventListener("click", (e) => {
       e.target.nextSibling.classList.toggle("hide");
     });
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
-    new InputNumber(mainInputId);
+    new InputNumber(mainInputId,"",!!historyInput ? [{name: "value", value: historyInput.mainVal}] : []);
 
     new OperationBtnInput(mainInputId, "+", "smaller hide");
 
@@ -947,6 +993,7 @@ class NewInput extends Component {
 
   createNewInput() {
     Generator.addInput();
+    Generator.inputsSave();
   }
 
   render() {
@@ -1048,7 +1095,12 @@ class App {
     const startBtn = new NewInput("app", "+");
     const app = document.getElementById("app");
     app.addEventListener("click", this.closeModal.bind(this), true);
-    addEventListener("load", Generator.themeLoad);
+    addEventListener("load", ()=>{
+      Generator.themeLoad();
+      Generator.trashLoad();
+      // History load from LocalStore
+      Generator.loadHistory();
+    });
   }
 }
 

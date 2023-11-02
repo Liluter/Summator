@@ -290,10 +290,12 @@ input[type='checkbox'] {
 }
 
 .message {
-  background-color: #dcdcdc;
-  color: blue;
+  background-color: var(--operator-modal-backG , #121212);
+  border: var(--border-main);
+  border-radius: var(--radius);
+  color: var(--light-backG);
   text-align: center;
-  line-height: 22px;
+  line-height: 40px;
   font-family: 'Signika';
   font-size: 18px;
   font-style: normal;
@@ -378,7 +380,7 @@ input[type='checkbox'] {
 }
 
 .off {
-  opacity: 0.3;
+  opacity: 0.6;
 }
 
 .on {
