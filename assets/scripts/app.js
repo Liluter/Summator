@@ -315,7 +315,7 @@ class Input {
     this.hashId = Math.floor(Math.random() * 1000000000);
     this.mainOperator = mainOperator;
     // (this.mainVal = mainVal.toFixed(2)), (this.modOperator = modOperator);
-    this.mainVal = mainVal.toFixed(2);
+    this.mainVal = mainVal;
     this.modValue = modValue;
     this.modOperator = modOperator;
     this.mod = mod;
@@ -624,7 +624,7 @@ class InputNumber extends Component {
 
   render() {
     this.elem = this.createComp("input", "input-num " + this.classes, [
-      { name: "placeholder", value: "set" },
+      // { name: "placeholder", value: "set" },
       { name: "inputmode", value: "numeric" },
       ...this.attributes,
     ]);
@@ -740,25 +740,25 @@ class Generator {
   // TRASH SAVE FEATURE -->
   static inputsSave() {
     localStorage.setItem("inputs", JSON.stringify(this.inputs));
-    console.log("INPUTS SAVED in LoacalStorageAPI ");
+    console.log("GENERATOR - INPUTS SAVED in LoacalStorageAPI ");
   }
   static inputsLoad() {
     const newInputs = JSON.parse(localStorage.getItem("inputs"));
     // const newActualInputs = localStorage.getItem("inputs");
     !!localStorage.getItem("inputs") ? (Generator.inputs = newInputs) : null;
 
-    console.log("Inputs LOADED successfully");
+    console.log("GENERATOR - Inputs LOADED successfully");
   }
 
   static trashSave() {
     localStorage.setItem("trash", JSON.stringify(this.trash));
-    console.log("TRASH SAVED in LoacalStorageAPI ");
+    console.log("GENERATOR - TRASH SAVED in LoacalStorageAPI ");
     
   }  
   static trashLoad() {
     const newTrash = JSON.parse(localStorage.getItem("trash"));
     !!localStorage.getItem("trash") ? (Generator.trash = newTrash) : null;
-    console.log("TRASH LOADED in LoacalStorageAPI ");
+    console.log("GENERATOR - TRASH LOADED in LoacalStorageAPI ");
   }
 
   // <-- TRASH SAVE FEATURE
@@ -768,12 +768,13 @@ class Generator {
   // Rebuild class components in Generator.addInput method to have abilyty to render from params and default params. Not just like that.
   static loadHistory(){
     Generator.inputsLoad();
-    console.log("History load")
+    console.log("GENERATOR - History load")
     // this.addInput(Generator.inputs[0])
     !!Generator.inputs.length ? Generator.inputs.forEach((elem)=>{
       this.addInput(elem) 
-    }) : console.log("no inputs")
+    }) : console.log("GENERATOR - no inputs")
     // Generator.inputs.forEach((elem)=>this.addInput(elem));
+    Generator.calculateResults();
   }
   //
 
@@ -812,7 +813,7 @@ class Generator {
   static themeSave() {
     localStorage.setItem("theme", JSON.stringify(this.theme));
 
-    console.log("LOCAL THEME SAVED ");
+    console.log("GENERATOR - LOCAL THEME SAVED ");
   }
 
   static themeLoad() {
@@ -826,7 +827,7 @@ class Generator {
 
     Generator.themeApply();
 
-    console.log("Theme loadad successfully");
+    console.log("GENERATOR - Theme loadad successfully");
   }
 
   static themeApply(passedTheme) {
@@ -915,12 +916,15 @@ class Generator {
 
   static addInput(historyInput) {
     // Create Input-main element for now without params, will change.
-    console.log('Arguments' ,!!historyInput)
+    console.log('GENERATOR - Arguments with input: ' ,!!historyInput)
     !!historyInput ? console.log(historyInput.id[historyInput.id.length-1] ) : null
     // const id = this.inputs.length + 1; // wrong attempt
     // const id = ++this.id;
-    const id = !!historyInput ? historyInput.id[historyInput.id.length-1] : this.inputs.length+1;
-
+    // error here wrong id calculation
+    // const id = !!historyInput ? +Generator.inputs[Generator.inputs.length-1].id.slice(11)+1 : this.inputs.length+1;
+    // !!historyInput ? console.log('ID calc: ',+Generator.inputs[Generator.inputs.length-1].id.slice(11)+1) : null;
+    const id = !!historyInput ? +historyInput.id[historyInput.id.length-1] : +Generator.inputs[Generator.inputs.length-1].id.slice(11)+1;
+    // change when historyInput exist and new one is create
 
     //====================================
     const smallContId = "Input-cont-" + id;
@@ -939,23 +943,25 @@ class Generator {
 
 
     // was mainInputId
-
+    // Input Item container creation with current id
     new InputItem("container", "input-container", [
       { name: "id", value: smallContId },
     ]);
+    console.log("Test:" , Generator.inputs[id-1])
     //==============================
-    // input-container children
+      // input-container childrens
     new InputItem(smallContId, "input-main", [
       { name: "id", value: mainInputId },
     ]);
-    //==============================
     //input-main children
+    //==============================
     this.oprMainBtn = new OperationBtnInput(mainInputId, !!historyInput ? historyInput.mainOperator : "+");
     this.oprMainBtn.elem.addEventListener("click", (e) => {
       e.target.nextSibling.classList.toggle("hide");
     });
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
-    new InputNumber(mainInputId,"",!!historyInput ? [{name: "value", value: historyInput.mainVal}] : []);
+
+    new InputNumber(mainInputId,"",!!historyInput ? [{name: "value", value: historyInput.mainVal}] : [{name: "value", value: 0}]);
 
     new OperationBtnInput(mainInputId, "+", "smaller hide");
 
@@ -983,7 +989,7 @@ class Generator {
     new SliderDelete(smallContId, [{ name: "id", value: sliderDelete }]);
   }
 }
-
+// New Input button 
 class NewInput extends Component {
   constructor(hookId, operator) {
     super(hookId, false);
