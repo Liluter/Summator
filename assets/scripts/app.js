@@ -400,26 +400,36 @@ class SliderMod extends Component {
 }
 
 class SliderSwitch extends Component {
-  constructor(hookId, attr) {
+  constructor(hookId, attr, remoteSet) {
     super(hookId, false);
     this.attr = attr;
+    this.remoteSet = remoteSet;
     this.render();
+    this.turnOn;
+  }
+
+  turnOn(ancestor){
+    ancestor.children[1].children[1].classList.remove("off");
+    ancestor.classList.remove("disabled");
+        Generator.calculateResults();
+  }
+
+  turnOff(ancestor){
+    ancestor.children[1].children[1].classList.add("off");
+    ancestor.classList.add("disabled");
+    Generator.calculateResults();
   }
 
   slideMenuHandler(e) {
     const ancestorCont = e.target.closest(".input-container");
     switch (e.target.textContent) {
       case "ON":
-        ancestorCont.children[1].children[1].classList.remove("off");
-        ancestorCont.classList.remove("disabled");
         Generator.inputFinder(ancestorCont.id).switcher = true;
-        Generator.calculateResults();
+        this.turnOn(ancestorCont);
         break;
       case "OFF":
-        ancestorCont.children[1].children[1].classList.add("off");
-        ancestorCont.classList.add("disabled");
         Generator.inputFinder(ancestorCont.id).switcher = false;
-        Generator.calculateResults();
+        this.turnOff(ancestorCont);
         break;
     }
     e.target.parentElement.classList.toggle("hide");
@@ -432,14 +442,20 @@ class SliderSwitch extends Component {
       "switch-menu-btn switch indicator"
     );
     switchBtnOn.elem.innerHTML = "ON";
-    switchBtnOn.elem.addEventListener("click", this.slideMenuHandler);
+    switchBtnOn.elem.addEventListener("click", this.slideMenuHandler.bind(this));
     const switchBtnOff = new SwitchInd(
       elem.id,
       "switch-menu-btn switch off turnoff"
     );
     switchBtnOff.elem.innerHTML = "OFF";
-    switchBtnOff.elem.addEventListener("click", this.slideMenuHandler);
+    switchBtnOff.elem.addEventListener("click", this.slideMenuHandler.bind(this));
+    const ancestorCont = elem.closest(".input-container");
     // to be continued...
+    if (!!this.remoteSet) {
+      this.turnOn(ancestorCont);
+    } else {
+      this.turnOff(ancestorCont)
+    }
   }
 }
 class SliderDelete extends Component {
@@ -921,22 +937,11 @@ class Generator {
 
   static addInput(historyInput) {
     // Create Input-main element for now without params, will change.
-    console.log("historyInput : ", historyInput);
-    console.log("GENERATOR - Arguments with input: ", !!historyInput);
+
     !!historyInput
       ? console.log(historyInput.id[historyInput.id.length - 1])
       : null;
-    // const id = this.inputs.length + 1; // wrong attempt
-    // const id = ++this.id;
-    // error here wrong id calculation
-    // const id = !!historyInput ? +Generator.inputs[Generator.inputs.length-1].id.slice(11)+1 : this.inputs.length+1;
-    // !!historyInput ? console.log('ID calc: ',+Generator.inputs[Generator.inputs.length-1].id.slice(11)+1) : null;
-
-    // const id = !!historyInput
-    //   ? +historyInput.id[historyInput.id.length - 1]
-    //   : Generator.inputs.length
-    //   ? +Generator.inputs[Generator.inputs.length - 1].id.slice(11) + 1
-    //   : 1;
+    
     let id;
     if (!!historyInput) {
       id = +historyInput.id[historyInput.id.length - 1];
@@ -997,12 +1002,7 @@ class Generator {
     new OperationBtnInput(mainInputId, !!historyInput ? historyInput.modOperator : "+", !!historyInput && historyInput.modValue != 0 ? "smaller" : "smaller hide");
 
     //modified inputNumber with value from SliderMod manipulation. readonly 
-    new InputNumber(mainInputId, !!historyInput && historyInput.modValue != 0 ? "modified" : "modified hide", !!historyInput ? [{name: "value", value: historyInput.modValue}, {name: "readonly", value: ""}] : "");
-    //add feature which modified value.
-
-    //modified inputNumber with value from SliderMod manipulation.
-    // new InputNumber(mainInputId, "modified hide", [{name: 'readonly', value: 'readonly'}]);
-    //add feature which modified value.
+    new InputNumber(mainInputId, !!historyInput && historyInput.modValue != 0 ? "modified" : "modified hide", !!historyInput ? [{name: "value", value: historyInput.modValue}, {name: "readonly", value: ""}] : [{name: "readonly", value: ""}]);
 
     //==============================
 
@@ -1010,10 +1010,10 @@ class Generator {
 
     new SliderMenuOpen(smallContId, [{ name: "id", value: sliderMenuOpen }]);
     //Slider mod open
-    new SliderMod(smallContId, [{ name: "id", value: sliderMod }], !!historyInput ? historyInput.modValue : "");
+    new SliderMod(smallContId, [{ name: "id", value: sliderMod }], !!historyInput ? +historyInput.modValue : 0);
 
     //Slider Switch open
-    new SliderSwitch(smallContId, [{ name: "id", value: sliderSwitch }]);
+    new SliderSwitch(smallContId, [{ name: "id", value: sliderSwitch }],!!historyInput ? historyInput.switcher : true);
     //Slider delete open
     new SliderDelete(smallContId, [{ name: "id", value: sliderDelete }]);
   }
