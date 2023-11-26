@@ -156,12 +156,12 @@ class ModalOptions extends Component {
       // { name: "popover", value: "auto" },
     ]);
 
-    this.elem.addEventListener("closeOptionModal", (e) =>{
+    this.elem.addEventListener("closeOptionModal", (e) => {
       // console.log("MODAL LOAD", e.detail);
       while (this.elem.children[1]) {
         this.elem.children[1].remove();
       }
-    } );
+    });
 
     const modalHeader = document.createElement("header");
     modalHeader.id = "modalHeader";
@@ -596,7 +596,7 @@ class InputNumber extends Component {
     this.attributes = attributes;
     this.classes = classes;
     this.attributes = attributes;
-    this.value=value;
+    this.value = value;
     this.elem;
     this.render();
   }
@@ -623,6 +623,7 @@ class InputNumber extends Component {
   }
 
   render() {
+    console.log("this.attribures", ...this.attributes);
     this.elem = this.createComp("input", "input-num " + this.classes, [
       // { name: "placeholder", value: "set" },
       { name: "inputmode", value: "numeric" },
@@ -753,8 +754,7 @@ class Generator {
   static trashSave() {
     localStorage.setItem("trash", JSON.stringify(this.trash));
     console.log("GENERATOR - TRASH SAVED in LoacalStorageAPI ");
-    
-  }  
+  }
   static trashLoad() {
     const newTrash = JSON.parse(localStorage.getItem("trash"));
     !!localStorage.getItem("trash") ? (Generator.trash = newTrash) : null;
@@ -766,18 +766,19 @@ class Generator {
   // LOAD HISTORY FROM LOCALSTORAGE
   // Need to recrate every Main Input element as in store.
   // Rebuild class components in Generator.addInput method to have abilyty to render from params and default params. Not just like that.
-  static loadHistory(){
+  static loadHistory() {
     Generator.inputsLoad();
-    console.log("GENERATOR - History load")
+    console.log("GENERATOR - History load");
     // this.addInput(Generator.inputs[0])
-    !!Generator.inputs.length ? Generator.inputs.forEach((elem)=>{
-      this.addInput(elem) 
-    }) : console.log("GENERATOR - no inputs")
+    !!Generator.inputs.length
+      ? Generator.inputs.forEach((elem) => {
+          this.addInput(elem);
+        })
+      : console.log("GENERATOR - no inputs");
     // Generator.inputs.forEach((elem)=>this.addInput(elem));
     Generator.calculateResults();
   }
   //
-
 
   // THEME CHANGE FEATURE -->
   static cssVaribles = [
@@ -910,20 +911,36 @@ class Generator {
 
     resultInput.value = counter.toFixed(2);
 
-    Generator.inputsSave()
+    Generator.inputsSave();
     return counter;
   }
 
   static addInput(historyInput) {
     // Create Input-main element for now without params, will change.
-    console.log('GENERATOR - Arguments with input: ' ,!!historyInput)
-    !!historyInput ? console.log(historyInput.id[historyInput.id.length-1] ) : null
+    console.log("GENERATOR - Arguments with input: ", !!historyInput);
+    !!historyInput
+      ? console.log(historyInput.id[historyInput.id.length - 1])
+      : null;
     // const id = this.inputs.length + 1; // wrong attempt
     // const id = ++this.id;
     // error here wrong id calculation
     // const id = !!historyInput ? +Generator.inputs[Generator.inputs.length-1].id.slice(11)+1 : this.inputs.length+1;
     // !!historyInput ? console.log('ID calc: ',+Generator.inputs[Generator.inputs.length-1].id.slice(11)+1) : null;
-    const id = !!historyInput ? +historyInput.id[historyInput.id.length-1] : +Generator.inputs[Generator.inputs.length-1].id.slice(11)+1;
+
+    // const id = !!historyInput
+    //   ? +historyInput.id[historyInput.id.length - 1]
+    //   : Generator.inputs.length
+    //   ? +Generator.inputs[Generator.inputs.length - 1].id.slice(11) + 1
+    //   : 1;
+    let id;
+    if (!!historyInput) {
+      id = +historyInput.id[historyInput.id.length - 1];
+    } else if (Generator.inputs.length) {
+      id = +Generator.inputs[Generator.inputs.length - 1].id.slice(11) + 1;
+    } else {
+      id = 1;
+    }
+    //(+Generator.inputs[Generator.inputs.length-1].id.slice(11)+1)
     // change when historyInput exist and new one is create
 
     //====================================
@@ -941,33 +958,41 @@ class Generator {
     // this.inputs.push(new Input(smallContId));
     !!historyInput ? null : this.inputs.push(new Input(smallContId));
 
-
     // was mainInputId
     // Input Item container creation with current id
     new InputItem("container", "input-container", [
       { name: "id", value: smallContId },
     ]);
-    console.log("Test:" , Generator.inputs[id-1])
+    console.log("Test:", Generator.inputs[id - 1]);
     //==============================
-      // input-container childrens
+    // input-container childrens
     new InputItem(smallContId, "input-main", [
       { name: "id", value: mainInputId },
     ]);
     //input-main children
     //==============================
-    this.oprMainBtn = new OperationBtnInput(mainInputId, !!historyInput ? historyInput.mainOperator : "+");
+    this.oprMainBtn = new OperationBtnInput(
+      mainInputId,
+      !!historyInput ? historyInput.mainOperator : "+"
+    );
     this.oprMainBtn.elem.addEventListener("click", (e) => {
       e.target.nextSibling.classList.toggle("hide");
     });
     new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
 
-    new InputNumber(mainInputId,"",!!historyInput ? [{name: "value", value: historyInput.mainVal}] : [{name: "value", value: 0}]);
+    new InputNumber(
+      mainInputId,
+      "",
+      !!historyInput
+        ? [{ name: "value", value: historyInput.mainVal }]
+        : [{ name: "value", value: 0 }]
+    );
 
     new OperationBtnInput(mainInputId, "+", "smaller hide");
 
     //modified inputNumber with value from SliderMod manipulation.
     new InputNumber(mainInputId, "modified hide", [
-      { name: "readonly", value: "readonly" },
+      { name: "placeholder", value: "new" },
     ]);
     //add feature which modified value.
 
@@ -989,7 +1014,7 @@ class Generator {
     new SliderDelete(smallContId, [{ name: "id", value: sliderDelete }]);
   }
 }
-// New Input button 
+// New Input button
 class NewInput extends Component {
   constructor(hookId, operator) {
     super(hookId, false);
@@ -1070,25 +1095,25 @@ class App {
       !optionsModal.contains(e.target) &&
       e.target == optionsBtn[1] &&
       !optionsModal.classList.contains("hide")
-      ) {
-        optionsModal.classList.add("hide");
-        // console.log('else e.target == optionsBtn[1]')
-        console.log("turn off 1 ");
-        // custom Event
-        // const myEvent = new Event("closeing");
-        // const myEvent = new CustomEvent("closeing",{detail: "Way first of closeing modal"});
-        optionsModal.dispatchEvent(myEvent);
-        // console.log(optionsModal.children);
-      } else if (
-        !optionsModal.contains(e.target) &&
-        e.target != optionsBtn[1] &&
-        !optionsModal.classList.contains("hide")
-        ) {
-          optionsModal.classList.add("hide");
-          console.log("turn off 2");
-          // const myEvent2 = new Event("closeing");
-          // const myEvent2 = new CustomEvent("closeing",{detail: "Way second of closeing modal"});
-          optionsModal.dispatchEvent(myEvent);
+    ) {
+      optionsModal.classList.add("hide");
+      // console.log('else e.target == optionsBtn[1]')
+      console.log("turn off 1 ");
+      // custom Event
+      // const myEvent = new Event("closeing");
+      // const myEvent = new CustomEvent("closeing",{detail: "Way first of closeing modal"});
+      optionsModal.dispatchEvent(myEvent);
+      // console.log(optionsModal.children);
+    } else if (
+      !optionsModal.contains(e.target) &&
+      e.target != optionsBtn[1] &&
+      !optionsModal.classList.contains("hide")
+    ) {
+      optionsModal.classList.add("hide");
+      console.log("turn off 2");
+      // const myEvent2 = new Event("closeing");
+      // const myEvent2 = new CustomEvent("closeing",{detail: "Way second of closeing modal"});
+      optionsModal.dispatchEvent(myEvent);
       // console.log('else e.target != optionsBtn[1]')
     }
   }
@@ -1101,7 +1126,7 @@ class App {
     const startBtn = new NewInput("app", "+");
     const app = document.getElementById("app");
     app.addEventListener("click", this.closeModal.bind(this), true);
-    addEventListener("load", ()=>{
+    addEventListener("load", () => {
       Generator.themeLoad();
       Generator.trashLoad();
       // History load from LocalStore
