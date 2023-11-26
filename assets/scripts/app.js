@@ -994,10 +994,10 @@ class Generator {
     );
 
     // new OperationBtnInput(mainInputId, "+", "smaller hide");
-    new OperationBtnInput(mainInputId, !!historyInput ? historyInput.modOperator : "+", !!historyInput ? "smaller" : "smaller hide");
+    new OperationBtnInput(mainInputId, !!historyInput ? historyInput.modOperator : "+", !!historyInput && historyInput.modValue != 0 ? "smaller" : "smaller hide");
 
     //modified inputNumber with value from SliderMod manipulation. readonly 
-    new InputNumber(mainInputId, !!historyInput ? "modified" : "modified hide", !!historyInput ? [{name: "value", value: historyInput.modValue}, {name: "readonly", value: ""}] : "");
+    new InputNumber(mainInputId, !!historyInput && historyInput.modValue != 0 ? "modified" : "modified hide", !!historyInput ? [{name: "value", value: historyInput.modValue}, {name: "readonly", value: ""}] : "");
     //add feature which modified value.
 
     //modified inputNumber with value from SliderMod manipulation.
