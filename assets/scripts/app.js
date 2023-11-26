@@ -917,6 +917,7 @@ class Generator {
 
   static addInput(historyInput) {
     // Create Input-main element for now without params, will change.
+    console.log("historyInput : ", historyInput);
     console.log("GENERATOR - Arguments with input: ", !!historyInput);
     !!historyInput
       ? console.log(historyInput.id[historyInput.id.length - 1])
@@ -988,7 +989,8 @@ class Generator {
         : [{ name: "value", value: 0 }]
     );
 
-    new OperationBtnInput(mainInputId, "+", "smaller hide");
+    // new OperationBtnInput(mainInputId, "+", "smaller hide");
+    new OperationBtnInput(mainInputId, !!historyInput ? historyInput.modOperator : "+", !!historyInput ? "smaller" : "smaller hide");
 
     //modified inputNumber with value from SliderMod manipulation.
     new InputNumber(mainInputId, "modified hide", [
