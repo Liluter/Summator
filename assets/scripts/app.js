@@ -325,9 +325,10 @@ class Input {
 }
 
 class SliderMod extends Component {
-  constructor(hookId, attr) {
+  constructor(hookId, attr, inputValue) {
     super(hookId, false);
     this.attr = attr;
+    this.inputValue = inputValue;
     this.render();
   }
   //add handler
@@ -371,12 +372,13 @@ class SliderMod extends Component {
       ).modOperator;
     }
     // show value in modified input handler
+
   }
 
   render() {
     const elem = this.createComp("div", "slider-mod hide", this.attr);
     const smallOprBtn = new OperationBtnInput(elem.id, "+", "smaller");
-    const modInput = new InputNumberMod(elem.id);
+    const modInput = new InputNumberMod(elem.id,"",[{name: "value", value: this.inputValue}]);
     const operatsMod = new OperatorModalSmall(
       elem.id,
       [
@@ -590,13 +592,12 @@ class OperationBtnInput extends Component {
 }
 
 class InputNumber extends Component {
-  constructor(hookId, classes = "", attributes = [], value) {
+  constructor(hookId, classes = "", attributes = []) {
     super(hookId, false);
     this.classes = classes;
     this.attributes = attributes;
     this.classes = classes;
     this.attributes = attributes;
-    this.value = value;
     this.elem;
     this.render();
   }
@@ -624,6 +625,7 @@ class InputNumber extends Component {
 
   render() {
     console.log("this.attribures", ...this.attributes);
+    console.log("InputNumber elem: ", this.value);
     this.elem = this.createComp("input", "input-num " + this.classes, [
       // { name: "placeholder", value: "set" },
       { name: "inputmode", value: "numeric" },
@@ -636,8 +638,10 @@ class InputNumber extends Component {
 }
 
 class InputNumberMod extends InputNumber {
-  constructor(hookId) {
-    super(hookId, false);
+  constructor(hookId, classes = "", attributes = []) {
+    super(hookId,classes, attributes);
+    this.classes = classes;
+    this.attributes = attributes;
     // this.render(); // not nessesary it inherits form InputNumber
   }
   valueHandler(e) {
@@ -992,10 +996,8 @@ class Generator {
     // new OperationBtnInput(mainInputId, "+", "smaller hide");
     new OperationBtnInput(mainInputId, !!historyInput ? historyInput.modOperator : "+", !!historyInput ? "smaller" : "smaller hide");
 
-    //modified inputNumber with value from SliderMod manipulation.
-    new InputNumber(mainInputId, "modified hide", [
-      { name: "placeholder", value: "new" },
-    ]);
+    //modified inputNumber with value from SliderMod manipulation. readonly 
+    new InputNumber(mainInputId, !!historyInput ? "modified" : "modified hide", !!historyInput ? [{name: "value", value: historyInput.modValue}, {name: "readonly", value: ""}] : "");
     //add feature which modified value.
 
     //modified inputNumber with value from SliderMod manipulation.
@@ -1008,7 +1010,7 @@ class Generator {
 
     new SliderMenuOpen(smallContId, [{ name: "id", value: sliderMenuOpen }]);
     //Slider mod open
-    new SliderMod(smallContId, [{ name: "id", value: sliderMod }]);
+    new SliderMod(smallContId, [{ name: "id", value: sliderMod }], !!historyInput ? historyInput.modValue : "");
 
     //Slider Switch open
     new SliderSwitch(smallContId, [{ name: "id", value: sliderSwitch }]);
