@@ -175,10 +175,14 @@ class ModalOptions extends Component {
       }
 
       const trashForm = document.createElement("form");
+      const trashFooter = document.createElement("footer");
       this.elem.append(trashForm);
+      this.elem.append(trashFooter);
       // trashForm.id="trashForm"
       trashForm.id = "trashForm";
+      trashFooter.id = "trashFooter";
 
+      // Trash Items generator
       if (Generator.trash.length > 0) {
         for (let trashItem of Generator.trash) {
           // console.log("To trash , ",trashItem);
@@ -195,9 +199,9 @@ class ModalOptions extends Component {
         message.textContent = "Empty Trash";
         trashForm.append(message);
       }
-
+      // Permanent Remove
       const permanentRemove = new Button(
-        trashForm.id,
+        trashFooter.id,
         "uniBtn",
         "Permanently Remove",
         (e) => {
@@ -209,7 +213,6 @@ class ModalOptions extends Component {
           console.log(liItems);
           const newArr = liItems.map((item, idx) => {
             if (item.children[0].checked === true) {
-              // to be continued
               return null;
             } else {
               return Generator.trash[idx];
@@ -228,10 +231,43 @@ class ModalOptions extends Component {
           e.preventDefault();
         }
       );
+      // RecoverBtn
+      const recoverBtn = new Button(trashFooter.id, "uniBtn", "Recover", () => {
+        const liItems = Array.from(trashForm.children).filter(
+          (child) => child.tagName == "LI"
+        );
+
+        // console.log(liItems);
+
+        const newArr = liItems.map((item, idx) => {
+          if (item.children[0].checked === true) {
+            let bufforItem = Generator.trash[idx];
+            console.log("Trash item ID : ", bufforItem.id);
+            bufforItem.id = "Input-cont-" + (+Generator.inputs[Generator.inputs.length-1].id.slice(11) + 1);
+            console.log("Recover Item ID : ", bufforItem.id );
+            Generator.addInput(bufforItem);
+            Generator.inputs.push(bufforItem);
+            Generator.inputsSave();
+            // supose to change id couse will interupt with new one.
+
+            return null;
+          } else {
+            return Generator.trash[idx];
+          }
+
+          //  return item.children[0].checked === true ? null : Generator.trash[idx]
+        });
+
+        const newArrFiltered = newArr.filter((el) =>
+          el != null ? true : false
+        );
+        Generator.trash = newArrFiltered;
+        Generator.trashSave();
+
+      });
+
+      // THEME BUTTON
     });
-
-    // THEME BUTTON
-
     const themeBtn = new Button(modalHeader.id, "uniBtn", "Theme", (e) => {
       const root = document.documentElement;
 
@@ -372,13 +408,14 @@ class SliderMod extends Component {
       ).modOperator;
     }
     // show value in modified input handler
-
   }
 
   render() {
     const elem = this.createComp("div", "slider-mod hide", this.attr);
     const smallOprBtn = new OperationBtnInput(elem.id, "+", "smaller");
-    const modInput = new InputNumberMod(elem.id,"",[{name: "value", value: this.inputValue}]);
+    const modInput = new InputNumberMod(elem.id, "", [
+      { name: "value", value: this.inputValue },
+    ]);
     const operatsMod = new OperatorModalSmall(
       elem.id,
       [
@@ -408,13 +445,13 @@ class SliderSwitch extends Component {
     this.turnOn;
   }
 
-  turnOn(ancestor){
+  turnOn(ancestor) {
     ancestor.children[1].children[1].classList.remove("off");
     ancestor.classList.remove("disabled");
-        Generator.calculateResults();
+    Generator.calculateResults();
   }
 
-  turnOff(ancestor){
+  turnOff(ancestor) {
     ancestor.children[1].children[1].classList.add("off");
     ancestor.classList.add("disabled");
     Generator.calculateResults();
@@ -442,19 +479,25 @@ class SliderSwitch extends Component {
       "switch-menu-btn switch indicator"
     );
     switchBtnOn.elem.innerHTML = "ON";
-    switchBtnOn.elem.addEventListener("click", this.slideMenuHandler.bind(this));
+    switchBtnOn.elem.addEventListener(
+      "click",
+      this.slideMenuHandler.bind(this)
+    );
     const switchBtnOff = new SwitchInd(
       elem.id,
       "switch-menu-btn switch off turnoff"
     );
     switchBtnOff.elem.innerHTML = "OFF";
-    switchBtnOff.elem.addEventListener("click", this.slideMenuHandler.bind(this));
+    switchBtnOff.elem.addEventListener(
+      "click",
+      this.slideMenuHandler.bind(this)
+    );
     const ancestorCont = elem.closest(".input-container");
     // to be continued...
     if (!!this.remoteSet) {
       this.turnOn(ancestorCont);
     } else {
-      this.turnOff(ancestorCont)
+      this.turnOff(ancestorCont);
     }
   }
 }
@@ -655,7 +698,7 @@ class InputNumber extends Component {
 
 class InputNumberMod extends InputNumber {
   constructor(hookId, classes = "", attributes = []) {
-    super(hookId,classes, attributes);
+    super(hookId, classes, attributes);
     this.classes = classes;
     this.attributes = attributes;
     // this.render(); // not nessesary it inherits form InputNumber
@@ -941,7 +984,7 @@ class Generator {
     !!historyInput
       ? console.log(historyInput.id[historyInput.id.length - 1])
       : null;
-    
+
     let id;
     if (!!historyInput) {
       id = +historyInput.id[historyInput.id.length - 1];
@@ -999,10 +1042,25 @@ class Generator {
     );
 
     // new OperationBtnInput(mainInputId, "+", "smaller hide");
-    new OperationBtnInput(mainInputId, !!historyInput ? historyInput.modOperator : "+", !!historyInput && historyInput.modValue != 0 ? "smaller" : "smaller hide");
+    new OperationBtnInput(
+      mainInputId,
+      !!historyInput ? historyInput.modOperator : "+",
+      !!historyInput && historyInput.modValue != 0 ? "smaller" : "smaller hide"
+    );
 
-    //modified inputNumber with value from SliderMod manipulation. readonly 
-    new InputNumber(mainInputId, !!historyInput && historyInput.modValue != 0 ? "modified" : "modified hide", !!historyInput ? [{name: "value", value: historyInput.modValue}, {name: "readonly", value: ""}] : [{name: "readonly", value: ""}]);
+    //modified inputNumber with value from SliderMod manipulation. readonly
+    new InputNumber(
+      mainInputId,
+      !!historyInput && historyInput.modValue != 0
+        ? "modified"
+        : "modified hide",
+      !!historyInput
+        ? [
+            { name: "value", value: historyInput.modValue },
+            { name: "readonly", value: "" },
+          ]
+        : [{ name: "readonly", value: "" }]
+    );
 
     //==============================
 
@@ -1010,10 +1068,18 @@ class Generator {
 
     new SliderMenuOpen(smallContId, [{ name: "id", value: sliderMenuOpen }]);
     //Slider mod open
-    new SliderMod(smallContId, [{ name: "id", value: sliderMod }], !!historyInput ? +historyInput.modValue : 0);
+    new SliderMod(
+      smallContId,
+      [{ name: "id", value: sliderMod }],
+      !!historyInput ? +historyInput.modValue : 0
+    );
 
     //Slider Switch open
-    new SliderSwitch(smallContId, [{ name: "id", value: sliderSwitch }],!!historyInput ? historyInput.switcher : true);
+    new SliderSwitch(
+      smallContId,
+      [{ name: "id", value: sliderSwitch }],
+      !!historyInput ? historyInput.switcher : true
+    );
     //Slider delete open
     new SliderDelete(smallContId, [{ name: "id", value: sliderDelete }]);
   }

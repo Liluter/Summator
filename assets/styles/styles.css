@@ -178,6 +178,17 @@ ul#colorList {
   gap: var(--gap);
 }
 
+#trashForm p {
+width : fit-content;
+padding: 0 8px;
+}
+
+#trashFooter {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
 input[type='checkbox'] {
   width: 18px;
   height: 18px;
