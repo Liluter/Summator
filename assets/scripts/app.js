@@ -189,8 +189,8 @@ class ModalOptions extends Component {
 			// Trash Items generator
 			if (Generator.trash.length > 0) {
 				for (let trashItem of Generator.trash) {
-					// console.log("To trash , ",trashItem);
-					const trashElement = new TrashItem(
+					console.log("Trash Item ... : ", trashItem);
+					new TrashItem(
 						trashForm.id,
 						"trash-item",
 						trashItem.mainVal,
@@ -244,12 +244,18 @@ class ModalOptions extends Component {
 				// console.log(liItems);
 
 				const newArr = liItems.map((item, idx) => {
+					console.log(item);
 					if (item.children[0].checked === true) {
 						let bufforItem = Generator.trash[idx];
 						console.log("Trash item ID : ", bufforItem.id);
-						bufforItem.id =
-							"Input-cont-" +
-							(+Generator.inputs[Generator.inputs.length - 1].id.slice(11) + 1);
+						if (Generator.inputs.length > 0) {
+							bufforItem.id =
+								"Input-cont-" +
+								(+Generator.inputs[Generator.inputs.length - 1].id.slice(11) +
+									1);
+						} else {
+							bufforItem.id = "Input-cont-" + 1;
+						}
 						console.log("Recover Item ID : ", bufforItem.id);
 						Generator.addInput(bufforItem);
 						Generator.inputs.push(bufforItem);
@@ -688,8 +694,8 @@ class InputNumber extends Component {
 	}
 
 	render() {
-		console.log("this.attribures", ...this.attributes);
-		console.log("InputNumber elem: ", this.value);
+		// console.log("this.attribures", ...this.attributes);
+		// console.log("InputNumber elem: ", this.value);
 		this.elem = this.createComp("input", "input-num " + this.classes, [
 			// { name: "placeholder", value: "set" },
 			{ name: "inputmode", value: "numeric" },
@@ -809,14 +815,14 @@ class Generator {
 	// TRASH SAVE FEATURE -->
 	static inputsSave() {
 		localStorage.setItem("inputs", JSON.stringify(this.inputs));
-		console.log("GENERATOR - INPUTS SAVED in LoacalStorageAPI ");
+		// console.log("GENERATOR - INPUTS SAVED in LoacalStorageAPI ");
 	}
 	static inputsLoad() {
 		const newInputs = JSON.parse(localStorage.getItem("inputs"));
 		// const newActualInputs = localStorage.getItem("inputs");
 		!!localStorage.getItem("inputs") ? (Generator.inputs = newInputs) : null;
 
-		console.log("GENERATOR - Inputs LOADED successfully");
+		// console.log("GENERATOR - Inputs LOADED successfully");
 	}
 
 	static trashSave() {
@@ -826,7 +832,7 @@ class Generator {
 	static trashLoad() {
 		const newTrash = JSON.parse(localStorage.getItem("trash"));
 		!!localStorage.getItem("trash") ? (Generator.trash = newTrash) : null;
-		console.log("GENERATOR - TRASH LOADED in LoacalStorageAPI ");
+		// console.log("GENERATOR - TRASH LOADED in LoacalStorageAPI ");
 	}
 
 	// <-- TRASH SAVE FEATURE
@@ -836,7 +842,7 @@ class Generator {
 	// Rebuild class components in Generator.addInput method to have abilyty to render from params and default params. Not just like that.
 	static loadHistory() {
 		Generator.inputsLoad();
-		console.log("GENERATOR - History load");
+		// console.log("GENERATOR - History load");
 		// this.addInput(Generator.inputs[0])
 		!!Generator.inputs.length
 			? Generator.inputs.forEach((elem) => {
@@ -896,7 +902,7 @@ class Generator {
 
 		Generator.themeApply();
 
-		console.log("GENERATOR - Theme loadad successfully");
+		// console.log("GENERATOR - Theme loadad successfully");
 	}
 
 	static themeApply(passedTheme) {
@@ -911,7 +917,7 @@ class Generator {
 			)
 		);
 
-		console.log(`THEME "${this.actualTheme}" APPLIED`);
+		// console.log(`THEME "${this.actualTheme}" APPLIED`);
 	}
 	//  <--THEME CHANGE FEATURE
 
@@ -986,9 +992,9 @@ class Generator {
 	static addInput(historyInput, toTrash = false) {
 		// Create Input-main element for now without params, will change.
 		console.log("historyInput : ", historyInput);
-		!!historyInput
-			? console.log(historyInput.id[historyInput.id.length - 1])
-			: null;
+		// !!historyInput
+		// 	? console.log(historyInput.id[historyInput.id.length - 1])
+		// 	: null;
 
 		let id;
 		if (!toTrash) {
@@ -1000,13 +1006,14 @@ class Generator {
 				id = 1;
 			}
 		} else {
-			if (!!historyInput) {
-				id = +historyInput.id[historyInput.id.length - 1];
-			} else if (Generator.trash.length) {
-				id = +Generator.trash[Generator.trash.length - 1].id.slice(11) + 1;
-			} else {
-				id = 1;
-			}
+			// if (historyInput) {
+			// 	id = +historyInput.id[historyInput.id.length - 1];
+			// } else if (Generator.trash.length) {
+			// 	id = +Generator.trash[Generator.trash.length - 1].id.slice(11) + 1;
+			// } else {
+			// 	id = 1;
+			// }
+			id = document.getElementById("trashForm").children.length;
 		}
 		//(+Generator.inputs[Generator.inputs.length-1].id.slice(11)+1)
 		// change when historyInput exist and new one is create
@@ -1034,12 +1041,12 @@ class Generator {
 			new InputItem("container", "input-container", [
 				{ name: "id", value: smallContId },
 			]);
-			console.log("Test:", Generator.inputs[id - 1]);
+			// console.log("Test:", Generator.inputs[id - 1]);
 		} else {
-			console.log(
-				"last child :",
-				document.getElementById("trashForm").lastChild
-			);
+			// console.log(
+			// 	"last child :",
+			// 	document.getElementById("trashForm").lastChild
+			// );
 			new InputItem(
 				`${document.getElementById("trashForm").lastChild.id}`,
 				"input-container",
@@ -1189,7 +1196,7 @@ class App {
 			// console.log(optionsBtn[1]);
 			// console.log(e.target == optionsBtn[1]);
 			// console.log("Only when closing options-modal");
-			console.log("turn on ");
+			// console.log("turn on ");
 		} else if (
 			!optionsModal.contains(e.target) &&
 			e.target == optionsBtn[1] &&
