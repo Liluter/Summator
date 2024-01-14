@@ -68,3 +68,5 @@ SAD-23
 
 - New ideas during sprint : 
     - Reset all themes to default values.
+
+- Refactor Trash ( form style features)
