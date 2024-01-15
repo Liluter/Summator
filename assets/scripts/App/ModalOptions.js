@@ -3,14 +3,28 @@ import { Button } from "./Button.js";
 import { Generator } from "./Generator.js";
 import { TrashItem } from "./TrashItem.js";
 import { ThemeItem } from "./ThemeItem.js";
+import { disappear } from "../utils/Disappear.js";
 
 export class ModalOptions extends Component {
 	constructor(hookId) {
 		super(hookId, false);
 		this.elem;
 		this.render();
+		this.disappear = disappear;
 	}
 
+	cleanView() {
+		while (this.elem.children[1]) {
+			this.elem.children[1].remove();
+		}
+	}
+
+	// disappear(ele) {
+	// 	ele.classList.add("disappera");
+	// 	const timeout = setTimeout(() => {
+	// 		ele.remove();
+	// 	}, 200);
+	// }
 	// test() {
 	//   console.log('Testing digital audio... :)')
 	// }
@@ -23,9 +37,7 @@ export class ModalOptions extends Component {
 
 		this.elem.addEventListener("closeOptionModal", (e) => {
 			// console.log("MODAL LOAD", e.detail);
-			while (this.elem.children[1]) {
-				this.elem.children[1].remove();
-			}
+			this.cleanView();
 		});
 
 		const modalHeader = document.createElement("header");
@@ -35,9 +47,7 @@ export class ModalOptions extends Component {
 		// TRASH BUTTON
 
 		const trashBtn = new Button(modalHeader.id, "uniBtn", "Trash", (e) => {
-			while (this.elem.children[1]) {
-				this.elem.children[1].remove();
-			}
+			this.cleanView();
 
 			const trashForm = document.createElement("form");
 			const trashFooter = document.createElement("footer");
@@ -78,6 +88,7 @@ export class ModalOptions extends Component {
 					console.log(liItems);
 					const newArr = liItems.map((item, idx) => {
 						if (item.children[0].checked === true) {
+							this.disappear(item);
 							return null;
 						} else {
 							return Generator.trash[idx];
@@ -123,6 +134,8 @@ export class ModalOptions extends Component {
 						Generator.inputsSave();
 						// supose to change id couse will interupt with new one.
 
+						this.disappear(item);
+
 						return null;
 					} else {
 						return Generator.trash[idx];
@@ -143,9 +156,7 @@ export class ModalOptions extends Component {
 		const themeBtn = new Button(modalHeader.id, "uniBtn", "Theme", (e) => {
 			const root = document.documentElement;
 
-			while (this.elem.children[1]) {
-				this.elem.children[1].remove();
-			}
+			this.cleanView();
 
 			const form = document.createElement("form");
 			this.elem.append(form);
