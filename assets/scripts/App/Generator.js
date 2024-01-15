@@ -195,7 +195,7 @@ export class Generator {
 
 	static addInput(historyInput, toTrash = false) {
 		// Create Input-main element for now without params, will change.
-		console.log("historyInput : ", historyInput);
+		// console.log("historyInput : ", historyInput);
 		// !!historyInput
 		// 	? console.log(historyInput.id[historyInput.id.length - 1])
 		// 	: null;

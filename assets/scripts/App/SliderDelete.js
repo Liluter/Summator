@@ -14,6 +14,7 @@ export class SliderDelete extends Component {
 		switch (e.target.textContent) {
 			case "DELETE":
 				ancestorCont.children[1].children[2].classList.remove("off");
+				console.log("ANCESTOR", ancestorCont);
 				let counter = 0;
 				const myMethod = () => {
 					ancestorCont.children[1].children[2].classList.toggle("off");
@@ -22,11 +23,11 @@ export class SliderDelete extends Component {
 						clearInterval(blinker);
 						Generator.inputRemover(ancestorCont.id);
 						ancestorCont.classList.add("removing");
-						setTimeout(() => ancestorCont.remove(), 500);
+						setTimeout(() => ancestorCont.remove(), 50);
 						Generator.calculateResults();
 					}
 				};
-				const blinker = setInterval(myMethod, 600);
+				const blinker = setInterval(myMethod, 300);
 				break;
 			case "KEEP":
 				ancestorCont.children[1].children[2].classList.add("off");

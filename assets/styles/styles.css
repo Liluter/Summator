@@ -189,7 +189,24 @@ ul#colorList {
 .input-container {
   width: 100%;
   position: relative;
-  transition: transform 1s ease-in;
+  transition: all 200ms ease;
+}
+
+.input-container.disabled {
+  filter: grayscale(75%) opacity(100%);
+}
+
+.input-container.removing {
+  /* transform: rotate(360deg) scale(0); */
+  /* transform: scaleX(0); */
+  /* animation: 200ms normal closingInput; */
+  transform: scale(0);
+}
+
+
+/* here */
+.input-container.appear {
+transform: scale(0);
 }
 
 /* here */
@@ -305,25 +322,15 @@ input[type='checkbox'] {
 
 
 
-.input-container.disabled {
-  filter: grayscale(75%) opacity(100%);
-}
 
-.input-container.removing {
-  /* transform: rotate(360deg) scale(0); */
-  /* transform: scaleX(0); */
-  animation: 500ms normal closingInput;
-
-}
-
-@keyframes closingInput {
+/* @keyframes closingInput {
   from {
     transform: scale(1);
   }
   to {
     transform: scale(0);
   }
-}
+} */
 
 .container {
   display: flex;

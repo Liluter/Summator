@@ -78,9 +78,9 @@ export class ModalOptions extends Component {
 			const permanentRemove = new Button(
 				trashFooter.id,
 				"uniBtn",
-				"Permanently Remove",
+				"Remove",
 				(e) => {
-					console.log("Permanently Remove");
+					console.log("Remove");
 					console.log("children", trashForm.children);
 					const liItems = Array.from(trashForm.children).filter(
 						(child) => child.tagName == "LI"

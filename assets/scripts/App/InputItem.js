@@ -1,4 +1,5 @@
 import { Component } from "./Component.js";
+import { appear } from "../utils/Appear.js";
 
 export class InputItem extends Component {
 	constructor(hookId, classes, attr) {
@@ -11,5 +12,8 @@ export class InputItem extends Component {
 
 	render() {
 		this.elem = this.createComp("div", this.classes, this.attr);
+		if (this.hookId === "container") {
+			appear(this.elem);
+		}
 	}
 }
