@@ -31,7 +31,7 @@ export class Generator {
 
 	static trashSave() {
 		localStorage.setItem("trash", JSON.stringify(this.trash));
-		console.log("GENERATOR - TRASH SAVED in LoacalStorageAPI ");
+		// console.log("GENERATOR - TRASH SAVED in LoacalStorageAPI ");
 	}
 	static trashLoad() {
 		const newTrash = JSON.parse(localStorage.getItem("trash"));

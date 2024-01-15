@@ -59,13 +59,16 @@ export class ModalOptions extends Component {
 
 			// Trash Items generator
 			if (Generator.trash.length > 0) {
+				let counter = 1;
 				for (let trashItem of Generator.trash) {
-					console.log("Trash Item ... : ", trashItem);
+					console.log("Trash Item ... : ", trashItem, counter);
+
 					new TrashItem(
 						trashForm.id,
 						"trash-item",
 						trashItem.mainVal,
-						JSON.stringify(trashItem)
+						JSON.stringify(trashItem),
+						counter++
 					);
 				}
 			} else {

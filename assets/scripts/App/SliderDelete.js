@@ -23,7 +23,9 @@ export class SliderDelete extends Component {
 						clearInterval(blinker);
 						Generator.inputRemover(ancestorCont.id);
 						ancestorCont.classList.add("removing");
-						setTimeout(() => ancestorCont.remove(), 50);
+						setTimeout(() => {
+							ancestorCont.remove();
+						}, 50);
 						Generator.calculateResults();
 					}
 				};
