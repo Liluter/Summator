@@ -161,6 +161,7 @@ ul#colorList {
   background-color: var(--light-grey);
   border: var(--border-main);
   transition: all 200ms ease;
+  gap:4px;
 }
 
 .trash-item.disappera{
