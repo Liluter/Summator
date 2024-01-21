@@ -1,4 +1,5 @@
 import { OperatorModal } from "./OperatorModal.js";
+import { Generator } from "./Generator.js";
 
 export class OperatorModalSmall extends OperatorModal {
 	operatorHandler(e) {
