@@ -70,3 +70,10 @@ SAD-23
     - Reset all themes to default values.
 
 - Refactor Trash ( form style features)
+
+- After some style improvments.
+
+![App after Upgrade 2](./Images/upgrade2-0.png)
+![App after Upgrade 2](./Images/upgrade2-1.png)
+![App after Upgrade 2](./Images/upgrade2-2.png)
+![App after Upgrade 2](./Images/upgrade2-3.png)
