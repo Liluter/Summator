@@ -514,10 +514,11 @@ input[type='checkbox'] {
  filter: brightness(85%);
 }
 .on {
-  opacity: 1;
+  /* opacity: 1; */
+  filter: saturate(200%) brightness(150%);
 }
 .switch-indicator:hover {
-  opacity: 0.7;
+  opacity: 0.9;
   filter: saturate(200%) brightness(150%);
   /* scale: 1; */
 }

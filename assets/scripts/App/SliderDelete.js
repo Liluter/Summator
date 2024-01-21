@@ -14,10 +14,12 @@ export class SliderDelete extends Component {
 		switch (e.target.textContent) {
 			case "DELETE":
 				ancestorCont.children[1].children[2].classList.remove("off");
+				ancestorCont.children[1].children[2].classList.add("on");
 				console.log("ANCESTOR", ancestorCont);
 				let counter = 0;
 				const myMethod = () => {
 					ancestorCont.children[1].children[2].classList.toggle("off");
+					ancestorCont.children[1].children[2].classList.toggle("on");
 					counter++;
 					if (counter === 5) {
 						clearInterval(blinker);
