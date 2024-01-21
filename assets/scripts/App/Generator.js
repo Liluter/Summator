@@ -81,10 +81,10 @@ export class Generator {
 	// };
 
 	static theme = {
-		default: ["#6adb35", "#FFC165", "#e2e0da", "#204a87"],
+		default: ["#ebe2c2", "#9b9892", "#ffffff", "#204a87"],
 		option: ["#edd400", "#e45555", "#d3d7cf", "#ce5c00"],
 		custom: ["#d2b974", "#c54d26", "#8d6553", "#ab5b30"],
-		contrast: ["#3d18c1", "#d15f96", "#592e61", "#b273cf"],
+		contrast: ["#16d0ba", "#0e47b9", "#2e2e2e", "#413649"],
 	};
 
 	static actualTheme = "default";

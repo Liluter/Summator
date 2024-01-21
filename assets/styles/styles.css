@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Signika:wght@400;600&display=swap');
 
 :root {
-  --light-backG: #fbfbfb;
+  --light-backG: #cbcbcb;
   --dark-grey-text: #3d3d3d;
   --light-grey: #ebebeb;
   --input-main-stroke: #00000084;
-  --secret-menu-bckg: #ebebeb;
+  /* --secret-menu-bckg: #ebebeb; */
   --secret-menu-stroke: #b5b5b5;
   --border-prime: 2px solid #ababab;
   --border-main: 1px solid var(--input-main-stroke);
@@ -61,9 +61,13 @@
     inset 1px 0px 2px rgba(0, 0, 0, 0.4),
     inset -1px 0px 2px rgba(0, 0, 0, 0.4);
   --input-modals:
-    inset 0 0 1px 2px rgba(0, 0, 0, 0.5),
+    inset 0 0 1px 2px rgba(0, 0, 0, 0.3),
     inset -1px 2px 2px 1px rgba(255, 255, 255, 0.481),
     inset 1px -2px 2px 1px rgba(0, 0, 0, 0.3);
+  --input-indicators:
+    inset 0 0 2px 2px rgba(0, 0, 0, 0.1),
+    inset -1px 2px 2px 2px rgba(255, 255, 255, 0.1),
+    inset 1px -2px 2px 2px rgba(0, 0, 0, 0.1);
   --input-number: inset 0px -3px 10px rgba(0, 0, 0, 0.05),
     inset 1px 3px 9px rgba(0, 0, 0, 0.3),
 
@@ -108,6 +112,7 @@ html {
   border-radius: 0px 0px var(--radius) var(--radius);
   border: var(--border-main);
   background: var(--input-main-bckg);
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.15)5% ,rgba(255,255,255,0.1) 60% , rgba(0,0,0,0.4)90%);
   padding: 6px;
   gap: 6px;
   z-index: 10;
@@ -142,6 +147,7 @@ ul#colorList {
   border: var(--border-main);
   background: var(--light-grey);
   padding: 0 14px 0 14px;
+  box-shadow: var(--input-modals);
 }
 
 
@@ -157,6 +163,8 @@ ul#colorList {
   width: fit-content;
   height: 40px;
   background: var(--header-btn-backG);
+
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.2)0% ,rgba(255,255,255,0.2) 30% , rgba(0,0,0,0.1));
   color: var(--dark-grey-text);
   font-family: 'Signika';
   font-size: 18px;
@@ -481,9 +489,12 @@ input[type='checkbox'] {
   z-index: 1;
   border-radius: 0px var(--radius) var(--radius) 0px;
   border: solid 1px var(--secret-menu-stroke);
-  background: var(--secret-menu-bckg);
+  background: var(--input-main-bckg);
+  background-image: linear-gradient(to bottom , rgba(0,0,0,0.3)0% ,rgba(255,255,255,0.3) 60% , rgba(0,0,0,0.2));
+
   gap: 3px;
   transition: all 0.5s ease;
+  box-shadow: var(--input-modals);
 }
 
 .switch-indicator {
@@ -491,22 +502,24 @@ input[type='checkbox'] {
   height: 15px;
   flex-shrink: 0;
   border-radius: 15px;
-  border: 1px solid var(--secret-menu-stroke);
   background: var(--light-grey);
+  border: 1px solid rgba(0, 0, 0, 0.618);
   list-style: none;
   margin-right: 6px;
   transition: all .2s ease;
+  box-shadow: var(--input-indicators);
 }
 
 .off {
-  opacity: 0.6;
+ filter: brightness(85%);
 }
 .on {
   opacity: 1;
 }
 .switch-indicator:hover {
-  opacity: 0.5;
-  scale: 1.1;
+  opacity: 0.7;
+  filter: saturate(200%) brightness(150%);
+  /* scale: 1; */
 }
 .slider-menu-open {
   display: flex;
@@ -521,7 +534,7 @@ input[type='checkbox'] {
   z-index: 2;
   border-radius: var(--radius);
   border: solid 1px var(--secret-menu-stroke);
-  background: var(--secret-menu-bckg);
+  background: var(--input-main-bckg);
   gap: 10px;
   transition: all 0.5s ease;
   box-shadow: var(--input-texture);
@@ -560,7 +573,7 @@ input[type='checkbox'] {
   z-index: 2;
   border-radius: var(--radius);
   border: solid 1px var(--secret-menu-stroke);
-  background: var(--secret-menu-bckg);
+  background: var(--input-main-bckg);
   gap: 6px;
   transition: all 0.5s ease;
   padding: 0 6px;
@@ -606,7 +619,7 @@ input[type='checkbox'] {
   z-index: 2;
   border-radius: var(--radius);
   border: solid 1px var(--secret-menu-stroke);
-  background: var(--secret-menu-bckg);
+  background: var(--input-main-bckg);
   gap: 6px;
   transition: all 0.5s ease;
   padding: 0 6px;
