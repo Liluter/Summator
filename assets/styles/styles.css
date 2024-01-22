@@ -101,7 +101,7 @@ html {
   justify-content: start;
   align-items: center;
   width: 100vw;
-  height: min-content;
+  height: 100vh;
   min-height: 100vh;
   background-color: var(--light-backG);
   gap: 24px;
