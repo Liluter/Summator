@@ -58,10 +58,14 @@ export function addInput(historyInput, toTrash = false) {
 	]);
 	//input-main children
 	//==============================
-	new OperationBtnInput(
+	const oprBtnInput = new OperationBtnInput(
 		mainInputId,
 		!!historyInput ? historyInput.mainOperator : "+"
 	);
+	oprBtnInput.elem.addEventListener("click", (e) => {
+		e.target.nextSibling.classList.toggle("hide");
+	});
+
 	new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
 
 	new InputNumber(

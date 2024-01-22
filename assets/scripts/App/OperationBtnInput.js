@@ -6,8 +6,8 @@ export class OperationBtnInput extends Component {
 		this.operator = operator;
 		this.classes = classes;
 		this.attr = attr;
-		this.render();
 		this.elem;
+		this.render();
 	}
 
 	render() {
@@ -17,5 +17,8 @@ export class OperationBtnInput extends Component {
 			this.attr
 		);
 		this.elem.innerHTML = this.operator;
+		// this.elem.addEventListener("click", (e) => {
+		// 	e.target.nextSibling.classList.toggle("hide");
+		// });
 	}
 }
