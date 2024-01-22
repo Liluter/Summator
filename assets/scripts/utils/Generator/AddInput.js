@@ -11,13 +11,9 @@ import { SliderMenuOpen } from "../../App/SliderMenuOpen.js";
 import { Generator } from "../../App/Generator.js";
 
 export function addInput(historyInput, toTrash = false) {
-	// Create Input-main element for now without params, will change.
-	// console.log("historyInput : ", historyInput);
-	// !!historyInput
-	// 	? console.log(historyInput.id[historyInput.id.length - 1])
-	// 	: null;
 	let id;
 	if (!toTrash) {
+		// When create not in trash
 		if (!!historyInput) {
 			id = +historyInput.id[historyInput.id.length - 1];
 		} else if (Generator.inputs.length) {
@@ -26,17 +22,9 @@ export function addInput(historyInput, toTrash = false) {
 			id = 1;
 		}
 	} else {
-		// if (historyInput) {
-		// 	id = +historyInput.id[historyInput.id.length - 1];
-		// } else if (Generator.trash.length) {
-		// 	id = +Generator.trash[Generator.trash.length - 1].id.slice(11) + 1;
-		// } else {
-		// 	id = 1;
-		// }
+		// When create into trash
 		id = document.getElementById("trashForm").children.length;
 	}
-	//(+Generator.inputs[Generator.inputs.length-1].id.slice(11)+1)
-	// change when historyInput exist and new one is create
 
 	//====================================
 	const smallContId = `Input-cont-${!toTrash ? "" : "trash-"}` + id;
@@ -50,23 +38,15 @@ export function addInput(historyInput, toTrash = false) {
 	const sliderDelete = `SliderDelete-${!toTrash ? "" : "trash-"}` + id;
 	const operModId = `OperMod-${!toTrash ? "" : "trash-"}` + id;
 
-	// this.inputs.push(new Input(smallContId));
 	if (!toTrash) {
 		!!historyInput ? null : this.inputs.push(new Input(smallContId));
 	}
 
-	// was mainInputId
-	// Input Item container creation with current id
 	if (!toTrash) {
 		new InputItem("container", "input-container", [
 			{ name: "id", value: smallContId },
 		]);
-		// console.log("Test:", Generator.inputs[id - 1]);
 	} else {
-		// console.log(
-		// 	"last child :",
-		// 	document.getElementById("trashForm").lastChild
-		// );
 		new InputItem(
 			`${document.getElementById("trashForm").lastChild.id}`,
 			"input-container",
