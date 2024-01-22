@@ -13,7 +13,6 @@ import { Generator } from "../../App/Generator.js";
 export function addInput(historyInput, toTrash = false) {
 	let id;
 	if (!toTrash) {
-		// When create not in trash
 		if (!!historyInput) {
 			id = +historyInput.id.slice(11);
 		} else if (Generator.inputs.length) {
@@ -22,7 +21,6 @@ export function addInput(historyInput, toTrash = false) {
 			id = 1;
 		}
 	} else {
-		// When create into trash
 		id = document.getElementById("trashForm").children.length;
 	}
 
@@ -40,24 +38,19 @@ export function addInput(historyInput, toTrash = false) {
 	}
 
 	if (!toTrash) {
-		// Create in main App container
 		new InputItem("main-container", "input-container", [
 			{ name: "id", value: smallContId },
 		]);
 	} else {
-		// create in trash
 		const trashForm = document.getElementById("trashForm");
 		new InputItem(`${trashForm.lastChild.id}`, "input-container", [
 			{ name: "id", value: smallContId },
 		]);
 	}
-	//==============================
-	// input-container childrens
 	new InputItem(smallContId, "input-main", [
 		{ name: "id", value: mainInputId },
 	]);
-	//input-main children
-	//==============================
+
 	const oprBtnInput = new OperationBtnInput(
 		mainInputId,
 		!!historyInput ? historyInput.mainOperator : "+"
@@ -76,14 +69,12 @@ export function addInput(historyInput, toTrash = false) {
 			: [{ name: "value", value: 0 }]
 	);
 
-	// new OperationBtnInput(mainInputId, "+", "smaller hide");
 	new OperationBtnInput(
 		mainInputId,
 		!!historyInput ? historyInput.modOperator : "+",
 		!!historyInput && historyInput.modValue != 0 ? "smaller" : "smaller hide"
 	);
 
-	//modified inputNumber with value from SliderMod manipulation. readonly
 	new InputNumber(
 		mainInputId,
 		!!historyInput && historyInput.modValue != 0 ? "modified" : "modified hide",
@@ -95,10 +86,7 @@ export function addInput(historyInput, toTrash = false) {
 			: [{ name: "readonly", value: "" }]
 	);
 
-	//==============================
-
 	new SliderMenuClosed(smallContId, [{ name: "id", value: sliderMenuId }]);
-
 	new SliderMenuOpen(smallContId, [{ name: "id", value: sliderMenuOpen }]);
 	new SliderMod(
 		smallContId,
@@ -110,6 +98,5 @@ export function addInput(historyInput, toTrash = false) {
 		[{ name: "id", value: sliderSwitch }],
 		!!historyInput ? historyInput.switcher : true
 	);
-	//Slider delete open
 	new SliderDelete(smallContId, [{ name: "id", value: sliderDelete }]);
 }
