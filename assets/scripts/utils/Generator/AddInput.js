@@ -22,16 +22,12 @@ export function addInput(historyInput, toTrash = false) {
 			id = 1;
 		}
 	} else {
-		console.log("555");
 		// When create into trash
 		id = document.getElementById("trashForm").children.length;
 	}
 
-	//====================================
 	const smallContId = `Input-cont-${!toTrash ? "" : "trash-"}` + id;
-	//====================================
 	const mainInputId = `InputMain-${!toTrash ? "" : "trash-"}` + id;
-
 	const sliderMenuId = `SliderMenu-${!toTrash ? "" : "trash-"}` + id;
 	const sliderMenuOpen = `SliderMenuOpen-${!toTrash ? "" : "trash-"}` + id;
 	const sliderMod = `SliderMod-${!toTrash ? "" : "trash-"}` + id;
@@ -44,15 +40,16 @@ export function addInput(historyInput, toTrash = false) {
 	}
 
 	if (!toTrash) {
-		new InputItem("container", "input-container", [
+		// Create in main App container
+		new InputItem("main-container", "input-container", [
 			{ name: "id", value: smallContId },
 		]);
 	} else {
-		new InputItem(
-			`${document.getElementById("trashForm").lastChild.id}`,
-			"input-container",
-			[{ name: "id", value: smallContId }]
-		);
+		// create in trash
+		const trashForm = document.getElementById("trashForm");
+		new InputItem(`${trashForm.lastChild.id}`, "input-container", [
+			{ name: "id", value: smallContId },
+		]);
 	}
 	//==============================
 	// input-container childrens
