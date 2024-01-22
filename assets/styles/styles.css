@@ -537,7 +537,6 @@ input[inputmode='numeric']::selection{
 .switch-indicator:hover {
   opacity: 0.9;
   filter: saturate(200%) brightness(150%);
-
   /* scale: 1; */
 }
 .switch-indicator.mod:hover {
