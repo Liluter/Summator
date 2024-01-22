@@ -15,13 +15,14 @@ export function addInput(historyInput, toTrash = false) {
 	if (!toTrash) {
 		// When create not in trash
 		if (!!historyInput) {
-			id = +historyInput.id[historyInput.id.length - 1];
+			id = +historyInput.id.slice(11);
 		} else if (Generator.inputs.length) {
-			id = +Generator.inputs[Generator.inputs.length - 1].id.slice(11) + 1;
+			id = Generator.inputs.length + 1;
 		} else {
 			id = 1;
 		}
 	} else {
+		console.log("555");
 		// When create into trash
 		id = document.getElementById("trashForm").children.length;
 	}
