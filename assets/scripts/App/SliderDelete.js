@@ -15,7 +15,6 @@ export class SliderDelete extends Component {
 			case "DELETE":
 				ancestorCont.children[1].children[2].classList.remove("off");
 				ancestorCont.children[1].children[2].classList.add("on");
-				console.log("ANCESTOR", ancestorCont);
 				let counter = 0;
 				const myMethod = () => {
 					ancestorCont.children[1].children[2].classList.toggle("off");
