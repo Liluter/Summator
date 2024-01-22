@@ -2,10 +2,10 @@ import { Component } from "./Component.js";
 import { SwitchInd } from "./SwitchInd.js";
 
 export class SliderMenuOpen extends Component {
-	list = ["mod", "switch", "delete"];
 	constructor(hookId, attr) {
 		super(hookId, false);
 		this.attr = attr;
+		this.list = ["mod", "switch", "delete"];
 		this.elem;
 		this.render();
 	}
