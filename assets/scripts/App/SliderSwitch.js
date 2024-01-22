@@ -44,7 +44,7 @@ export class SliderSwitch extends Component {
 			elem.id,
 			"switch-menu-btn switch indicator"
 		);
-		switchBtnOn.elem.innerHTML = "ON";
+		switchBtnOn.elem.textContent = "ON";
 		switchBtnOn.elem.addEventListener(
 			"click",
 			this.slideMenuHandler.bind(this)
@@ -53,13 +53,12 @@ export class SliderSwitch extends Component {
 			elem.id,
 			"switch-menu-btn switch off turnoff"
 		);
-		switchBtnOff.elem.innerHTML = "OFF";
+		switchBtnOff.elem.textContent = "OFF";
 		switchBtnOff.elem.addEventListener(
 			"click",
 			this.slideMenuHandler.bind(this)
 		);
 		const ancestorCont = elem.closest(".input-container");
-		// to be continued...
 		if (!!this.remoteSet) {
 			this.turnOn(ancestorCont);
 		} else {

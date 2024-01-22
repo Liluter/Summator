@@ -100,14 +100,11 @@ export function addInput(historyInput, toTrash = false) {
 	new SliderMenuClosed(smallContId, [{ name: "id", value: sliderMenuId }]);
 
 	new SliderMenuOpen(smallContId, [{ name: "id", value: sliderMenuOpen }]);
-	//Slider mod open
 	new SliderMod(
 		smallContId,
 		[{ name: "id", value: sliderMod }],
 		!!historyInput ? +historyInput.modValue : 0
 	);
-
-	//Slider Switch open
 	new SliderSwitch(
 		smallContId,
 		[{ name: "id", value: sliderSwitch }],
