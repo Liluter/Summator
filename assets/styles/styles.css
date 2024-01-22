@@ -532,12 +532,28 @@ input[inputmode='numeric']::selection{
 .on {
   /* opacity: 1; */
   filter: saturate(200%) brightness(150%);
+  box-shadow:0 0 6px 4px rgba(219, 43, 43, 0.3);
 }
 .switch-indicator:hover {
   opacity: 0.9;
   filter: saturate(200%) brightness(150%);
+
   /* scale: 1; */
 }
+.switch-indicator.mod:hover {
+  box-shadow:0 0 6px 4px rgba(15, 65, 231, 0.3);
+}
+.switch-indicator.switch:hover {
+  box-shadow:
+  /* 0 0 10px 10px rgb(0, 0, 0,0.2), */
+  0 0 6px 4px rgba(255, 255, 0, 0.3)
+  ;
+}
+.switch-indicator.delete:hover {
+  box-shadow:0 0 6px 4px rgba(219, 43, 43, 0.3);
+}
+
+
 .slider-menu-open {
   display: flex;
   flex-direction: row;
