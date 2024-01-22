@@ -2,9 +2,9 @@ import { Component } from "./Component.js";
 import { SwitchInd } from "./SwitchInd.js";
 
 export class SliderMenuClosed extends Component {
-	list = ["mod", "switch", "delete"];
 	constructor(hookId, attr) {
 		super(hookId, false);
+		this.list = ["mod", "switch", "delete"];
 		this.attr = attr;
 		this.render();
 	}
@@ -19,12 +19,10 @@ export class SliderMenuClosed extends Component {
 		for (let el of this.list) {
 			const classes = "switch-indicator " + el;
 			if (el !== "switch") {
-				const switchBtn = new SwitchInd(this.elem.id, classes + " off");
+				new SwitchInd(this.elem.id, classes + " off");
 			} else {
-				const switchBtn = new SwitchInd(this.elem.id, classes);
+				new SwitchInd(this.elem.id, classes);
 			}
-			//===============================================================
-			// need to set without off class for switch btn indiator ... done. ???
 		}
 	}
 }
