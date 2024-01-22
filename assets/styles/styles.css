@@ -120,7 +120,7 @@ html {
   background: var(--input-main-bckg);
   /* background-image: linear-gradient(to bottom, rgba(0,0,0,0.15)5% ,rgba(255,255,255,0.1) 60% , rgba(0,0,0,0.4)90%); */
   padding: 6px;
-  gap: 6px;
+  gap: 8px;
   z-index: 10;
 
   box-shadow: var(--input-texture);
@@ -537,7 +537,6 @@ input[inputmode='numeric']::selection{
 .switch-indicator:hover {
   opacity: 0.9;
   filter: saturate(200%) brightness(150%);
-
   /* scale: 1; */
 }
 .switch-indicator.mod:hover {
