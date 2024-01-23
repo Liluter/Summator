@@ -77,3 +77,5 @@ SAD-23
 ![App after Upgrade 2](./Images/upgrade2-1.png)
 ![App after Upgrade 2](./Images/upgrade2-2.png)
 ![App after Upgrade 2](./Images/upgrade2-3.png)
+
+- Refactor code.

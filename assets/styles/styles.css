@@ -5,7 +5,6 @@
   src: url('./fonts/digital-7.ttf') format('truetype');
 }
 
-
 :root {
   --light-backG: #cbcbcb;
   --dark-grey-text: #3d3d3d;
@@ -13,7 +12,6 @@
   --input-main-stroke: #00000084;
   /* --secret-menu-bckg: #ebebeb; */
   --secret-menu-stroke: #b5b5b5;
-  --border-prime: 2px solid #ababab;
   --border-main: 1px solid var(--input-main-stroke);
   /* --border-main: 2px  solid linear-gradient(red white); */
   --gap: 6px;
@@ -22,6 +20,7 @@
   --secret-menu-mod: #3449ff;
   --secret-menu-switch: #ffec3e;
   --secret-menu-delete: #ff5c5c;
+  --input-number-bckg: rgba(206, 206, 182, 1);
   --input-modified-bckg: #8eb0ff;
   --shadow-btn: 0px 0px 6px rgba(0, 0, 0, 0.26);
   --shadow-btn2: 0px 0px 4px rgba(0, 0, 0, 0.16);
@@ -120,11 +119,9 @@ html {
   border-radius: 0px 0px var(--radius) var(--radius);
   border: var(--border-main);
   background: var(--input-main-bckg);
-  /* background-image: linear-gradient(to bottom, rgba(0,0,0,0.15)5% ,rgba(255,255,255,0.1) 60% , rgba(0,0,0,0.4)90%); */
   padding: 6px;
   gap: 8px;
   z-index: 10;
-
   box-shadow: var(--input-texture);
 }
 
@@ -158,6 +155,12 @@ ul#colorList {
   box-shadow: var(--input-modals);
 }
 
+.container {
+  width: min(60%, 400px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
 .colorInput {
   width: 30px;
@@ -171,8 +174,7 @@ ul#colorList {
   width: fit-content;
   height: 40px;
   background: var(--header-btn-backG);
-
-  background-image: linear-gradient(to bottom, rgba(0,0,0,0.2)0% ,rgba(255,255,255,0.2) 30% , rgba(0,0,0,0.1));
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2)0%, rgba(255, 255, 255, 0.2) 30%, rgba(0, 0, 0, 0.1));
   color: var(--dark-grey-text);
   font-family: 'Signika';
   font-size: 18px;
@@ -180,11 +182,10 @@ ul#colorList {
   line-height: 18px;
   padding: 2px 8px;
   font-weight: 500;
-  
   position: relative;
   text-shadow: -1px -1px 1px rgba(255, 255, 255, 0.1),
-  0px 0 0 #00000024,
-  1px 1px 1px rgba(0, 0, 0, 0.4);
+    0px 0 0 #00000024,
+    1px 1px 1px rgba(0, 0, 0, 0.4);
   border: var(--border-main) solid;
   border-radius: var(--radius);
   border-bottom-color: rgba(0, 0, 0, 0.7);
@@ -205,7 +206,7 @@ ul#colorList {
 }
 
 .options-modal {
-  width: 300px;
+  width: 310px;
   height: min-content;
   min-height: 100px;
   display: flex;
@@ -240,6 +241,8 @@ ul#colorList {
   border: var(--border-main);
   transition: all 200ms ease;
   gap: 4px;
+  padding: 10px 4px;
+  box-shadow: var(--input-modals)
 }
 
 .trash-item.disappera {
@@ -313,8 +316,8 @@ input[type='checkbox'] {
   flex: 0 0 25px;
 }
 
-input[inputmode='numeric']::selection{
-  background-color: rgba(0,0,0,0.55);
+input[inputmode='numeric']::selection {
+  background-color: rgba(0, 0, 0, 0.55);
   color: rgba(206, 206, 182, 0.96);
 }
 
@@ -326,7 +329,6 @@ input[inputmode='numeric']::selection{
   min-width: 160px;
   height: min-content;
   border: 1px solid var(--input-main-stroke);
-  background-color: var(--light-backG);
   color: var(--dark-grey-text);
 
   line-height: 1.1;
@@ -334,23 +336,17 @@ input[inputmode='numeric']::selection{
   font-size: 2rem;
   font-weight: normal;
   font-style: normal;
-  padding-bottom: 2px;
   text-align: right;
-  padding-right: 6px;
   gap: var(--gap);
   padding: 0 6px;
   flex: 0 1 140px;
-  background: rgba(206, 206, 182, 1);
+  background: var(--input-number-bckg);
   border-radius: var(--input-radius);
   box-shadow: var(--input-number);
 }
 
 .header-input:focus-visible {
   outline: none;
-}
-
-.container {
-  width: 60%;
 }
 
 .operation-btn {
@@ -360,7 +356,6 @@ input[inputmode='numeric']::selection{
   min-height: auto;
   text-align: center;
   float: left;
-  /* font-family: "geometry"; */
   font-size: 18px;
   background: var(--operation-btn);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2),
@@ -376,6 +371,12 @@ input[inputmode='numeric']::selection{
   box-shadow: var(--btn-shadow);
 }
 
+.bigger {
+  position: relative;
+  width: 3rem;
+  min-height: 3rem;
+}
+
 .operation-btn:active,
 .bigger:active {
   top: 3px;
@@ -387,19 +388,6 @@ input[inputmode='numeric']::selection{
   height: 30px;
   border-radius: var(--radius);
   font-size: 18px;
-}
-
-.bigger {
-  position: relative;
-  width: 3rem;
-  /* height:3rem; */
-  min-height: 3rem;
-}
-
-.container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .message {
@@ -416,21 +404,19 @@ input[inputmode='numeric']::selection{
 }
 
 .input-main {
+  width: 100%;
   min-width: 217px;
+  height: 60px;
   position: relative;
   z-index: 2;
   display: flex;
   align-items: center;
-  width: 100%;
-  height: 60px;
-  border-radius: 18px;
   border: 1px solid var(--input-main-stroke);
+  border-radius: var(--radius);
   background: var(--input-main-bckg);
   box-shadow: 0px 2px 2px #6b6b6b4d, 0px 4px 18px #90909080;
   gap: var(--gap);
   padding: 0 8px;
-
-  border-radius: 14px;
   box-shadow: var(--input-texture);
 }
 
@@ -461,7 +447,6 @@ input[inputmode='numeric']::selection{
   font-size: 24px;
 }
 
-
 .input-num {
   width: 100%;
   position: relative;
@@ -478,22 +463,20 @@ input[inputmode='numeric']::selection{
   font-style: normal;
   font-weight: normal;
   text-align: right;
-
-  /* text-shadow: 0 0 2px rgba(164, 237, 255, 0.9); */
   padding: 2px 6px;
   display: block;
-  background: rgba(206, 206, 182, 1);
+  background: var(--input-number-bckg);
   box-shadow: var(--input-number);
-
-  /* caret: rgba(0,0,0,0.3) underscore; */
-  /* caret-color: #ffffff; */
 }
+
 .input-num:focus-visible {
   outline: none;
 }
+
 .input-num.modified {
   background-color: var(--input-modified-bckg);
 }
+
 .slider-menu-closed {
   display: flex;
   flex-direction: column;
@@ -508,8 +491,7 @@ input[inputmode='numeric']::selection{
   border-radius: 0px var(--radius) var(--radius) 0px;
   border: solid 1px var(--secret-menu-stroke);
   background: var(--input-main-bckg);
-  background-image: linear-gradient(to bottom , rgba(0,0,0,0.3)0% ,rgba(255,255,255,0.3) 60% , rgba(0,0,0,0.2));
-
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3)0%, rgba(255, 255, 255, 0.3) 60%, rgba(0, 0, 0, 0.2));
   gap: 3px;
   transition: all 0.5s ease;
   box-shadow: var(--input-modals);
@@ -529,30 +511,36 @@ input[inputmode='numeric']::selection{
 }
 
 .off {
- filter: brightness(85%);
+  filter: brightness(85%);
 }
+
 .on {
   /* opacity: 1; */
   filter: saturate(200%) brightness(150%);
-  box-shadow:0 0 6px 4px rgba(219, 43, 43, 0.3);
+  box-shadow: 0 0 6px 4px rgba(219, 43, 43, 0.3);
 }
+
 .switch-indicator:hover {
   opacity: 0.9;
   filter: saturate(200%) brightness(150%);
   /* scale: 1; */
 }
+
 .switch-indicator.mod:hover {
-  box-shadow:0 0 6px 4px rgba(15, 65, 231, 0.3);
+  box-shadow: 0 0 6px 4px rgba(15, 65, 231, 0.3);
 }
+
 .switch-indicator.switch:hover {
   box-shadow: 0 0 6px 4px rgba(255, 255, 0, 0.3);
 }
+
 .switch-indicator.delete:hover {
-  box-shadow:0 0 6px 4px rgba(219, 43, 43, 0.3);
+  box-shadow: 0 0 6px 4px rgba(219, 43, 43, 0.3);
 }
 
-
-.slider-menu-open {
+.slider-menu-open,
+.slider-mod,
+.slider-switch {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -572,53 +560,26 @@ input[inputmode='numeric']::selection{
 }
 
 .slider-mod {
-  display: flex;
-  flex-direction: row;
   justify-content: space-around;
-  align-items: center;
-  width: 251px;
-  height: 60px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 2;
-  border-radius: var(--radius);
-  border: solid 1px var(--secret-menu-stroke);
   background: var(--operator-modal-backG);
   gap: 6px;
-  transition: all 0.5s ease;
   padding: 0 6px;
   box-shadow: var(--input-modals);
 }
 
 .slider-switch {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 251px;
-  height: 60px;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 2;
-  border-radius: var(--radius);
-  border: solid 1px var(--secret-menu-stroke);
-  background: var(--input-main-bckg);
   gap: 6px;
-  transition: all 0.5s ease;
   padding: 0 6px;
-  box-shadow: var(--input-texture);
 }
 
 .switch-menu-btn {
+  position: relative;
   width: 64px;
   height: 32px;
   margin-right: 0;
   border-radius: 16px;
   border: 1px solid var(--secret-menu-stroke);
   background: var(--light-grey);
-  transition: all 0.2s ease;
   box-shadow: var(--btn-shadow);
 }
 
@@ -680,6 +641,7 @@ input[inputmode='numeric']::selection{
   opacity: 1;
   filter: brightness(110%);
 }
+
 .switch-menu-btn.turnoff:hover {
   filter: grayscale(50%) contrast(70%);
 }
