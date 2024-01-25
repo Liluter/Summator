@@ -13,8 +13,8 @@ export const THEME_SWATCH_TITLES = [
 ];
 
 export const THEME = {
-	default: ["#f19c36", "#c0beb9", "#ffffff", "#204a87"],
-	option: ["#edd400", "#e45555", "#d3d7cf", "#ce5c00"],
+	default: ["#ebe2c2", "#00a4d6", "#f5f5f5", "#204a87"],
+	option: ["#edd400", "#e2225c", "#d3d7cf", "#ce5c00"],
 	custom: ["#d2b974", "#c54d26", "#8d6553", "#ab5b30"],
 	contrast: ["#16d0ba", "#0e47b9", "#2e2e2e", "#413649"],
 };
