@@ -1,35 +1,33 @@
 # Summator
-Summator App for easy calculations
 
-Create app for marketplace salesman to fast calculations and easy sale manegment.
+## [SUMMATOR](https://github.com/Liluter/Summator/settings/pages) App for easier calculations.
 
-## Jira web link
-https://awdziewicz.atlassian.net/wiki/spaces/SD/overview?atlOrigin=eyJpIjoiYmI2ODQxMWQwNzMwNDZiYjllZjhmZDE5NmQzMWQ3NDciLCJwIjoiaiJ9
+    I am creating a marketplace app for sellers to get quick calculations and easy sales management.
 
-## MVP Sprint
-- Main logic done.
-- UI and almost all css styles done.
-
+## Summator project on  [JIRA](https://awdziewicz.atlassian.net/wiki/spaces/SD/overview?atlOrigin=eyJpIjoiYmI2ODQxMWQwNzMwNDZiYjllZjhmZDE5NmQzMWQ3NDciLCJwIjoiaiJ9)
+    Used Jira to manage this project.
 ---
 
-- [ ] To investigate necesity off using all operators signs in main operation modal. Maybe "+" and "-" will be enougth.
+## Incoming: Clear board, More Save options, Day/Night style toggle.
+    
+---
+## Upgrade 2
+- Add to option modal, theme change feature.
+- New ideas during sprint : 
+    - Reset all themes to default values.
 
-Sprinty
-Epik
-SAD-8
+- Refactor Trash ( form style features)
+- After some style improvments.
 
-Setup Summator App development
-Gotowe
-Epik
-SAD-16
+![App after Upgrade 2](./Images/upgrade2-0.png)
+![App after Upgrade 2](./Images/upgrade2-1.png)
+![App after Upgrade 2](./Images/upgrade2-2.png)
+![App after Upgrade 2](./Images/upgrade2-3.png)
 
-MVP
-Gotowe
-Epik
-SAD-23
+- Refactor code.
+---
 
 ## Upgrade 1
-
 
 - After 1 sprint ideas
     - Improve header button style animation and hover
@@ -52,30 +50,29 @@ SAD-23
 
 - When Switch off result should update
 
+![App after Upgrade 2](./Images/Upgrade2.png)
 ---
 
 ![App after Upgrade 1](./Images/Upgrade1.png)
 
 --- 
+## MVP Sprint
+- Main logic done.
+- UI and almost all css styles done.
 
+- [ ] To investigate necesity off using all operators signs in main operation modal. Maybe "+" and "-" will be enougth.
 
-## Upgrade 2
+Sprinty
+Epik
+SAD-8
 
-![App after Upgrade 2](./Images/Upgrade2.png)
+Setup Summator App development
+Gotowe
+Epik
+SAD-16
 
-- Add to option modal, theme change feature.
-
-
-- New ideas during sprint : 
-    - Reset all themes to default values.
-
-- Refactor Trash ( form style features)
-
-- After some style improvments.
-
-![App after Upgrade 2](./Images/upgrade2-0.png)
-![App after Upgrade 2](./Images/upgrade2-1.png)
-![App after Upgrade 2](./Images/upgrade2-2.png)
-![App after Upgrade 2](./Images/upgrade2-3.png)
-
-- Refactor code.
+MVP
+Gotowe
+Epik
+SAD-23
+---
