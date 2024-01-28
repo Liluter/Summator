@@ -7,23 +7,24 @@ export function calculateResults() {
 	for (const element of Generator.inputs) {
 		if (element.switcher) {
 			modifier = +element.mainVal;
-
-			switch (element.modOperator) {
-				case "+":
-					modifier += +element.modValue;
-					break;
-				case "-":
-					modifier -= +element.modValue;
-					break;
-				case "x":
-					modifier *= +element.modValue;
-					break;
-				case "/":
-					modifier /= +element.modValue;
-					break;
-				case "%":
-					modifier *= +element.modValue / 100;
-					break;
+			if (element.modValue !== "") {
+				switch (element.modOperator) {
+					case "+":
+						modifier += +element.modValue;
+						break;
+					case "-":
+						modifier -= +element.modValue;
+						break;
+					case "x":
+						modifier *= +element.modValue;
+						break;
+					case "/":
+						modifier /= +element.modValue;
+						break;
+					case "%":
+						modifier *= +element.modValue / 100;
+						break;
+				}
 			}
 
 			switch (element.mainOperator) {

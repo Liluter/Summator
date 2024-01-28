@@ -91,7 +91,7 @@ export function addInput(historyInput, toTrash = false) {
 	new SliderMod(
 		smallContId,
 		[{ name: "id", value: sliderMod }],
-		!!historyInput ? +historyInput.modValue : ""
+		!!historyInput ? historyInput.modValue : ""
 	);
 	new SliderSwitch(
 		smallContId,

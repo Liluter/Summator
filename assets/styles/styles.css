@@ -367,7 +367,7 @@ input[inputmode='numeric']::selection {
   border-top-color: rgba(0, 0, 0, 0.5);
   border-right-color: rgba(0, 0, 0, 0.6);
   border-left-color: rgba(0, 0, 0, 0.6);
-  flex: 0 0 32px;
+  flex: 0 0 2.2rem;
   box-shadow: var(--btn-shadow);
 }
 
@@ -384,8 +384,8 @@ input[inputmode='numeric']::selection {
 }
 
 .smaller {
-  width: 32px;
-  height: 30px;
+  flex: 0 0 1.8rem;
+  height: 1.8rem;;
   border-radius: var(--radius);
   font-size: 18px;
 }
@@ -511,12 +511,12 @@ input[inputmode='numeric']::selection {
 }
 
 .off {
-  filter: brightness(85%);
+  filter: brightness(60%);
 }
 
 .on {
   /* opacity: 1; */
-  filter: saturate(200%) brightness(150%);
+  filter: saturate(120%) brightness(180%);
   box-shadow: 0 0 6px 4px rgba(219, 43, 43, 0.3);
 }
 
@@ -563,7 +563,7 @@ input[inputmode='numeric']::selection {
   justify-content: space-around;
   background: var(--operator-modal-backG);
   gap: 6px;
-  padding: 0 6px;
+  padding: 0 8px;
   box-shadow: var(--input-modals);
 }
 

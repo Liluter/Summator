@@ -27,11 +27,11 @@ export class SliderMod extends Component {
 			inputNumModified.value = e.target.value;
 			inputNumModified.classList.remove("hide");
 			operatorModified.classList.remove("hide");
-		} else if (actualModOperator !== "+") {
-			modIndicator.classList.remove("off");
+		} else if (actualModOperator !== "+" && e.target.value) {
+			// modIndicator.classList.remove("off");
 			inputNumModified.value = e.target.value;
-			inputNumModified.classList.add("hide");
-			operatorModified.classList.add("hide");
+			// inputNumModified.classList.add("hide");
+			// operatorModified.classList.add("hide");
 			operatorModified.innerHTML = Generator.inputFinder(
 				ancestorCont.id
 			).modOperator;
@@ -40,7 +40,7 @@ export class SliderMod extends Component {
 			inputNumModified.classList.add("hide");
 			operatorModified.classList.add("hide");
 
-			Generator.inputFinder(ancestorCont.id).modOperator = "+";
+			// Generator.inputFinder(ancestorCont.id).modOperator = "+";
 			operatorModified.innerHTML = Generator.inputFinder(
 				ancestorCont.id
 			).modOperator;
@@ -48,8 +48,15 @@ export class SliderMod extends Component {
 	}
 
 	render() {
+		const ancestorCont = document.getElementById(this.hookId);
 		const elem = this.createComp("div", "slider-mod hide", this.attr);
-		const smallOprBtn = new OperationBtnInput(elem.id, "+", "smaller");
+		const smallOprBtn = new OperationBtnInput(
+			elem.id,
+			!Generator.inputFinder(ancestorCont.id)
+				? Generator.inputFinder(ancestorCont.id, "trash").modOperator
+				: Generator.inputFinder(ancestorCont.id).modOperator,
+			"smaller"
+		);
 		const modInput = new InputNumberMod(elem.id, "", [
 			{ name: "value", value: this.inputValue },
 		]);
