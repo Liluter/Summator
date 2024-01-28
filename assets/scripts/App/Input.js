@@ -3,9 +3,9 @@ export class Input {
 		id,
 		hashId,
 		mainOperator = "+",
-		mainVal = 0,
+		mainVal = "",
 		modOperator = "+",
-		modValue = 0,
+		modValue = "",
 		mod = false,
 		switcher = true,
 		del = false

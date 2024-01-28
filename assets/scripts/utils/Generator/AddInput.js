@@ -66,7 +66,7 @@ export function addInput(historyInput, toTrash = false) {
 		"",
 		!!historyInput
 			? [{ name: "value", value: historyInput.mainVal }]
-			: [{ name: "value", value: 0 }]
+			: [{ name: "value", value: "" }]
 	);
 
 	new OperationBtnInput(
@@ -91,7 +91,7 @@ export function addInput(historyInput, toTrash = false) {
 	new SliderMod(
 		smallContId,
 		[{ name: "id", value: sliderMod }],
-		!!historyInput ? +historyInput.modValue : 0
+		!!historyInput ? +historyInput.modValue : ""
 	);
 	new SliderSwitch(
 		smallContId,
