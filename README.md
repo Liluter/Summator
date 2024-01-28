@@ -1,6 +1,6 @@
 # Summator
 
-## [SUMMATOR](https://github.com/Liluter/Summator/settings/pages) App for easier calculations.
+## [SUMMATOR](https://liluter.github.io/Summator/) App for easier calculations.
 
     I am creating a marketplace app for sellers to get quick calculations and easy sales management.
 
