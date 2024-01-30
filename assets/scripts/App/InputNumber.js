@@ -20,8 +20,11 @@ export class InputNumber extends Component {
 	}
 	keyDownHandler(e) {
 		if (
-			("0123456789.".includes(e.key) && typeof +e.target.value === "number") ||
-			e.key === "Backspace"
+			("0123456789.".includes(e.key) &&
+				typeof +e.target.value === "number" &&
+				!isNaN(Number(e.target.value + e.key))) ||
+			e.key === "Backspace" ||
+			e.key === "Enter"
 		) {
 		} else {
 			e.preventDefault();
