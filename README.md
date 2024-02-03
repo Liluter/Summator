@@ -11,6 +11,11 @@
 ## Incoming: Clear board, More Save options, Day/Night style toggle.
     
 ---
+## Upgrade 3
+- String validation for '.' inputs.
+- Fix selection input number to empty value not "0".
+- Refactor ModalOptions
+---
 ## Upgrade 2
 - Add to option modal, theme change feature.
 - New ideas during sprint : 
