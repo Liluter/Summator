@@ -167,7 +167,7 @@ ul#colorList {
   height: 30px;
   border: var(--border-main);
   overflow: hidden;
-
+  border-radius: 4px;
 }
 
 .uniBtn {
@@ -250,16 +250,16 @@ ul#colorList {
 }
 
 .trash-item input {
-  height: 32px;
+  height: min-content;
   margin: 0 4px;
   border-radius: var(--radius);
   text-align: right;
   color: var(--dark-grey-text);
   text-align: right;
-  font-family: 'Signika';
-  font-size: 28px;
+  font-family: "Digital-7", 'Signika';
+  font-size: 1.5rem;
   font-style: normal;
-  line-height: 14px;
+  line-height: 1.1;
 }
 
 .trash-item input[type="checkbox"] {
@@ -436,15 +436,15 @@ input[inputmode='numeric']::selection {
   width: 12px;
   height: 12px;
 }
-
+/* 
 #trashForm .input-num {
   height: 80%;
-}
+} */
 
 #trashForm .operation-btn {
   width: 2rem;
   height: 2rem;
-  font-size: 24px;
+  font-size: 16px;
 }
 
 .input-num {

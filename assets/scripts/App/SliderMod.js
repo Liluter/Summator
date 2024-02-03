@@ -52,9 +52,7 @@ export class SliderMod extends Component {
 		const elem = this.createComp("div", "slider-mod hide", this.attr);
 		const smallOprBtn = new OperationBtnInput(
 			elem.id,
-			!Generator.inputFinder(ancestorCont.id)
-				? Generator.inputFinder(ancestorCont.id, "trash").modOperator
-				: Generator.inputFinder(ancestorCont.id).modOperator,
+			Generator.trash[this.hookId.slice(-1)],
 			"smaller"
 		);
 		const modInput = new InputNumberMod(elem.id, "", [
@@ -65,7 +63,7 @@ export class SliderMod extends Component {
 			[
 				{
 					name: "id",
-					value: "OprModSmall-" + this.hookId[this.hookId.length - 1],
+					value: "OprModSmall-" + this.hookId.slice(-1),
 				},
 			],
 			"smaller"
