@@ -16,7 +16,7 @@ export class OperationBtnInput extends Component {
 			"operation-btn " + this.classes,
 			this.attr
 		);
-		this.elem.innerHTML = this.operator;
+		this.elem.textContent = this.operator;
 		// this.elem.addEventListener("click", (e) => {
 		// 	e.target.nextSibling.classList.toggle("hide");
 		// });

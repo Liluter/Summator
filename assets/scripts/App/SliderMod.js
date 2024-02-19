@@ -50,9 +50,14 @@ export class SliderMod extends Component {
 	render() {
 		const ancestorCont = document.getElementById(this.hookId);
 		const elem = this.createComp("div", "slider-mod hide", this.attr);
+		console.log(
+			Generator.inputs,
+			Generator.inputFinder(this.hookId).modOperator
+			// Generator.inputs[this.hookId.slice(-1) - 1].modOperator
+		);
 		const smallOprBtn = new OperationBtnInput(
 			elem.id,
-			Generator.trash[this.hookId.slice(-1)],
+			Generator.inputFinder(this.hookId).modOperator,
 			"smaller"
 		);
 		const modInput = new InputNumberMod(elem.id, "", [
