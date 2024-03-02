@@ -16,8 +16,8 @@ export function recoverBtnHandler() {
 			} else {
 				bufforItem.id = "Input-cont-" + 1;
 			}
-			Generator.addInput(bufforItem);
 			Generator.inputs.push(bufforItem);
+			Generator.addInput(bufforItem);
 			Generator.inputsSave();
 			disappear(item);
 			return null;

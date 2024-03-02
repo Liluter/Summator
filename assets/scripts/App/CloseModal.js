@@ -1,6 +1,7 @@
 export function closeModal(e) {
 	// for slider mod inside operator modal closing
-
+	// console.log(e);
+	// return;
 	const sliderMod = document.querySelectorAll(".slider-mod");
 	const sliderMenuOpen = document.querySelectorAll(".slider-menu-open");
 	const sliderDelete = document.querySelectorAll(".slider-delete");

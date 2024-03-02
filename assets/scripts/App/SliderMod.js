@@ -5,10 +5,11 @@ import { OperationBtnInput } from "./OperationBtnInput.js";
 import { OperatorModalSmall } from "./OperatorModalSmall.js";
 
 export class SliderMod extends Component {
-	constructor(hookId, attr, inputValue) {
+	constructor(hookId, attr, inputValue, inTrash = false) {
 		super(hookId, false);
 		this.attr = attr;
 		this.inputValue = inputValue;
+		this.inTrash = inTrash;
 		this.render();
 	}
 	oprBtnHandler(e) {
@@ -50,14 +51,9 @@ export class SliderMod extends Component {
 	render() {
 		const ancestorCont = document.getElementById(this.hookId);
 		const elem = this.createComp("div", "slider-mod hide", this.attr);
-		console.log(
-			Generator.inputs,
-			Generator.inputFinder(this.hookId).modOperator
-			// Generator.inputs[this.hookId.slice(-1) - 1].modOperator
-		);
 		const smallOprBtn = new OperationBtnInput(
 			elem.id,
-			Generator.inputFinder(this.hookId).modOperator,
+			!this.inTrash ? Generator.inputFinder(this.hookId).modOperator : "+",
 			"smaller"
 		);
 		const modInput = new InputNumberMod(elem.id, "", [
