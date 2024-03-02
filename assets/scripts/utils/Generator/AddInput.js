@@ -55,9 +55,6 @@ export function addInput(historyInput, toTrash = false) {
 		mainInputId,
 		!!historyInput ? historyInput.mainOperator : "+"
 	);
-	oprBtnInput.elem.addEventListener("click", (e) => {
-		e.target.nextSibling.classList.toggle("hide");
-	});
 
 	new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
 
@@ -91,7 +88,8 @@ export function addInput(historyInput, toTrash = false) {
 	new SliderMod(
 		smallContId,
 		[{ name: "id", value: sliderMod }],
-		!!historyInput ? historyInput.modValue : ""
+		!!historyInput ? historyInput.modValue : "",
+		toTrash
 	);
 	new SliderSwitch(
 		smallContId,
