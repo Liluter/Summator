@@ -6,10 +6,13 @@
 }
 
 :root {
-  --light-backG: #cbcbcb;
+  /* --light-backG: #cbcbcb; */
   --dark-grey-text: #3d3d3d;
-  --light-grey: #ebebeb;
+  --app-backG: #cbcbcb;
+  --light-grey: #cfc797;
   --input-main-stroke: #00000084;
+  --text-color: #3d3d3d;
+  --lcd-color: #fff;
   /* --secret-menu-bckg: #ebebeb; */
   --secret-menu-stroke: #b5b5b5;
   --border-main: 1px solid var(--input-main-stroke);
@@ -20,10 +23,14 @@
   --secret-menu-mod: #3449ff;
   --secret-menu-switch: #ffec3e;
   --secret-menu-delete: #ff5c5c;
-  --input-number-bckg: rgba(206, 206, 182, 1);
+  --input-number-bckg: #ceceb6;
+  --input-number-bckg-dark: #4a4a2c;
+  --input-number-bckg-light: #ceceb6;
   --input-modified-bckg: #8eb0ff;
+  --input-modified-bckg-dark: #01267d;
+  --input-modified-bckg-light: #8eb0ff;
   --shadow-btn: 0px 0px 6px rgba(0, 0, 0, 0.26);
-  --shadow-btn2: 0px 0px 4px rgba(0, 0, 0, 0.16);
+  --shadow-btn2: 0px 0px 4px rgba(6, 1, 1, 0.16);
 
   --operation-btn: #7dd454;
   --header-btn-backG: #FFC165;
@@ -81,6 +88,7 @@
     inset 0px 2px 1px 2px rgba(0, 0, 0, 0.1),
     0px 1px 0px 0.5px rgba(255, 255, 255, 0.3),
     1px 0px 0px 0.5px rgba(0, 0, 0, 0.2);
+  /* color-scheme: light dark; */
 }
 
 * {
@@ -91,7 +99,7 @@
 
 html {
   font-family: 'Signika', Tahoma, Geneva, Verdana, sans-serif;
-  color: var(--dark-grey-text);
+  color: var(--text-color);
 }
 
 #app {
@@ -103,7 +111,7 @@ html {
   width: 100vw;
   height: 100vh;
   min-height: 100vh;
-  background-color: var(--light-backG);
+  background-color: var(--app-backG);
   gap: 24px;
   padding-bottom: 20px;
 }
@@ -151,7 +159,7 @@ ul#colorList {
   align-items: center;
   border-radius: calc(2*var(--radius));
   border: var(--border-main);
-  background: var(--light-grey);
+  background: var(--app-backG);
   padding: 0 14px 0 14px;
   box-shadow: var(--input-modals);
 }
@@ -176,7 +184,7 @@ ul#colorList {
   height: 40px;
   background: var(--header-btn-backG);
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2)0%, rgba(255, 255, 255, 0.2) 30%, rgba(0, 0, 0, 0.1));
-  color: var(--dark-grey-text);
+  color: var(--text-color);
   font-family: 'Signika';
   font-size: 18px;
   font-style: normal;
@@ -255,7 +263,7 @@ ul#colorList {
   margin: 0 4px;
   border-radius: var(--radius);
   text-align: right;
-  color: var(--dark-grey-text);
+  color: var(--text-color);
   text-align: right;
   font-family: "Digital-7", 'Signika';
   font-size: 1.5rem;
@@ -331,7 +339,7 @@ input[inputmode='numeric']::selection {
   min-width: 160px;
   height: min-content;
   border: 1px solid var(--input-main-stroke);
-  color: var(--dark-grey-text);
+  color: var(--text-color);
 
   line-height: 1.1;
   font-family: 'Digital-7', 'Signika', sans-serif;
@@ -360,6 +368,7 @@ input[inputmode='numeric']::selection {
   float: left;
   font-size: 18px;
   background: var(--operation-btn);
+  color: var(--text-color);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2),
     0px 0 0 #00000024,
     0px 1px 1px rgba(0, 0, 0, 0.3);
@@ -397,7 +406,7 @@ input[inputmode='numeric']::selection {
   background-color: var(--operator-modal-backG, #121212);
   border: var(--border-main);
   border-radius: var(--radius);
-  color: var(--light-backG);
+  color: var(--text-color);
   text-align: center;
   line-height: 40px;
   font-family: 'Signika';
@@ -460,7 +469,7 @@ input[inputmode='numeric']::selection {
   border-radius: var(--input-radius);
   border: none;
   border: var(--border-main);
-  color: var(--dark-grey-text);
+  color: var(--text-color);
   line-height: 1.1;
   font-family: 'Digital-7', 'Signika', sans-serif;
   font-size: 2rem;

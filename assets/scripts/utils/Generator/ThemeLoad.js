@@ -1,13 +1,19 @@
 import { Generator } from "../../App/Generator.js";
 
 export function themeLoad() {
-	const newTheme = JSON.parse(localStorage.getItem("theme"));
-	const newActualTheme = localStorage.getItem("actualTheme");
-	!!localStorage.getItem("theme") ? (Generator.theme = newTheme) : null;
+	if (!!localStorage.getItem("theme")) {
+		const theme = JSON.parse(localStorage.getItem("theme"));
+		Generator.theme = theme;
+	} else {
+		localStorage.setItem("theme", JSON.stringify(Generator.theme));
+	}
 
-	!!localStorage.getItem("actualTheme")
-		? (Generator.actualTheme = newActualTheme)
-		: null;
+	if (!!localStorage.getItem("actualTheme")) {
+		const newActualTheme = localStorage.getItem("actualTheme");
+		Generator.actualTheme = newActualTheme;
+	} else {
+		localStorage.setItem("actualTheme", JSON.stringify(Generator.actualTheme));
+	}
 
 	Generator.themeApply();
 }

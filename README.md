@@ -10,12 +10,15 @@
 
 ---
 
-## Incoming: Clear board, More Save options, Day/Night style toggle.
+## Incoming: More Save options, Day/Night style toggle.
 
 ## Upgrade 4
 
 - Fix modOperator.
 - Clear Board feature.
+- Select all items in trash.
+- Reset button for theme feature.
+- Fix btn recovery from trash.
 
 ---
 
