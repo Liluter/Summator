@@ -7,6 +7,7 @@ import { loadHistory } from "../utils/Generator/LoadHistory.js";
 import { themeSave } from "../utils/Generator/ThemeSave.js";
 import { themeLoad } from "../utils/Generator/ThemeLoad.js";
 import { themeApply } from "../utils/Generator/ThemeApply.js";
+import { themeReset } from "../utils/Generator/ThemeReset.js";
 import { inputFinder } from "../utils/Generator/InputFinder.js";
 import { inputRemover } from "../utils/Generator/InputRemover.js";
 import { calculateResults } from "../utils/Generator/CalculateResults.js";
@@ -35,6 +36,7 @@ export class Generator {
 	static themeSave = themeSave;
 	static themeLoad = themeLoad;
 	static themeApply = themeApply;
+	static themeReset = themeReset;
 	static inputFinder = inputFinder;
 	static inputRemover = inputRemover;
 	static calculateResults = calculateResults;
