@@ -305,7 +305,8 @@ ul#colorList {
   align-self: center;
 }
 
-#trashFooter {
+#trashFooter,
+#themeFooter {
   display: flex;
   justify-content: center;
   gap: 12px;
