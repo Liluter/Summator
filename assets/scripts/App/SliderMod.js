@@ -54,7 +54,9 @@ export class SliderMod extends Component {
 		const smallOprBtn = new OperationBtnInput(
 			elem.id,
 			!this.inTrash ? Generator.inputFinder(this.hookId).modOperator : "+",
-			"smaller"
+			"smaller",
+			null,
+			this.oprBtnHandler.bind(this)
 		);
 		const modInput = new InputNumberMod(elem.id, "", [
 			{ name: "value", value: this.inputValue },
@@ -70,7 +72,6 @@ export class SliderMod extends Component {
 			"smaller"
 		);
 
-		smallOprBtn.elem.addEventListener("click", this.oprBtnHandler.bind(this));
 		modInput.elem.addEventListener("input", this.modInputHandler.bind(this));
 	}
 }

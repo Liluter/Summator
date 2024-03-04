@@ -1,12 +1,13 @@
 import { Component } from "./Component.js";
 
 export class OperationBtnInput extends Component {
-	constructor(hookId, operator, classes = "", attr) {
+	constructor(hookId, operator, classes = "", attr, clickHandler) {
 		super(hookId, false);
 		this.operator = operator;
 		this.classes = classes;
 		this.attr = attr;
 		this.elem;
+		this.clickHandler = clickHandler;
 		this.render();
 	}
 
@@ -17,8 +18,6 @@ export class OperationBtnInput extends Component {
 			this.attr
 		);
 		this.elem.textContent = this.operator;
-		// this.elem.addEventListener("click", (e) => {
-		// 	e.target.nextSibling.classList.toggle("hide");
-		// });
+		this.clickHandler && this.elem.addEventListener("click", this.clickHandler);
 	}
 }

@@ -32,11 +32,14 @@ export class OperatorModal extends Component {
 
 		for (const operator of this.operators) {
 			this.buttons.push(
-				new OperationBtnInput(this.elem.id, operator, this.classes)
+				new OperationBtnInput(
+					this.elem.id,
+					operator,
+					this.classes,
+					null,
+					this.operatorHandler.bind(this)
+				)
 			);
 		}
-		this.buttons.forEach((e) =>
-			e.elem.addEventListener("click", this.operatorHandler.bind(this))
-		);
 	}
 }

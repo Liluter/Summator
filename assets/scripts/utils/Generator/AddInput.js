@@ -9,6 +9,8 @@ import { SliderMod } from "../../App/SliderMod.js";
 import { SliderMenuClosed } from "../../App/SliderMenuClosed.js";
 import { SliderMenuOpen } from "../../App/SliderMenuOpen.js";
 import { Generator } from "../../App/Generator.js";
+import { mainOperationBtnHandler } from "../MainOperationBtnHandler.js";
+import { modalOperationBtnHandler } from "../ModalOperationBtnHandler.js";
 
 export function addInput(historyInput, toTrash = false) {
 	let id;
@@ -53,9 +55,12 @@ export function addInput(historyInput, toTrash = false) {
 
 	const oprBtnInput = new OperationBtnInput(
 		mainInputId,
-		!!historyInput ? historyInput.mainOperator : "+"
+		!!historyInput ? historyInput.mainOperator : "+",
+		"",
+		null,
+		mainOperationBtnHandler
 	);
-
+	// oprBtnInput.elem.addEventListener("click", mainOperationBtnHandler);
 	new OperatorModal(mainInputId, [{ name: "id", value: operModId }]);
 
 	new InputNumber(
@@ -69,7 +74,9 @@ export function addInput(historyInput, toTrash = false) {
 	new OperationBtnInput(
 		mainInputId,
 		!!historyInput ? historyInput.modOperator : "+",
-		!!historyInput && historyInput.modValue != 0 ? "smaller" : "smaller hide"
+		!!historyInput && historyInput.modValue != 0 ? "smaller" : "smaller hide",
+		null,
+		modalOperationBtnHandler
 	);
 
 	new InputNumber(
