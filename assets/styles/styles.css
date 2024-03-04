@@ -24,7 +24,7 @@
   --secret-menu-switch: #ffec3e;
   --secret-menu-delete: #ff5c5c;
   --input-number-bckg: #ceceb6;
-  --input-number-bckg-dark: #4a4a2c;
+  --input-number-bckg-dark: #27271f;
   --input-number-bckg-light: #ceceb6;
   --input-modified-bckg: #8eb0ff;
   --input-modified-bckg-dark: #01267d;
@@ -32,9 +32,9 @@
   --shadow-btn: 0px 0px 6px rgba(0, 0, 0, 0.26);
   --shadow-btn2: 0px 0px 4px rgba(6, 1, 1, 0.16);
 
-  --operation-btn: #7dd454;
-  --header-btn-backG: #FFC165;
-  --input-main-bckg: #adadad;
+  --operation-btn: #00a4d6;
+  --header-btn-backG: #00a4d6;
+  --input-main-bckg: #cbcbcb;
   /* --input-main-bckg: rgba(206, 206, 182, 0.7); */
   --operator-modal-backG: #24249cc3;
 
