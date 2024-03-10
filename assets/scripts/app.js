@@ -22,11 +22,10 @@ class App {
 			Generator.trashLoad();
 			Generator.loadHistory();
 		});
-		const help = document.createElement("uc-modalhelp");
-		help.innerHTML = `<h2 slot="message">This is Title of help message </h2>`;
+		const modalHelp = document.createElement("uc-modalhelp");
+		modalHelp.setAttribute("id", "modalHelp");
 		const app = document.querySelector("#app");
-
-		app.append(help);
+		app.append(modalHelp);
 	}
 }
 

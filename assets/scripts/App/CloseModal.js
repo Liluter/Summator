@@ -31,20 +31,20 @@ export function closeModal(e) {
 	const myEvent = new Event("closeOptionModal");
 	if (
 		!optionsModal.contains(e.target) &&
-		e.target == optionsBtn[1] &&
+		e.target == optionsBtn[2] &&
 		optionsModal.classList.contains("hide")
 	) {
 		optionsModal.classList.toggle("hide");
 	} else if (
 		!optionsModal.contains(e.target) &&
-		e.target == optionsBtn[1] &&
+		e.target == optionsBtn[2] &&
 		!optionsModal.classList.contains("hide")
 	) {
 		optionsModal.classList.add("hide");
 		optionsModal.dispatchEvent(myEvent);
 	} else if (
 		!optionsModal.contains(e.target) &&
-		e.target != optionsBtn[1] &&
+		e.target != optionsBtn[2] &&
 		!optionsModal.classList.contains("hide")
 	) {
 		optionsModal.classList.add("hide");

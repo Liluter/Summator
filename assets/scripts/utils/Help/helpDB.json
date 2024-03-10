@@ -1,0 +1,10 @@
+{
+	"mainView": {
+		"title": "Main help",
+		"content": "This is help for main ."
+	},
+	"options": {
+		"title": "Options help",
+		"content": "This is help for options"
+	}
+}

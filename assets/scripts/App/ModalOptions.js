@@ -2,6 +2,7 @@ import { Component } from "./Component.js";
 import { Button } from "./Button.js";
 import { trashBtnHandler } from "../utils/Modal/TrashBtnHandler.js";
 import { themeBtnHandler } from "../utils/Modal/ThemeBtnHandler.js";
+import { useHelp } from "../utils/Help/UseHelp.js";
 
 export class ModalOptions extends Component {
 	constructor(hookId) {
@@ -29,6 +30,13 @@ export class ModalOptions extends Component {
 		modalHeader.id = "modalHeader";
 		this.elem.append(modalHeader);
 
+		// HELP BUTTON
+		const helpBtn = new Button(
+			modalHeader.id,
+			"uniBtn",
+			"?",
+			useHelp.bind(this, "options")
+		);
 		// TRASH BUTTON
 		const trashBtn = new Button(
 			modalHeader.id,
