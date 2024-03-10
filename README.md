@@ -12,6 +12,12 @@
 
 ## Incoming: More Save options, Day/Night style toggle.
 
+## Upgrade 5
+
+- Add web component as help modal and use it in few places.
+- Fix operation btn click handler.
+- Dark/Light theme selection.
+
 ## Upgrade 4
 
 - Fix modOperator.
