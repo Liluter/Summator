@@ -27,9 +27,9 @@ export class HeaderComp extends Component {
 		headerEl.innerHTML = `
     <button class='uniBtn'>Help</button>
     <button class='uniBtn'>Result</button>
-    <input id='resultInput' inputmode='numeric' value='0.00' class='header-input' readonly>
     <button class='uniBtn'>Options</button>
     <button class='uniBtn clear-board'>Clr Brd</button>
+    <input id='resultInput' inputmode='numeric' value='0.00' class='header-input' readonly>
     `;
 		const headerBtns = headerEl.querySelectorAll("button");
 		this.input = headerEl.querySelector("input");
