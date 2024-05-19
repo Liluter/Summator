@@ -170,10 +170,13 @@ ul#colorList {
 }
 
 .container {
-  width: min(60%, 400px);
+  width: min(calc(100% - 34px), 350px);
+  min-width: 270px;
+  max-width: max-content;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  margin-right: 26px;
 }
 
 .colorInput {
